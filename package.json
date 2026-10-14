@@ -1,0 +1,48 @@
+{
+  "name": "entre-elas",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts",
+    "processar-saberes": "tsx --env-file-if-exists=.env.local scripts/processar-saberes.ts",
+    "avaliar-match": "tsx --env-file-if-exists=.env.local scripts/avaliar-match.ts",
+    "demo:reset": "tsx --env-file-if-exists=.env.local scripts/demo.ts",
+    "db:types": "XDG_CONFIG_HOME=/tmp/entre-elas-config SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io supabase gen types typescript --db-url postgresql://postgres@127.0.0.1:54330/postgres > lib/db/types.ts",
+    "test:db": "node scripts/with-local-env.mjs env TEST_DATABASE=true node_modules/.bin/vitest run tests/db.test.ts",
+    "setup:local": "node scripts/setup-local.mjs",
+    "seed:local": "node scripts/with-local-env.mjs npm run seed",
+    "dev:local": "node scripts/with-local-env.mjs npm run dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.3",
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "stream-chat": "^9.54.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.0",
+    "supabase": "2.75.0",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.4"
+  },
+  "overrides": {
+    "tar": "^7.5.22"
+  }
+}

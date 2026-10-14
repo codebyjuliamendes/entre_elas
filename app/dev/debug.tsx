@@ -1,0 +1,9 @@
+'use client';
+import { useState, type FormEvent } from 'react';
+export default function Debug(){
+ const [profileId,setProfileId]=useState('00000000-0000-4000-8000-000000000001');
+ const [endpoint,setEndpoint]=useState('/api/faiscas/buscar');const [method,setMethod]=useState('POST');const [json,setJson]=useState('{"pedido":"Preciso apresentar um projeto à diretoria"}');const [saida,setSaida]=useState('');
+ async function executar(event:FormEvent){event.preventDefault();try{if(!endpoint.startsWith('/api/')||endpoint.startsWith('//'))throw new Error('Informe uma rota da API.');const r=await fetch(endpoint,{method,headers:{'Content-Type':'application/json'},body:method==='GET'?undefined:JSON.stringify(JSON.parse(json))});setSaida(JSON.stringify({status:r.status,dados:await r.json()},null,2));}catch(error){setSaida(error instanceof Error?error.message:'Falha na requisição.');}}
+ async function entrar(event:FormEvent){event.preventDefault();try{const r=await fetch('/api/dev/entrar-como',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile_id:profileId})});setSaida(JSON.stringify({status:r.status,dados:await r.json()},null,2));}catch{setSaida('Falha ao entrar.');}}
+ return <main><h1>Debug de domínio</h1><p>Use somente dados fictícios. Consulte docs/api.md para os contratos.</p><form onSubmit={entrar}><label>Usuária UUID <input value={profileId} onChange={e=>setProfileId(e.target.value)}/></label><button>Entrar como</button></form><form onSubmit={executar}><label>Rota <input value={endpoint} onChange={e=>setEndpoint(e.target.value)}/></label><label>Método <select value={method} onChange={e=>setMethod(e.target.value)}><option>GET</option><option>POST</option><option>PATCH</option></select></label><label>Entrada JSON <textarea rows={12} cols={80} value={json} onChange={e=>setJson(e.target.value)}/></label><button>Executar</button></form><pre>{saida}</pre></main>;
+}
