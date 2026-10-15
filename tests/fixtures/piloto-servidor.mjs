@@ -6,7 +6,7 @@ import {createHash,randomUUID} from 'node:crypto';
 import {createClient} from '@supabase/supabase-js';
 const env=Object.fromEntries(readFileSync('.env.local-db','utf8').split('\n').filter(l=>l.includes('=')).map(l=>{const p=l.indexOf('=');return [l.slice(0,p),l.slice(p+1)];}));
 const db=createClient(env.NEXT_PUBLIC_SUPABASE_URL,env.SUPABASE_SERVICE_ROLE_KEY,{auth:{persistSession:false}});
-const emails=['primeira@banca.test','segunda@banca.test','terceira@banca.test'];
+const emails=['primeira@banca.test','livre@outra.test','terceira@banca.test'];
 for(const email of emails){await db.from('piloto_limites').delete().eq('chave','login:'+createHash('sha256').update(email).digest('hex'));}
 const usuarios=new Map(emails.map(email=>[email,{id:randomUUID(),email,email_confirmed_at:new Date().toISOString(),aud:'authenticated',role:'authenticated',app_metadata:{},user_metadata:{}}]));
 const links=new Map();const tokens=new Map();
@@ -18,7 +18,7 @@ const server=createServer(async(req,res)=>{try{
  if(url.pathname==='/test-cleanup'){await limpar();res.end('{}');return;}
  if(url.pathname==='/test-link'){const link=[...links].find(([,v])=>v.email===url.searchParams.get('email'));res.end(JSON.stringify({url:link?'http://127.0.0.1:3400/auth/callback?code='+link[0]:null}));return;}
  const chunks=[];for await(const c of req)chunks.push(c);const body=chunks.length?JSON.parse(Buffer.concat(chunks).toString()):{};
- if(url.pathname==='/auth/v1/otp'){const code=randomUUID();links.set(code,{email:body.email,challenge:body.code_challenge});res.end('{}');return;}
+ if(url.pathname==='/auth/v1/otp'){if(!usuarios.has(body.email))usuarios.set(body.email,{id:randomUUID(),email:body.email,email_confirmed_at:new Date().toISOString(),aud:'authenticated',role:'authenticated',app_metadata:{},user_metadata:{}});const code=randomUUID();links.set(code,{email:body.email,challenge:body.code_challenge});res.end('{}');return;}
  if(url.pathname==='/auth/v1/token'){
   let user;
   if(url.searchParams.get('grant_type')==='pkce'){const link=links.get(body.auth_code);const challenge=createHash('sha256').update(body.code_verifier ?? '').digest('base64url');if(link?.challenge===challenge){user=usuarios.get(link.email);links.delete(body.auth_code);}}
@@ -31,7 +31,7 @@ const server=createServer(async(req,res)=>{try{
  res.statusCode=404;res.end('{}');
  }catch{res.statusCode=500;res.end('{"message":"Falha no contrato local"}');}});
 await new Promise(resolve=>server.listen(54322,'127.0.0.1',resolve));
-const child=spawn('npm',['run','start','--','--port','3400'],{stdio:'inherit',env:{...process.env,...env,APP_MODE:'piloto',PILOT_STARTS_AT:new Date().toISOString(),APP_URL:'http://127.0.0.1:3400',NEXT_PUBLIC_SUPABASE_URL:'http://127.0.0.1:54322',NEXT_PUBLIC_SUPABASE_ANON_KEY:'chave-publica-apenas-do-teste',PILOT_ALLOWED_EMAILS:emails.join(','),PILOT_LEADER_EMAILS:emails[0],GEMINI_API_KEY:'',GROQ_API_KEY:'',DAILY_API_KEY:'',STREAM_API_KEY:'',STREAM_API_SECRET:''}});
+const child=spawn('npm',['run','start','--','--port','3400'],{stdio:'inherit',env:{...process.env,...env,APP_MODE:'piloto',PILOT_STARTS_AT:new Date().toISOString(),APP_URL:'http://127.0.0.1:3400',NEXT_PUBLIC_SUPABASE_URL:'http://127.0.0.1:54322',NEXT_PUBLIC_SUPABASE_ANON_KEY:'chave-publica-apenas-do-teste',PILOT_LEADER_EMAILS:emails[0],GEMINI_API_KEY:'',GROQ_API_KEY:'',DAILY_API_KEY:'',STREAM_API_KEY:'',STREAM_API_SECRET:''}});
 let terminando=false;
 async function limpar(){
  for(const u of usuarios.values()){

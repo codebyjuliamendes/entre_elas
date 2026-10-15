@@ -44,8 +44,9 @@ export function Login() {
       <span className="eyebrow">Entre Elas · piloto</span>
       <h1>Uma conversa pode abrir caminhos.</h1>
       <p>
-        Entre com o e-mail convidado. Você terá sua própria conta e suas trocas
-        ficarão salvas com segurança no servidor.
+        Digite seu e-mail para criar sua conta ou entrar. Você receberá um link
+        de acesso, sem precisar de senha. Suas trocas ficarão salvas com
+        segurança no servidor.
       </p>
       <form onSubmit={entrar}>
         <label className="form-label" htmlFor="email">

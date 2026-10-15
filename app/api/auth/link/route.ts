@@ -24,6 +24,17 @@ export async function POST(request: Request) {
         "Aguarde para pedir outro link. Verifique sua caixa de entrada e spam.",
         429,
       );
+    const limiteGlobal = await getDb().rpc("piloto_consumir", {
+      chave_input: "login:global",
+      janela_input: janela,
+      limite_input: 100,
+    });
+    verificarErro(limiteGlobal.error);
+    if (!limiteGlobal.data)
+      throw new ErroDominio(
+        "O envio de links está temporariamente no limite. Tente novamente mais tarde.",
+        429,
+      );
     const jar = await cookies();
     const client = createClient(
       variavel("NEXT_PUBLIC_SUPABASE_URL"),

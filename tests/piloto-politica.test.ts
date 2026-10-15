@@ -3,22 +3,24 @@ import { exigirEmail, lider, pilotoAtivo } from "@/lib/piloto/config";
 import { perfilPilotoSchema } from "@/lib/piloto/acoes";
 afterEach(() => vi.unstubAllEnvs());
 describe("Política de admissão do piloto", () => {
-  it("lista vazia nunca libera cadastro e a demo não habilita o piloto", () => {
+  it("aceita qualquer e-mail válido no piloto sem lista de convites", () => {
     vi.stubEnv("APP_MODE", "piloto");
-    vi.stubEnv("PILOT_ALLOWED_EMAILS", "");
-    expect(() => exigirEmail("pessoa@banca.test")).toThrow("convidadas");
+    expect(exigirEmail("  NOVA@exemplo.com  ")).toBe("nova@exemplo.com");
+    expect(exigirEmail("outra@empresa.com")).toBe("outra@empresa.com");
+    expect(() => exigirEmail("email inválido")).toThrow();
     vi.stubEnv("APP_MODE", "apresentacao");
-    vi.stubEnv("PILOT_ALLOWED_EMAILS", "pessoa@banca.test");
     expect(pilotoAtivo()).toBe(false);
-    expect(() => exigirEmail("pessoa@banca.test")).toThrow();
+    expect(() => exigirEmail("nova@exemplo.com")).toThrow(
+      "não está habilitado",
+    );
   });
-  it("aceita somente o email verificado da lista e liderança explicitamente configurada", () => {
+  it("cadastro aberto não concede acesso à liderança", () => {
     vi.stubEnv("APP_MODE", "piloto");
-    vi.stubEnv("PILOT_ALLOWED_EMAILS", " pessoa@banca.test, outra@banca.test ");
     vi.stubEnv("PILOT_LEADER_EMAILS", "pessoa@banca.test");
-    expect(exigirEmail("PESSOA@banca.test")).toBe("pessoa@banca.test");
-    expect(() => exigirEmail("visitante@banca.test")).toThrow();
-    expect(lider("outra@banca.test")).toBe(false);
+    expect(exigirEmail("visitante@qualquer.com")).toBe(
+      "visitante@qualquer.com",
+    );
+    expect(lider("visitante@qualquer.com")).toBe(false);
     expect(lider("pessoa@banca.test")).toBe(true);
   });
   it("perfil não aceita identidade, permissões ou fotos dentro do rascunho de IA", () => {

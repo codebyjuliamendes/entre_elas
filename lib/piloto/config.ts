@@ -1,17 +1,11 @@
 import { z } from "zod";
 import { ErroDominio } from "@/lib/domain/erros";
 export const pilotoAtivo = () => process.env.APP_MODE === "piloto";
-export function emailsPermitidos() {
-  return (process.env.PILOT_ALLOWED_EMAILS ?? "")
-    .split(",")
-    .map((x) => x.trim().toLowerCase())
-    .filter(Boolean);
-}
 export function exigirEmail(email: unknown) {
-  const valor = z.email().max(254).parse(email).toLowerCase();
-  if (!pilotoAtivo() || !emailsPermitidos().includes(valor))
+  const valor = z.string().trim().email().max(254).parse(email).toLowerCase();
+  if (!pilotoAtivo())
     throw new ErroDominio(
-      "Acesso disponível somente às pessoas convidadas para o piloto.",
+      "O acesso por e-mail não está habilitado neste ambiente.",
       403,
     );
   return valor;

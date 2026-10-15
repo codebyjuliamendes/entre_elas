@@ -1,6 +1,7 @@
 # Ativar o piloto real da banca
 
-O piloto atende até dez pessoas convidadas, com link mágico por e-mail e Faíscas
+O piloto foi dimensionado inicialmente para até dez pessoas, com cadastro aberto,
+link mágico por e-mail e Faíscas
 entre participantes reais. `APP_MODE=apresentacao` mantém o modo anterior;
 `APP_MODE=piloto` usa `/piloto` e redireciona as rotas antigas. Nunca use as
 personas do seed como contas de jurados. O frontend do piloto usa APIs e dados
@@ -17,14 +18,16 @@ no Supabase; não há aceite simulado nem fonte de dados em localStorage.
    Postgres/PostgREST locais não oferecem Supabase Auth nem entrega de e-mail.
 3. Defina `APP_URL` como a URL HTTPS pública da aplicação. No Supabase Auth,
    habilite login por e-mail, configure Site URL e permita exatamente
-   `https://SEU-DOMINIO/auth/callback`. Use SMTP adequado para os convidados e
+   `https://SEU-DOMINIO/auth/callback`. Use SMTP próprio para envio público e
    verifique limites de entrega da conta. Configure expiração do link em dez
    minutos, compatível com o cookie temporário PKCE.
-4. Preencha `PILOT_ALLOWED_EMAILS` com os e-mails convidados separados por vírgula.
-   Lista vazia bloqueia o acesso. `PILOT_LEADER_EMAILS` define explicitamente quem
+4. Não há lista de convidados: qualquer e-mail válido pode solicitar o link e
+   entrar após a confirmação. Habilite novos cadastros no Supabase Auth.
+   `PILOT_LEADER_EMAILS` define explicitamente quem
    vê as métricas; não existe promoção de papel pelo formulário de perfil.
    `PILOT_STARTS_AT` pode fixar o início UTC das métricas. Sem valor, utiliza a
    criação da primeira conta desse piloto; não mistura contagens do seed.
+   Configure os dois templates e o remetente seguindo `supabase/templates/README.md`.
 5. Configure Gemini/Groq, modelos/embedding 768 e Stream/Daily com as credenciais
    reais. Nenhuma geração, mensagem ou chamada remota foi comprovada sem elas.
    A busca vetorial exige embeddings reais: o perfil oferece indexação dos saberes.
@@ -81,7 +84,8 @@ Limite persistente de sessenta chamadas lógicas de IA por pessoa/dia, incluindo
 cache, com janela UTC e incremento atômico. Provider mantém cache e fallback Groq;
 embeddings continuam Gemini, sem substituir vetores por números fictícios. Se
 ambos falharem, o app informa indisponibilidade e mantém dados já salvos.
-Pedidos de link têm limite de cinco por e-mail/hora, além dos limites do Auth.
+Pedidos de link têm limite de cinco por e-mail/hora e cem por hora no aplicativo,
+além dos limites do Auth/SMTP. O limite global protege a quota no cadastro aberto.
 
 Painel acessível somente aos e-mails de liderança configurados. Contagens do
 piloto: participantes, Faíscas realizadas entre contas reais, dicas dessas trocas,

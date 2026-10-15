@@ -166,3 +166,18 @@ local e dos contratos/segurança do backend; não é validação de serviços se
 O código do piloto inclui integração de chat/vídeo, não uma validação desses
 serviços sem chaves. Não liberar os três dias para a banca antes dos testes
 externos descritos no guia de ativação. Execução da pipeline remota não foi confirmada.
+
+## Cadastro aberto e e-mail personalizado — 2026-10-15
+
+- Lista de convidados removida por solicitação da usuária. Qualquer e-mail válido
+  pode receber link no modo piloto; identidade confirmada e acesso de liderança
+  continuam verificados. Há limite global de cem solicitações/hora e cinco por e-mail.
+- Build, lint e tipos aprovados; 72 testes unitários e dois de navegador do piloto
+  passaram. A segunda conta usa outro domínio, sem pré-cadastro no aplicativo.
+  O Auth do navegador continua sendo contrato local simulado, sem entrega real.
+- Templates de confirmação e Magic Link preparados em supabase/templates, com
+  ConfirmationURL preservada. Quatro capturas locais (dois templates, desktop/mobile)
+  sem rolagem horizontal; revisão visual em .local/emails, fora do Git.
+- SMTP/remetente/DNS e instalação dos templates no Supabase hospedado não foram
+  realizados. Prévia em Chromium não comprova aparência idêntica em todos os clientes
+  de e-mail, nem entrega em caixas reais. Guia de configuração acompanha os HTMLs.

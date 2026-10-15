@@ -44,7 +44,7 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
   const ctx = await browser.newContext();
   const outra = await ctx.newPage();
   await entrar(page, "primeira@banca.test", "Primeira Participante");
-  await entrar(outra, "segunda@banca.test", "Segunda Participante");
+  await entrar(outra, "livre@outra.test", "Segunda Participante");
   const segundaConta = await (await outra.request.get("/api/piloto")).json();
   await page.reload();
   await page

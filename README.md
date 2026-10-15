@@ -41,10 +41,12 @@ para resultados locais e integrações externas ainda pendentes.
 
 ## Piloto real com a banca
 
-O modo `APP_MODE=piloto` adiciona login individual por link mágico, onboarding,
+O modo `APP_MODE=piloto` adiciona cadastro aberto e login individual por link mágico, onboarding,
 perfil e foto no servidor, Faíscas entre contas reais, chat/vídeo via integrações,
 consentimento e quota de IA e painel restrito de liderança. A configuração pública
 e os serviços externos ainda precisam ser ativados e testados. Siga
 [docs/ativar-piloto.md](docs/ativar-piloto.md) antes de liberar o acesso à banca.
 `npm run test:e2e:piloto` usa Postgres local e um contrato Auth simulado, sem e-mail
 ou serviços de IA/chat/vídeo reais. Não use o servidor fixture em produção.
+
+E-mails com a identidade do app: [templates e remetente SMTP](supabase/templates/README.md).
