@@ -1,9 +1,11 @@
 "use client";
+import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 export function Login() {
   const router = useRouter(),
     params = useSearchParams();
+  const retorno = normalizarRetorno(params.get("retorno"));
   const [email, setEmail] = useState(""),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false);
@@ -14,10 +16,10 @@ export function Login() {
         headers: { "Content-Type": "application/json" },
         body: "{}",
       }).then((r) => {
-        if (r.ok) router.replace("/piloto");
+        if (r.ok) router.replace(retorno);
       });
     }
-  }, [params, router]);
+  }, [params, router, retorno]);
   async function entrar(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -25,7 +27,7 @@ export function Login() {
       const r = await fetch("/api/auth/link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, retorno }),
       });
       const data = await r.json();
       setStatus(

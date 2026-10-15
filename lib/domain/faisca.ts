@@ -39,22 +39,18 @@ export async function criarFaisca(entrada: unknown, usuaria: string) {
   const u = s.id.parse(usuaria);
   if (input.solicitante_id !== u || u === input.convidada_id)
     throw new ErroDominio("Solicitante inválida.");
+  if (process.env.APP_MODE === "piloto") {
+    const chave = z.object({ chave_pedido: s.id }).parse(entrada).chave_pedido;
+    const { data, error } = await getDb().rpc("piloto_criar_convite", {
+      usuaria_id: u,
+      chave,
+      dados: input,
+    });
+    if (error) throw new ErroDominio(error.message, 409);
+    return s.faisca.parse(data);
+  }
   if (input.horarios_propostos.some((h) => Date.parse(h) <= Date.now()))
     throw new ErroDominio("Proponha horários futuros.");
-  if (process.env.APP_MODE === "piloto") {
-    const { data: c, error: ce } = await getDb()
-      .from("piloto_contas")
-      .select("profile_id")
-      .eq("profile_id", input.convidada_id)
-      .eq("onboarding", true)
-      .maybeSingle();
-    verificarErro(ce);
-    if (!c)
-      throw new ErroDominio(
-        "Escolha uma pessoa com perfil concluído no piloto.",
-        400,
-      );
-  }
   await obterPerfil(input.convidada_id);
   const { data, error } = await getDb()
     .from("faiscas")

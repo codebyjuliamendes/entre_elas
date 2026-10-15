@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import type { Faisca } from "@/lib/schemas/entities";
 import type { DadosPiloto } from "@/lib/piloto/dados";
+import { orientarFaisca } from "@/lib/domain/faisca-orientacao";
 import { api, dataHora } from "@/lib/piloto/browser";
 import { toast } from "sonner";
 export function Encontro({
@@ -28,6 +29,11 @@ export function Encontro({
     [chatErro, setChatErro] = useState("");
   const pid = d.perfil.id;
   const publicada = d.posts.some((p) => p.origem_faisca_id === f.id);
+  const orientacao = orientarFaisca({
+    encontro: f,
+    usuaria_id: pid,
+    publicada,
+  });
   const nome = (id: string) =>
     d.pessoas.find((p) => p.id === id)?.nome ?? "Participante";
   useEffect(() => {
@@ -83,6 +89,11 @@ export function Encontro({
       <p>
         {f.horario ? dataHora(f.horario) : "Escolha um dos horários propostos"}
       </p>
+      <section className="pilot-card" aria-label="Próximo passo da Faísca">
+        <span className="eyebrow">Seu próximo passo</span>
+        <h2>{orientacao.titulo}</h2>
+        <p>{orientacao.descricao}</p>
+      </section>
       {f.status === "pendente" && (
         <section className="pilot-card">
           <h2>Um convite para trocar experiências</h2>

@@ -1,3 +1,4 @@
+import { normalizarRetorno, COOKIE_RETORNO } from "@/lib/piloto/retorno";
 import { variavel } from "@/lib/config";
 import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
@@ -45,7 +46,9 @@ export async function GET(request: Request) {
     });
     verificarErro(pe);
     await salvarSessao(data.session);
-    return NextResponse.redirect(new URL("/piloto", origem), {
+    const retorno = normalizarRetorno(jar.get(COOKIE_RETORNO)?.value);
+    jar.delete(COOKIE_RETORNO);
+    return NextResponse.redirect(new URL(retorno, origem), {
       headers: {
         "Cache-Control": "no-store",
         "Referrer-Policy": "no-referrer",

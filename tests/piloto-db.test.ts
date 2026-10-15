@@ -113,6 +113,7 @@ describe.skipIf(!enabled)(
     });
     it("convite para seed é recusado; aceite e publicação exigem as duas contas", async () => {
       const base = {
+        chave_pedido: randomUUID(),
         solicitante_id: pids[0],
         convidada_id: pids[1],
         pedido: "Quero conversar sobre indicadores",
@@ -194,6 +195,34 @@ describe.skipIf(!enabled)(
       const a = await faisca.publicarComoDica(f.id, pids[0]);
       const b = await faisca.publicarComoDica(f.id, pids[1]);
       expect(a.id).toBe(b.id);
+    });
+    it("repetir um envio concorrente não duplica o convite e não permite trocar seu conteúdo", async () => {
+      const base = {
+        chave_pedido: randomUUID(),
+        solicitante_id: pids[0],
+        convidada_id: pids[1],
+        pedido: "Compartilhar experiências com indicadores",
+        tema: "Indicadores",
+        horarios_propostos: [new Date(Date.now() + 86400000).toISOString()],
+      };
+      const resultados = await Promise.all(
+        Array.from({ length: 8 }, () => faisca.criarFaisca(base, pids[0])),
+      );
+      fids.push(resultados[0].id);
+      expect(new Set(resultados.map((f) => f.id)).size).toBe(1);
+      await expect(
+        faisca.criarFaisca(
+          { ...base, pedido: "Um pedido diferente com a mesma chave" },
+          pids[0],
+        ),
+      ).rejects.toThrow("outro convite");
+      const { count, error } = await getDb()
+        .from("faiscas")
+        .select("id", { count: "exact", head: true })
+        .eq("solicitante_id", pids[0])
+        .eq("chave_pedido", base.chave_pedido);
+      verificarErro(error);
+      expect(count).toBe(1);
     });
     it("busca do piloto exclui o catálogo fictício", async () => {
       const vetor = JSON.stringify([1, ...Array(767).fill(0)]);

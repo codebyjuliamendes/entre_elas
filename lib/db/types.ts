@@ -203,6 +203,7 @@ export type Database = {
       faiscas: {
         Row: {
           anotacoes: Json
+          chave_pedido: string | null
           convidada_id: string
           created_at: string
           daily_room_url: string | null
@@ -222,6 +223,7 @@ export type Database = {
         }
         Insert: {
           anotacoes?: Json
+          chave_pedido?: string | null
           convidada_id: string
           created_at?: string
           daily_room_url?: string | null
@@ -241,6 +243,7 @@ export type Database = {
         }
         Update: {
           anotacoes?: Json
+          chave_pedido?: string | null
           convidada_id?: string
           created_at?: string
           daily_room_url?: string | null
@@ -976,6 +979,10 @@ export type Database = {
           limite_input: number
         }
         Returns: boolean
+      }
+      piloto_criar_convite: {
+        Args: { chave: string; dados: Json; usuaria_id: string }
+        Returns: Json
       }
       piloto_provisionar: { Args: { auth_id: string }; Returns: string }
       piloto_revisar_resumo: {

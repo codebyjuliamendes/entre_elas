@@ -57,9 +57,45 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
   await page
     .getByLabel("Propor um horário no seu fuso local", { exact: true })
     .fill(futuro);
+  const chaves: string[] = [];
+  let perderResposta = true;
+  await page.route("**/api/faiscas", async (route) => {
+    if (route.request().method() !== "POST") {
+      await route.continue();
+      return;
+    }
+    chaves.push(route.request().postDataJSON().chave_pedido);
+    if (perderResposta) {
+      perderResposta = false;
+      await route.fetch();
+      await route.abort("failed");
+    } else await route.continue();
+  });
   await page
     .getByRole("button", { name: "Enviar convite", exact: true })
     .click();
+  await expect(
+    page.getByText(/Sem conexão\. Seus dados já salvos continuam/),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Enviar convite", exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      "Convite enviado. A outra pessoa poderá responder na própria conta.",
+      { exact: true },
+    ),
+  ).toBeVisible();
+  expect(chaves).toHaveLength(2);
+  expect(new Set(chaves).size).toBe(1);
+  const convites = await (await page.request.get("/api/faiscas")).json();
+  expect(
+    convites.filter(
+      (f: { pedido: string }) =>
+        f.pedido === "Como escolher indicadores para uma decisão?",
+    ),
+  ).toHaveLength(1);
+
   await page
     .getByRole("button", {
       name: /Segunda Participante.*Como escolher indicadores/,
@@ -82,11 +118,16 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
     outra.getByRole("heading", { name: "Vinte minutos com intenção" }),
   ).toBeVisible();
   await page.reload();
-  await page
-    .getByRole("button", {
-      name: /Segunda Participante.*Como escolher indicadores/,
-    })
-    .click();
+  await expect(
+    page.getByLabel("Suas anotações", { exact: true }),
+  ).toBeVisible();
+  const rotaEncontro = page.url();
+  await page.context().clearCookies({ name: "entre_elas_access" });
+  await page.reload();
+  await expect(page).toHaveURL(rotaEncontro);
+  await expect(
+    page.getByLabel("Suas anotações", { exact: true }),
+  ).toBeVisible();
   await page
     .getByLabel("Suas anotações", { exact: true })
     .fill("Aprendi a definir a decisão antes de escolher os indicadores.");
@@ -100,11 +141,9 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
     .getByRole("button", { name: "Salvar minhas anotações", exact: true })
     .click();
   await page.reload();
-  await page
-    .getByRole("button", {
-      name: /Segunda Participante.*Como escolher indicadores/,
-    })
-    .click();
+  await expect(
+    page.getByLabel("Suas anotações", { exact: true }),
+  ).toBeVisible();
   await page
     .getByLabel("Ou escreva uma síntese manual, para vocês revisarem")
     .fill(
@@ -120,11 +159,6 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
     page.getByRole("button", { name: "Publicar dica na rede", exact: true }),
   ).toBeDisabled();
   await outra.reload();
-  await outra
-    .getByRole("button", {
-      name: /Primeira Participante.*Como escolher indicadores/,
-    })
-    .click();
   await outra
     .getByRole("button", { name: "Autorizo publicar esta dica", exact: true })
     .click();

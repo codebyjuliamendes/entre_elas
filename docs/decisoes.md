@@ -49,3 +49,10 @@
 
 - 2026-10-15 (cadastro aberto): A usuária retirou a lista de convidados. Qualquer e-mail válido pode solicitar link e entrar após confirmação no Auth; PILOT_ALLOWED_EMAILS foi removida. A liderança continua explicitamente restrita a PILOT_LEADER_EMAILS. Limites de cinco links por e-mail/hora e cem no app/hora preservam o orçamento de envio público.
 - 2026-10-15 (e-mail): Templates separados de confirmação e Magic Link usam identidade lilás, logo textual e tabelas/estilos inline, preservando ConfirmationURL e o fluxo PKCE. Não há nova dependência ou envio próprio no app. Remetente verificado, SMTP, DNS e instalação dos HTMLs no Supabase dependem da configuração externa; arquivos locais não comprovam entrega.
+
+- 2026-10-15 (confiabilidade): Navegação do piloto usa aba/encontro na URL, sem guardar dados privados no navegador. Recarregar conserva a visualização, com as mesmas verificações de acesso. Atualizações usam sequência para descartar respostas atrasadas e reconexão dispara nova consulta.
+- 2026-10-15 (confiabilidade): Transporte distingue rede/timeout/resposta inválida de sessão encerrada. Renovação simultânea é compartilhada no navegador; erros temporários preservam a sessão e mutações não são repetidas automaticamente por falha de rede.
+- 2026-10-15 (confiabilidade): Migration 011 acrescenta chave por envio de convite e RPC com lock/índice único por solicitante. O mesmo pedido é idempotente; chave reutilizada com outro conteúdo é recusada. Não há deduplicação por semelhança de texto, que impediria novos encontros legítimos.
+- 2026-10-15 (confiabilidade): Orientação da Faísca descreve o próximo passo de cada participante conforme estado, anotações, consentimentos e publicação; não introduz pré-requisitos de navegação nem simula decisões de outra pessoa.
+
+- 2026-10-15 (retomada): Renovação e link mágico preservam o destino de navegação em cookie HttpOnly temporário. O retorno aceita somente `/piloto` e parâmetros conhecidos, evitando redirecionamento aberto; não altera ConfirmationURL nem templates de e-mail.

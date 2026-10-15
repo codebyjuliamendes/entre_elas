@@ -181,3 +181,23 @@ externos descritos no guia de ativação. Execução da pipeline remota não foi
 - SMTP/remetente/DNS e instalação dos templates no Supabase hospedado não foram
   realizados. Prévia em Chromium não comprova aparência idêntica em todos os clientes
   de e-mail, nem entrega em caixas reais. Guia de configuração acompanha os HTMLs.
+
+## Recuperação de conexão e convites — 2026-10-15
+
+- Build, lint e TypeScript passaram. 84 testes unitários e 21 de banco local
+  passaram; dois cenários de navegador do piloto passaram com Auth simulado.
+- Banco: oito criações concorrentes do mesmo envio retornam um único convite;
+  reutilizar a chave com outro conteúdo é recusado. Migration 011 aplicada somente
+  no banco local e tipos regenerados a partir dele.
+- Navegador: a resposta do primeiro envio é abortada depois de o servidor salvar;
+  repetir conserva a chave e deixa exatamente um convite. Recarregar mantém o
+  encontro aberto e o fluxo segue até publicação com duas contas independentes.
+- Testes de transporte cobrem renovação compartilhada, falha temporária sem logout,
+  sessão inválida, limite de retentativa, rede, timeout e resposta HTML inesperada.
+  Orientação cobre convite recebido/enviado, anotações e autorização/publicação.
+- Serviços externos e aplicação de migrations no Supabase hospedado continuam
+  pendentes das configurações seguras; os testes locais não comprovam esses serviços.
+
+- Retorno após autenticação: testes rejeitam destinos externos e parâmetros
+  desconhecidos; o navegador verifica renovação com acesso expirado sem perder
+  a Faísca aberta. Auth continua simulado no teste, sem envio de e-mail real.

@@ -9,7 +9,7 @@ no Supabase; não há aceite simulado nem fonte de dados em localStorage.
 
 ## Configuração externa necessária
 
-1. Aplique as migrations em ordem no Supabase escolhido, incluindo 006–010.
+1. Aplique as migrations em ordem no Supabase escolhido, incluindo 006–011.
    Elas adicionam contas vinculadas à identidade Auth, favoritos, limites atômicos,
    miniaturas de foto, busca vetorial restrita e metadados de mensagens e revisão atômica da síntese. Não
    habilite políticas públicas: a service role fica exclusivamente no servidor.
@@ -114,3 +114,24 @@ Os testes `test:e2e:piloto` usam contrato Auth local simulado e Postgres real,
 não enviam e-mails reais nem usam os serviços externos. Não representam teste
 end-to-end do Supabase Auth hospedado, SMTP, Gemini/Groq, Stream ou Daily.
 Não liberar o piloto externo apenas com esses testes locais.
+
+## Recuperação e retomada
+
+A aba e a Faísca aberta ficam na URL; recarregar ou voltar/avançar no navegador
+retoma a visualização, com acesso novamente verificado no servidor. A URL não
+concede permissão a uma pessoa que não participa do encontro.
+
+Repetir o mesmo envio de convite após perder a resposta usa a mesma chave da
+solicitação e recupera o registro original. A migration 011 impede duplicação
+sob concorrência e rejeita reutilizar a chave com outro conteúdo. A chave vale
+para aquela tentativa na página; editar o pedido cria uma nova intenção de envio.
+Não é uma autorização para repetir automaticamente outras operações de escrita.
+
+Respostas antigas de atualização não sobrescrevem o estado mais recente. Sem
+rede, o app informa a situação e atualiza ao reconectar. Rascunhos ainda não
+salvos permanecem apenas na página aberta; esse aviso não promete salvamento
+offline. Falha temporária ao renovar sessão não força logout; pedidos simultâneos
+compartilham a renovação. Uma sessão realmente inválida exige novo login.
+
+A renovação da sessão e o novo login também preservam aba/encontro. O retorno
+é limitado a `/piloto`, com parâmetros validados; URLs externas são descartadas.

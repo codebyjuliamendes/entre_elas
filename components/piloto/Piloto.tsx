@@ -1,10 +1,19 @@
 "use client";
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import type { DadosPiloto } from "@/lib/piloto/dados";
 import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
+import { normalizarRetorno } from "@/lib/piloto/retorno";
+import { useNavegacaoPiloto } from "@/lib/piloto/navegacao";
+import { useOnline } from "@/lib/browser/conexao";
 import { api, dataHora } from "@/lib/piloto/browser";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -12,16 +21,26 @@ const sobreIA =
   "Ao autorizar, seus pedidos, objetivos, saberes e anotações de Faíscas poderão ser enviados ao Google Gemini e à Groq para sugestões, resumos e quizzes. O processamento e a retenção seguem as políticas desses provedores; no plano gratuito do Gemini, os dados podem ser usados para melhorar produtos. Não envie dados sensíveis, confidenciais ou de terceiros. Fotos e chat não alimentam o mapa de saberes. Você pode revogar esta autorização; isso impede novos envios, mas não apaga o que já foi processado pelos provedores.";
 export function Piloto() {
   const router = useRouter();
+  const online = useOnline();
+  const { tab, encontro, setTab, setEncontro } = useNavegacaoPiloto();
+  const atualizacao = useRef({ numero: 0 });
+  const chaveConvite = useRef<{ assinatura: string; id: string } | null>(null);
   useEffect(() => {
-    const login = () => router.replace("/entrar");
+    const login = () =>
+      router.replace(
+        "/entrar?retorno=" +
+          encodeURIComponent(
+            normalizarRetorno(
+              window.location.pathname + window.location.search,
+            ),
+          ),
+      );
     window.addEventListener("piloto:login", login);
     return () => window.removeEventListener("piloto:login", login);
   }, [router]);
   const [dados, setDados] = useState<DadosPiloto | null>(null),
     [erro, setErro] = useState(""),
-    [tab, setTab] = useState("faiscas"),
     [busy, setBusy] = useState(false),
-    [encontro, setEncontro] = useState<string | null>(null),
     [passo, setPasso] = useState(0),
     [pedido, setPedido] = useState(""),
     [indicacoes, setIndicacoes] = useState<
@@ -33,22 +52,36 @@ export function Piloto() {
       null,
     );
   const carregar = useCallback(async () => {
+    const id = ++atualizacao.current.numero;
     try {
-      setDados(await api<DadosPiloto>("/api/piloto"));
+      const resposta = await api<DadosPiloto>("/api/piloto");
+      if (id !== atualizacao.current.numero) return;
+      setDados(resposta);
       setErro("");
     } catch (e) {
-      setErro(e instanceof Error ? e.message : "Sem conexão. Tente novamente.");
+      if (id === atualizacao.current.numero)
+        setErro(
+          e instanceof Error ? e.message : "Sem conexão. Tente novamente.",
+        );
     }
   }, []);
   useEffect(() => {
+    const ciclo = atualizacao.current;
     const inicial = setTimeout(() => void carregar(), 0);
     const t = setInterval(() => {
-      if (document.visibilityState === "visible") void carregar();
+      if (document.visibilityState === "visible" && navigator.onLine)
+        void carregar();
     }, 15000);
     return () => {
+      ciclo.numero++;
       clearTimeout(inicial);
       clearInterval(t);
     };
+  }, [carregar]);
+  useEffect(() => {
+    const atualizar = () => void carregar();
+    window.addEventListener("online", atualizar);
+    return () => window.removeEventListener("online", atualizar);
   }, [carregar]);
   async function executar(acao: () => Promise<unknown>, mensagem?: string) {
     setBusy(true);
@@ -84,12 +117,20 @@ export function Piloto() {
   async function convidar(e: FormEvent) {
     e.preventDefault();
     await executar(async () => {
-      await api("/api/faiscas", {
+      const envio = {
         convidada_id: destino,
         pedido,
         tema: pedido.slice(0, 160),
         horarios_propostos: [new Date(horario).toISOString()],
+      };
+      const assinatura = JSON.stringify(envio);
+      if (chaveConvite.current?.assinatura !== assinatura)
+        chaveConvite.current = { assinatura, id: crypto.randomUUID() };
+      await api("/api/faiscas", {
+        ...envio,
+        chave_pedido: chaveConvite.current.id,
       });
+      chaveConvite.current = null;
       setPedido("");
       setDestino("");
       setIndicacoes([]);
@@ -235,6 +276,21 @@ export function Piloto() {
         ))}
       </nav>
       <main>
+        {!online && (
+          <p role="status" className="pilot-card">
+            Você está sem conexão. O que já foi salvo continua no servidor.
+            Mantenha esta página aberta para preservar o que ainda está
+            escrevendo; reconecte para salvar.
+          </p>
+        )}
+        {encontro && !ativo && (
+          <p role="status" className="pilot-card">
+            Esta Faísca não está disponível para sua conta.{" "}
+            <button onClick={() => setEncontro(null)}>
+              Voltar para suas Faíscas
+            </button>
+          </p>
+        )}
         {erro && (
           <p role="alert" className="pilot-card">
             {erro} Os dados já salvos continuam no servidor.{" "}
@@ -359,7 +415,10 @@ export function Piloto() {
                     value={horario}
                     onChange={(e) => setHorario(e.target.value)}
                   />
-                  <button className="pilot-button" disabled={busy || !destino}>
+                  <button
+                    className="pilot-button"
+                    disabled={busy || !destino || !online}
+                  >
                     Enviar convite
                   </button>
                 </form>
@@ -560,7 +619,7 @@ export function Piloto() {
                 </section>
               </>
             )}
-            {tab === "lideranca" && (
+            {tab === "lideranca" && d.lider && (
               <>
                 <h1>O que a banca construiu</h1>
                 <button

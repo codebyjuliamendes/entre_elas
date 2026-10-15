@@ -1,3 +1,4 @@
+import { normalizarRetorno, COOKIE_RETORNO } from "@/lib/piloto/retorno";
 import { variavel } from "@/lib/config";
 import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
@@ -8,7 +9,8 @@ import { getDb, verificarErro } from "@/lib/db/client";
 import { ErroDominio } from "@/lib/domain/erros";
 export async function POST(request: Request) {
   return resposta(async () => {
-    const email = exigirEmail((await corpo(request)).email);
+    const entrada = await corpo(request);
+    const email = exigirEmail(entrada.email);
     const chave = "login:" + createHash("sha256").update(email).digest("hex");
     const janela = new Date(
       Math.floor(Date.now() / 3600000) * 3600000,
@@ -36,6 +38,13 @@ export async function POST(request: Request) {
         429,
       );
     const jar = await cookies();
+    jar.set(COOKIE_RETORNO, normalizarRetorno(entrada.retorno), {
+      httpOnly: true,
+      secure: new URL(origemApp()).protocol === "https:",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 600,
+    });
     const client = createClient(
       variavel("NEXT_PUBLIC_SUPABASE_URL"),
       variavel("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
