@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, useRef, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
@@ -17,8 +17,8 @@ import {
   CheckCheck,
   Video,
   LoaderCircle,
-  Heart,
   Bookmark,
+  Heart,
   CheckCircle2,
   CalendarDays,
 } from "lucide-react";
@@ -30,17 +30,21 @@ import {
 } from "@/app/actions/ia-actions";
 import {
   useDemo,
-  atualizarDemo,
+  escolherConexao,
+  aceitarConvite as salvarConvite,
+  concluirEncontro,
+  autorizarPublicacaoDemo,
   atualizarJornada,
   reiniciarJornada,
   publicarDemo,
   alternarLista,
 } from "@/lib/demo/store";
 import { perfisDemo, ana, obterPerfilDemo } from "@/lib/demo/catalogo";
+import { assistenteLocal, comFallbackLocal } from "@/lib/demo/fallback";
 import { horarioDaDemo } from "@/lib/demo/tempo";
 import { pedidoSchema, type Step } from "@/lib/demo/schemas";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { HomeNetwork } from "./HomeNetwork";
 import {
   Dialog,
   DialogContent,
@@ -55,10 +59,18 @@ const suggestions = [
   "Descomplicar os dados",
   "Desenvolver minha liderança",
 ];
-export function Journey() {
+export function Journey({ retomar = false }: { retomar?: boolean }) {
   const state = useDemo();
   const j = state.jornada;
-  const [step, setStep] = useState<Step>(1);
+  const [visaoInicio, setVisaoInicio] = useState(!retomar);
+  const step: Step = visaoInicio ? 1 : j.step;
+  const requisicao = useRef(0);
+  useEffect(
+    () => () => {
+      requisicao.current++;
+    },
+    [],
+  );
   const [loading, setLoading] = useState<"match" | "pauta" | "sintese" | null>(
     null,
   );
@@ -69,11 +81,11 @@ export function Journey() {
   const perfil = obterPerfilDemo(
     j.match?.perfil_sugerido_id ?? perfisDemo[1].id,
   );
-  const ultimoConvite = state.convites.at(-1);
+  const ultimoConvite = state.convites.find((c) => c.id === j.convite_id);
   const publicado = state.publicacoes.some((p) => p.id === ultimoConvite?.id);
   function avancar(n: Step) {
     setErro("");
-    setStep(n);
+    setVisaoInicio(n === 1);
     atualizarJornada({ step: n });
     window.scrollTo({ top: 0, behavior: reduced ? "instant" : "smooth" });
   }
@@ -85,18 +97,15 @@ export function Journey() {
     }
     setErro("");
     setLoading("match");
+    const sequencia = ++requisicao.current;
     try {
-      const match = await matchFaisca(
-        input.data,
-        outra ? j.match?.perfil_sugerido_id : undefined,
+      const excluido = outra ? j.match?.perfil_sugerido_id : undefined;
+      const match = await comFallbackLocal(
+        () => matchFaisca(input.data, excluido),
+        () => assistenteLocal.matchFaisca(input.data, excluido),
       );
-      atualizarJornada({
-        match,
-        pauta: null,
-        resultado: null,
-        consentimento_ana: false,
-        consentimento_convidada: false,
-      });
+      if (sequencia !== requisicao.current) return;
+      escolherConexao(match);
       avancar(2);
     } catch {
       setErro(
@@ -104,30 +113,22 @@ export function Journey() {
       );
       toast.error("Não foi possível encontrar a conexão agora.");
     } finally {
-      setLoading(null);
+      if (sequencia === requisicao.current) setLoading(null);
     }
   }
   async function aceitarConvite() {
     setConviteAberto(false);
     setLoading("pauta");
+    const sequencia = ++requisicao.current;
     setErro("");
     try {
-      const pauta = await gerarPauta(j.pedido, ana.nome, perfil.nome);
+      const pauta = await comFallbackLocal(
+        () => gerarPauta(j.pedido, ana.nome, perfil.nome),
+        () => assistenteLocal.gerarPauta(j.pedido, ana.nome, perfil.nome),
+      );
       const horario = horarioDaDemo(dia);
-      atualizarDemo((s) => ({
-        ...s,
-        convites: [
-          ...s.convites,
-          {
-            id: crypto.randomUUID(),
-            perfil_id: perfil.id,
-            tema: j.pedido,
-            horario,
-            status: "aceita" as const,
-          },
-        ].slice(-50),
-      }));
-      atualizarJornada({ pauta, horario });
+      if (sequencia !== requisicao.current) return;
+      salvarConvite({ id: crypto.randomUUID(), horario, pauta });
       avancar(3);
       toast.success(
         `${perfil.nome.split(" ")[0]} aceitou na simulação. Café combinado!`,
@@ -135,7 +136,7 @@ export function Journey() {
     } catch {
       setErro("Não conseguimos preparar a pauta agora. Tente novamente.");
     } finally {
-      setLoading(null);
+      if (sequencia === requisicao.current) setLoading(null);
     }
   }
   async function sintetizar(event: FormEvent) {
@@ -145,15 +146,20 @@ export function Journey() {
       return;
     }
     setLoading("sintese");
+    const sequencia = ++requisicao.current;
     setErro("");
     try {
-      const resultado = await gerarDicaEQuiz(j.aprendizado);
-      atualizarJornada({ resultado });
+      const resultado = await comFallbackLocal(
+        () => gerarDicaEQuiz(j.aprendizado),
+        () => assistenteLocal.gerarDicaEQuiz(j.aprendizado),
+      );
+      if (sequencia !== requisicao.current) return;
+      concluirEncontro(resultado);
       avancar(6);
     } catch {
       setErro("Seu aprendizado está salvo. Tente sintetizar novamente.");
     } finally {
-      setLoading(null);
+      if (sequencia === requisicao.current) setLoading(null);
     }
   }
   function publicar() {
@@ -170,7 +176,7 @@ export function Journey() {
   }
   function reset() {
     reiniciarJornada();
-    setStep(1);
+    setVisaoInicio(true);
     setErro("");
     window.scrollTo({ top: 0, behavior: reduced ? "instant" : "smooth" });
   }
@@ -240,7 +246,7 @@ export function Journey() {
                 </div>
               )}
               {step === 1 && (
-                <>
+                <div className="home-layout">
                   <div className="greeting">
                     <span className="eyebrow">
                       Seu próximo passo começa em uma conversa
@@ -356,102 +362,8 @@ export function Journey() {
                       20 minutos de conversa. Novas possibilidades.
                     </div>
                   </section>
-                  <div className="section-heading">
-                    <h2>Uma conversa pode mudar tudo</h2>
-                  </div>
-                  <div className="how-grid">
-                    {[
-                      {
-                        icon: Lightbulb,
-                        title: "Conte seu desafio",
-                        desc: (
-                          <>
-                            Toda pergunta é um
-                            <br />
-                            bom começo.
-                          </>
-                        ),
-                        cor: "peach",
-                      },
-                      {
-                        icon: Coffee,
-                        title: "Conecte experiências",
-                        desc: (
-                          <>
-                            Um café de 20 min
-                            <br />
-                            com quem já viveu.
-                          </>
-                        ),
-                        cor: "lilac",
-                      },
-                      {
-                        icon: Sparkles,
-                        title: "Faça o saber circular",
-                        desc: (
-                          <>
-                            O que você aprende
-                            <br />
-                            inspira a rede.
-                          </>
-                        ),
-                        cor: "mint",
-                      },
-                    ].map(({ icon: Icon, title, desc, cor }) => (
-                      <div className="how-item" key={title}>
-                        <span className={`how-icon ${cor}`}>
-                          <Icon size={17} strokeWidth={1.5} />
-                        </span>
-                        <strong>{title}</strong>
-                        <small>{desc}</small>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="section-heading">
-                    <h2>Saberes que estão por perto</h2>
-                    <Link className="text-link" href="/comunidades">
-                      Explorar a rede
-                      <ArrowUpRight size={12} />
-                    </Link>
-                  </div>
-                  {perfisDemo.slice(1).map((p) => (
-                    <Link href={`/perfil?usuaria=${p.slug}`} key={p.id}>
-                      <Card className="person-card">
-                        <Avatar nome={p.nome} src={p.avatar} size={46} />
-                        <div>
-                          <h3>{p.nome}</h3>
-                          <p>
-                            {p.cargo} · {p.regional}
-                          </p>
-                          <div className="tags">
-                            <span className="tag">{p.tags[0]}</span>
-                            <span className="tag">{p.tags[1]}</span>
-                          </div>
-                        </div>
-                        <span className="person-spark">
-                          <Sparkles size={14} />
-                        </span>
-                      </Card>
-                    </Link>
-                  ))}
-                  <div className="network-card">
-                    <div className="avatar-stack">
-                      {perfisDemo.map((p) => (
-                        <Avatar
-                          key={p.id}
-                          nome={p.nome}
-                          src={p.avatar}
-                          size={29}
-                        />
-                      ))}
-                    </div>
-                    <div>
-                      <strong>Juntas, a gente vai mais longe.</strong>
-                      <p>Uma rede feita de histórias, experiências e você.</p>
-                    </div>
-                    <Heart size={17} color="#b8a6ce" />
-                  </div>
-                </>
+                  <HomeNetwork />
+                </div>
               )}
               {step === 2 && j.match && (
                 <>
@@ -758,9 +670,7 @@ export function Journey() {
                             type="checkbox"
                             checked={j.consentimento_ana}
                             onChange={(e) =>
-                              atualizarJornada({
-                                consentimento_ana: e.target.checked,
-                              })
+                              autorizarPublicacaoDemo("ana", e.target.checked)
                             }
                           />
                           <span>
@@ -774,7 +684,7 @@ export function Journey() {
                           className="full-width"
                           disabled={j.consentimento_convidada}
                           onClick={() => {
-                            atualizarJornada({ consentimento_convidada: true });
+                            autorizarPublicacaoDemo("convidada", true);
                             toast.success(
                               `${perfil.nome.split(" ")[0]} autorizou na simulação.`,
                             );

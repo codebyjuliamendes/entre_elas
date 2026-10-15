@@ -1,19 +1,101 @@
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { ErroDominio, ErroIA } from '@/lib/domain/erros';
+import { NextResponse } from "next/server";
+import { randomUUID } from "node:crypto";
+import { z } from "zod";
+import { ErroDominio, ErroIA } from "@/lib/domain/erros";
 export async function resposta(acao: () => Promise<unknown>) {
- try { return NextResponse.json(await acao()); }
- catch(error) {
-  if(error instanceof z.ZodError) return NextResponse.json({erro:'Dados inválidos.',detalhes:error.issues.map(i=>({campo:i.path.join('.'),mensagem:i.message}))},{status:400});
-  if(error instanceof ErroDominio) return NextResponse.json({erro:error.message},{status:error.status});
-  if(error instanceof ErroIA) return NextResponse.json({erro:error.message},{status:error.status===408?504:502});
-  return NextResponse.json({erro:'Operação indisponível. Verifique as integrações e a configuração do servidor.'},{status:503});
- }
+  const requestId = randomUUID();
+  const headers = { "Cache-Control": "no-store", "X-Request-Id": requestId };
+  try {
+    return NextResponse.json(await acao(), { headers });
+  } catch (error) {
+    if (error instanceof z.ZodError)
+      return NextResponse.json(
+        {
+          erro: "Dados inválidos.",
+          detalhes: error.issues.map((i) => ({
+            campo: i.path.join("."),
+            mensagem: i.message,
+          })),
+          request_id: requestId,
+        },
+        { status: 400, headers },
+      );
+    if (error instanceof ErroDominio)
+      return NextResponse.json(
+        { erro: error.message, request_id: requestId },
+        { status: error.status, headers },
+      );
+    if (error instanceof ErroIA)
+      return NextResponse.json(
+        { erro: error.message, request_id: requestId },
+        { status: error.status === 408 ? 504 : 502, headers },
+      );
+    console.error(
+      JSON.stringify({
+        evento: "operacao_indisponivel",
+        request_id: requestId,
+        classe: error instanceof Error ? error.name : "desconhecido",
+      }),
+    );
+    return NextResponse.json(
+      {
+        erro: "Operação indisponível. Tente novamente em instantes.",
+        request_id: requestId,
+      },
+      { status: 503, headers },
+    );
+  }
 }
-export async function corpo(request: Request): Promise<Record<string,unknown>> {
- const origem=request.headers.get('origin');
- if(origem && origem!==new URL(request.url).origin) throw new ErroDominio('Origem da requisição não permitida.',403);
- if(Number(request.headers.get('content-length') ?? '0')>100000) throw new ErroDominio('Requisição muito grande.',413);
- try { return z.record(z.string(),z.unknown()).parse(await request.json()); } catch { throw new ErroDominio('Corpo JSON inválido.'); }
+const LIMITE = 100_000;
+export async function corpo(
+  request: Request,
+): Promise<Record<string, unknown>> {
+  const origem = request.headers.get("origin");
+  if (
+    (origem && origem !== new URL(request.url).origin) ||
+    request.headers.get("sec-fetch-site") === "cross-site"
+  )
+    throw new ErroDominio("Origem da requisição não permitida.", 403);
+  const tipo = request.headers
+    .get("content-type")
+    ?.split(";")[0]
+    .trim()
+    .toLowerCase();
+  if (
+    tipo !== "application/json" &&
+    !/^application\/[a-z0-9.+-]+\+json$/.test(tipo ?? "")
+  )
+    throw new ErroDominio("Envie o corpo como application/json.", 415);
+  const tamanho = request.headers.get("content-length");
+  if (tamanho !== null && (!/^\d+$/.test(tamanho) || Number(tamanho) > LIMITE))
+    throw new ErroDominio("Requisição muito grande ou tamanho inválido.", 413);
+  const reader = request.body?.getReader();
+  if (!reader) throw new ErroDominio("Corpo JSON inválido.");
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  let texto = "",
+    bytes = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      bytes += value.byteLength;
+      if (bytes > LIMITE) {
+        await reader.cancel();
+        throw new ErroDominio("Requisição muito grande.", 413);
+      }
+      texto += decoder.decode(value, { stream: true });
+    }
+    texto += decoder.decode();
+  } catch (error) {
+    if (error instanceof ErroDominio) throw error;
+    throw new ErroDominio("Corpo JSON inválido.");
+  } finally {
+    reader.releaseLock();
+  }
+  try {
+    return z.record(z.string(), z.unknown()).parse(JSON.parse(texto));
+  } catch {
+    throw new ErroDominio("Corpo JSON inválido.");
+  }
 }
-export type RotaAcao = {params:Promise<{acao:string}>};
+export type RotaAcao = { params: Promise<{ acao: string }> };

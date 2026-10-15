@@ -97,3 +97,29 @@ PITCH_AI_MODE=demo é o padrão. OpenRouter é opcional e openrouter.ai foi adic
 aos destinos de rede no draft. Também foram salvos o requisito opcional da chave,
 as variáveis do MVP e instruções de inicialização. Isso não aplica nem publica
 automaticamente a configuração. Vercel não foi implantado nesta tarefa.
+
+## Upgrade — 2026-10-15
+
+- Build de produção, ESLint sem avisos e TypeScript passaram. `typecheck` agora
+  gera tipos do Next antes do tsc, inclusive em checkouts sem `.next`.
+- 62 testes unitários passaram; os 14 de banco são ignorados nessa execução
+  e passaram separadamente com `npm run test:db`.
+- 10 cenários Playwright passaram contra produção isolada na porta 3200:
+  jornada completa, consentimento/quiz/persistência, navegação, retomada,
+  desktop, descoberta/filtros/busca global, comunidade/comentários, favoritos,
+  backup inválido, fallback sem rede e cache público da PWA.
+- Total: 86 testes aprovados. Novos testes cobrem identidade dos encontros,
+  migração, proteção de dados corrompidos/quota, datas, ICS, origem e corpo HTTP,
+  cookie assinado e fallback local com prazo limitado.
+- Auditoria de dependências de produção: zero vulnerabilidades.
+- Doze capturas de produção revisadas em celular e desktop nas rotas início,
+  rede, saberes, comunidades, agenda e configurações; sem rolagem horizontal.
+  Evidências locais em `.local/upgrade`, fora do controle de versão.
+- Pipeline GitHub Actions adicionada; sucesso remoto ainda não comprovado.
+- Instruções atualizadas e salvas no draft do ambiente. Esse salvamento não
+  aplica nem publica a configuração; revisão/salvamento e publicação no produto
+  continuam necessários para ativá-la.
+
+As integrações externas, SSO, Storage hospedado, vídeo/chat reais e deploy
+continuam com as limitações anteriores. O upgrade validado é da apresentação
+local e dos contratos/segurança do backend; não é validação de serviços sem chaves.

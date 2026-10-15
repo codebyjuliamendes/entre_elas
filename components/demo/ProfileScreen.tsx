@@ -11,8 +11,14 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { toast } from "sonner";
+import { dicasIniciais } from "@/lib/demo/conteudo";
 import { ana, perfisDemo, ANA_ID } from "@/lib/demo/catalogo";
-import { useDemo, atualizarDemo, reiniciarJornada } from "@/lib/demo/store";
+import {
+  useDemo,
+  atualizarDemo,
+  reiniciarJornada,
+  iniciarComPessoa,
+} from "@/lib/demo/store";
 import { Avatar } from "@/components/Avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,14 +27,17 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 export function ProfileScreen({ slug }: { slug?: string }) {
   const state = useDemo();
+  const router = useRouter();
   const perfil = perfisDemo.find((p) => p.slug === slug) ?? ana;
   const proprio = perfil.id === ANA_ID;
   const posts = state.publicacoes.filter((p) => p.perfil_id === perfil.id);
   const [editando, setEditando] = useState(false);
   const [bio, setBio] = useState("");
   const [saberes, setSaberes] = useState("");
+  const [objetivos, setObjetivos] = useState("");
   function salvar(event: FormEvent) {
     event.preventDefault();
     const lista = [
@@ -45,9 +54,22 @@ export function ProfileScreen({ slug }: { slug?: string }) {
       );
       return;
     }
+    const metas = objetivos
+      .split("\n")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    if (metas.length > 5 || metas.some((x) => x.length < 3 || x.length > 160)) {
+      toast.error("Use até cinco objetivos entre 3 e 160 caracteres.");
+      return;
+    }
     atualizarDemo((s) => ({
       ...s,
-      perfil: { bio: bio.trim(), saberes: lista },
+      perfil: {
+        ...s.perfil,
+        bio: bio.trim(),
+        saberes: lista,
+        objetivos: metas,
+      },
     }));
     setEditando(false);
     toast.success("Seu perfil da apresentação foi atualizado.");
@@ -69,6 +91,7 @@ export function ProfileScreen({ slug }: { slug?: string }) {
             onClick={() => {
               setBio(state.perfil.bio);
               setSaberes(state.perfil.saberes.join(", "));
+              setObjetivos(state.perfil.objetivos.join("\n"));
               setEditando(true);
             }}
           >
@@ -116,11 +139,43 @@ export function ProfileScreen({ slug }: { slug?: string }) {
             <span>Saberes na rede</span>
           </div>
           <div className="profile-stat">
-            <strong>{posts.length}</strong>
+            <strong>
+              {
+                state.publicacoes.filter(
+                  (p) => p.perfil_id === perfil.id || p.autora_id === perfil.id,
+                ).length
+              }
+            </strong>
             <span>Dicas compartilhadas</span>
           </div>
         </div>
       </section>
+      {!proprio && (
+        <div className="profile-connect">
+          <Button
+            className="full-width"
+            onClick={() => {
+              iniciarComPessoa(perfil.id);
+              router.push("/?retomar=nova");
+            }}
+          >
+            <Sparkles size={16} />
+            Quero uma Faísca com {perfil.nome.split(" ")[0]}
+          </Button>
+        </div>
+      )}
+      {proprio && state.perfil.objetivos.length > 0 && (
+        <section className="profile-goals">
+          <span className="eyebrow">Meu próximo passo</span>
+          <h2>O que quero desenvolver</h2>
+          {state.perfil.objetivos.map((o) => (
+            <p key={o}>
+              <Sparkles size={13} />
+              {o}
+            </p>
+          ))}
+        </section>
+      )}
       <div className="section-heading">
         <h2>O que eu compartilho</h2>
         <span className="tag">Declarados por mim</span>
@@ -201,7 +256,10 @@ export function ProfileScreen({ slug }: { slug?: string }) {
                 }}
                 key={s}
               >
-                {s}
+                <Link href="/saberes">
+                  {dicasIniciais.find((dica) => dica.id === s)?.titulo ??
+                    state.publicacoes.find((dica) => dica.id === s)?.titulo ?? s}
+                </Link>
               </div>
             ))
           ) : (
@@ -259,6 +317,21 @@ export function ProfileScreen({ slug }: { slug?: string }) {
             <p className="input-hint">
               Separe os saberes por vírgula. Até 15, com até 80 caracteres cada.
             </p>
+            <label
+              className="form-label"
+              htmlFor="objetivos"
+              style={{ marginTop: 18 }}
+            >
+              O que quero desenvolver
+            </label>
+            <textarea
+              id="objetivos"
+              value={objetivos}
+              maxLength={805}
+              rows={3}
+              onChange={(e) => setObjetivos(e.target.value)}
+            />
+            <p className="input-hint">Até cinco objetivos, um por linha.</p>
             <Button
               className="full-width"
               type="submit"

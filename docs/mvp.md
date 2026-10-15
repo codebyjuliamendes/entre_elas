@@ -2,8 +2,9 @@
 
 O MVP mantém Next.js 16 e React 19, por escolha da usuária, com Tailwind,
 Framer Motion, primitivas Radix no padrão shadcn/ui, Lucide e Sonner.
-A interface tem 430 px de largura máxima, navegação inferior e cinco rotas:
-Início, Agenda, Chats, Comunidades e Perfil. `/dev` continua independente.
+A interface é mobile-first, com navegação inferior no celular e uma área de trabalho
+com menu lateral e colunas no desktop. Rotas: Início, Rede, Biblioteca de saberes,
+Agenda, Chats, Comunidades, Perfil e Configurações. `/dev` continua independente.
 
 ## Executar e publicar na Vercel
 
@@ -21,7 +22,7 @@ Início, Agenda, Chats, Comunidades e Perfil. `/dev` continua independente.
 ## Roteiro
 
 - No Início, clique “Apresentar um projeto” e encontre sua Faísca.
-- Veja Carla e sua evidência; “Buscar outra” alterna a candidata.
+- Veja a candidata e sua evidência; o catálogo contém oito perfis fictícios, com sugestões locais por especialidade e opção de buscar outra.
 - Convide para café e clique “Simular aceite de Carla”. Nenhum convite externo é enviado.
 - Leia a pauta, entre na chamada e teste microfone/câmera simulados. Nenhum
   dispositivo é acessado. Encerre o encontro e escreva um aprendizado fictício.
@@ -30,8 +31,8 @@ Início, Agenda, Chats, Comunidades e Perfil. `/dev` continua independente.
 - Abra o perfil de Carla: o saber e a dica reconhecidos aparecem e persistem após reload.
 - Agenda contém o café, filtros por tipo/data e confirmação de eventos fictícios.
 - Chats oferece conversas locais com respostas simuladas; não usa Stream nem IA.
-- Comunidades permite buscar, participar/sair, explorar e curtir exemplos de posts.
-- Perfil permite editar a bio e os saberes de Ana, consultar reconhecimentos e dicas salvas.
+- Comunidades permite buscar, participar/sair, escrever posts, comentar e curtir, com persistência local.
+- Perfil permite editar a bio e os saberes de Ana, editar objetivos, consultar reconhecimentos e acessar dicas salvas.
 
 ## Persistência e limites
 
@@ -55,7 +56,31 @@ O banco existente já tem pgvector e schema completo. Use suas migrations e
 
 `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`.
 `npm run test:db` verifica os domínios reais com o banco local preparado.
-`npm run test:e2e` gera o build e executa os quatro cenários contra um servidor
-de produção na porta 3100. Usa `/usr/bin/chromium` quando disponível ou
+`npm run test:e2e` gera o build e executa os dez cenários contra um servidor
+de produção na porta 3200. Usa `/usr/bin/chromium` quando disponível ou
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH. Em máquinas sem Chromium, instale pelo
 Playwright (`npx playwright install chromium`), mantendo TLS e verificação de artefatos.
+
+## Recursos do upgrade
+
+- `/rede`: busca sem acentos, filtros por área/regional e conexão direta com uma pessoa.
+- `/saberes`: busca, favoritos, compartilhamento e leitura de dicas; publicações novas incluem quiz.
+- Busca global no cabeçalho, também por Ctrl/Cmd+K no desktop.
+- Agenda em America/Sao_Paulo, navegação entre semanas/anos, exportação ICS,
+  cancelamento de convites aceitos e retomada do rascunho de cada encontro.
+- `/configuracoes`: exportar backup JSON, importar até 10 MB com confirmação e
+  validação, restaurar dados e consultar instruções de instalação.
+- Estado interno v2 com migração da chave v1 existente. Convites e publicações
+  usam IDs estáveis; consentimento exige encontro concluído e ambas as autorizações.
+  Rascunhos anteriores ficam associados ao respectivo encontro.
+- Avisos para modo offline, armazenamento indisponível ou conteúdo corrompido.
+  Um backup inválido não substitui o estado atual; dados corrompidos originais
+  ficam protegidos até uma restauração ou limpeza explícita.
+- Ícones instaláveis, manifest e service worker. O cache contém apenas recursos
+  públicos; APIs e respostas personalizadas não entram no cache. A jornada já
+  carregada pode usar exemplos locais offline; novas navegações podem mostrar
+  a página offline. Isso não equivale a sincronização offline do backend real.
+
+A migração e os backups são de apresentação: use somente dados fictícios.
+A pipeline em `.github/workflows/qualidade.yml` executa lint, tipos, testes,
+auditoria de produção, navegador e banco local em jobs separados.

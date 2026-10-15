@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+import "./workspace.css";
+import { PwaRegistration } from "@/components/PwaRegistration";
 export const metadata: Metadata = {
   title: "Entre Elas · Saber que conecta",
   description:
@@ -25,6 +27,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <html lang="pt-BR">
       <body>
         {children}
+        <PwaRegistration />
         <Toaster
           richColors
           position="top-center"

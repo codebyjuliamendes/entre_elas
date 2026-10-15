@@ -12,10 +12,12 @@ const mensagensIniciais: Record<string, string> = {
   daniela:
     "Oi, Ana! Se precisar de uma mão com dados ou indicadores, vamos conversar!",
 };
-export function ChatsScreen() {
+export function ChatsScreen({ com }: { com?: string }) {
   const state = useDemo();
   const [busca, setBusca] = useState("");
-  const [contato, setContato] = useState<PerfilDemo | null>(null);
+  const [contato, setContato] = useState<PerfilDemo | null>(
+    perfisDemo.find((p) => p.slug === com && p.slug !== "ana") ?? null,
+  );
   const [texto, setTexto] = useState("");
   function enviar(event: FormEvent) {
     event.preventDefault();
@@ -44,7 +46,7 @@ export function ChatsScreen() {
             texto:
               canal === "carla"
                 ? "Adorei sua ideia! No nosso café, podemos começar pelo objetivo e construir um próximo passo juntas. 💜"
-                : "Vamos descomplicar juntas! Podemos escolher um indicador e pensar na história que ele precisa contar. ✨",
+                : `Vamos aprender juntas! Podemos começar com uma pergunta sobre ${contato.saberes[0].toLowerCase()} e escolher um próximo passo. ✨`,
             autora: "contato" as const,
             created_at: new Date().toISOString(),
           },
@@ -77,7 +79,8 @@ export function ChatsScreen() {
           aria-live="polite"
         >
           <div className="message">
-            {mensagensIniciais[contato.slug]}
+            {mensagensIniciais[contato.slug] ??
+              `Oi, Ana! Vamos trocar experiências sobre ${contato.saberes[0].toLowerCase()}?`}
             <small>Exemplo de conversa</small>
           </div>
           {state.mensagens
@@ -192,7 +195,11 @@ export function ChatsScreen() {
               >
                 FAÍSCA
               </span>
-              <p>{ultima?.texto ?? mensagensIniciais[p.slug]}</p>
+              <p>
+                {ultima?.texto ??
+                  mensagensIniciais[p.slug] ??
+                  `Vamos conversar sobre ${p.saberes[0].toLowerCase()}?`}
+              </p>
             </div>
             <div className="chat-time">
               <small>{ultima ? "Agora" : "Demo"}</small>

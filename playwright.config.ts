@@ -8,7 +8,7 @@ export default defineConfig({
   expect: { timeout: 12000 },
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:3100",
+    baseURL: "http://127.0.0.1:3200",
     trace: "retain-on-failure",
     ...devices["iPhone 13"],
     defaultBrowserType: "chromium",
@@ -20,9 +20,9 @@ export default defineConfig({
     },
   },
   webServer: {
-    command: "npm run start -- --port 3100",
-    url: "http://127.0.0.1:3100",
-    reuseExistingServer: !process.env.CI,
+    command: "npm run start -- --port 3200",
+    url: "http://127.0.0.1:3200",
+    reuseExistingServer: false,
     timeout: 120000,
     env: { PITCH_AI_MODE: "demo" },
   },

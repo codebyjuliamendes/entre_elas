@@ -1,7 +1,14 @@
 "use client";
 import Link from "next/link";
 import { useState, type ReactNode } from "react";
-import { Bell, Sparkles, ArrowUpRight } from "lucide-react";
+import {
+  Bell,
+  Sparkles,
+  ArrowUpRight,
+  Settings,
+  WifiOff,
+  TriangleAlert,
+} from "lucide-react";
 import { BottomNav } from "./BottomNav";
 import { Avatar } from "./Avatar";
 import { ana } from "@/lib/demo/catalogo";
@@ -11,10 +18,24 @@ import {
   DialogTitle,
   DialogDescription,
 } from "./ui/dialog";
+import { Navigation } from "./Navigation";
+import { SearchDialog } from "./SearchDialog";
+import { useDemo, useAvisoLocal, marcarNotificacoes } from "@/lib/demo/store";
+import { useOnline } from "@/lib/browser/conexao";
 export function AppShell({ children }: { children: ReactNode }) {
   const [notificacoes, setNotificacoes] = useState(false);
+  const state = useDemo();
+  const aviso = useAvisoLocal();
+  const online = useOnline();
+  const ids = [
+    "boas-vindas",
+    ...state.convites.map((c) => "encontro-" + c.id),
+    ...state.publicacoes.map((p) => "saber-" + p.id),
+  ];
+  const naoLidas = ids.some((id) => !state.notificacoes_lidas.includes(id));
   return (
     <>
+      <Navigation />
       <div className="desktop-note" aria-hidden="true">
         <span className="desktop-wordmark">
           <Sparkles size={20} /> entre elas
@@ -38,20 +59,54 @@ export function AppShell({ children }: { children: ReactNode }) {
               <i />
             </span>
           </Link>
+          <SearchDialog />
           <div className="header-actions">
+            <Link
+              href="/configuracoes"
+              className="header-settings"
+              aria-label="Configurações do meu espaço"
+            >
+              <Settings size={20} />
+            </Link>
             <button
               className="notification-button"
               aria-label="Abrir notificações"
-              onClick={() => setNotificacoes(true)}
+              onClick={() => {
+                setNotificacoes(true);
+                marcarNotificacoes(ids);
+              }}
             >
               <Bell size={21} />
-              <span className="notification-dot" />
+              {naoLidas && <span className="notification-dot" />}
             </button>
             <Link href="/perfil" aria-label="Meu perfil">
               <Avatar nome={ana.nome} src={ana.avatar} size={38} />
             </Link>
           </div>
         </header>
+        <div className="environment-strip">
+          <span className="status-dot" />
+          Espaço de demonstração
+          <span>
+            {aviso
+              ? "Progresso nesta sessão"
+              : "Progresso salvo neste dispositivo"}
+          </span>
+        </div>
+        {!online && (
+          <p className="app-alert" role="status">
+            <WifiOff size={15} />
+            Sem conexão. As etapas de apresentação continuam usando exemplos
+            locais.
+          </p>
+        )}
+        {aviso && (
+          <p className="app-alert" role="status">
+            <TriangleAlert size={15} />
+            {aviso}
+            <Link href="/configuracoes">Gerenciar dados</Link>
+          </p>
+        )}
         <main id="conteudo" className="app-content">
           {children}
         </main>
@@ -73,6 +128,31 @@ export function AppShell({ children }: { children: ReactNode }) {
           <DialogDescription>
             Notificações fictícias da apresentação.
           </DialogDescription>
+          {state.convites
+            .slice(-3)
+            .reverse()
+            .map((c) => (
+              <Link
+                key={c.id}
+                href="/agenda"
+                className="notice-card"
+                onClick={() => setNotificacoes(false)}
+              >
+                <span className="icon-tile lilac">
+                  <Sparkles size={20} />
+                </span>
+                <span>
+                  <strong>
+                    {c.status === "realizada"
+                      ? "Uma troca que virou aprendizado"
+                      : c.status === "cancelada"
+                        ? "Encontro cancelado"
+                        : "Você tem uma Faísca combinada"}
+                  </strong>
+                  <small>{c.tema}</small>
+                </span>
+              </Link>
+            ))}
           <Link
             href="/comunidades"
             className="notice-card"

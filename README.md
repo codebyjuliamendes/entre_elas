@@ -29,3 +29,12 @@ no Supabase hospedado. Nunca inclua credenciais no controle de versão.
 ## Apresentação visual
 
 `npm run dev` abre o MVP mesmo sem credenciais externas. Veja [docs/mvp.md](docs/mvp.md) para o roteiro de seis etapas, modo IA via OpenRouter, persistência local e deploy na Vercel. O backend real continua documentado separadamente.
+
+## Upgrade da experiência
+
+Layout adaptado a celular e desktop, busca global, rede com oito perfis fictícios,
+biblioteca pesquisável, comunidades com posts e comentários, agenda com exportação
+ICS e rascunhos por encontro, backup/restauração e suporte PWA com página offline.
+As APIs validam tamanho real do corpo, origem e cookies assinados. Uma pipeline
+GitHub Actions automatiza as verificações. Consulte [validações](docs/validacao.md)
+para resultados locais e integrações externas ainda pendentes.

@@ -173,15 +173,16 @@ test("jornada retoma após navegação e outra candidata respeita o pedido", asy
     page.getByRole("heading", { name: "Carla Souza", exact: true }),
   ).toBeVisible();
 });
-test("layout desktop mantém o aplicativo em 430 px e navegação acessível", async ({
+test("layout desktop amplia o espaço de trabalho e mantém a navegação acessível", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
   const frame = await page.locator(".app-frame").boundingBox();
-  expect(frame?.width).toBe(430);
+  expect(frame?.width).toBeGreaterThan(850);
+  expect(frame?.width).toBeLessThan(1200);
   await expect(
-    page.getByRole("navigation", { name: "Navegação principal" }),
+    page.getByRole("navigation", { name: "Navegação do espaço" }),
   ).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Encontrar minha Faísca", exact: true }),

@@ -8,10 +8,26 @@ import {
   Clock3,
   Check,
   Coffee,
+  Download,
+  Play,
 } from "lucide-react";
 import { toast } from "sonner";
 import { eventosDemo, obterPerfilDemo } from "@/lib/demo/catalogo";
-import { useDemo, alternarLista, atualizarDemo } from "@/lib/demo/store";
+import {
+  useDemo,
+  alternarLista,
+  cancelarEncontro,
+  retomarEncontro,
+} from "@/lib/demo/store";
+import { useRouter } from "next/navigation";
+import {
+  inicioSemana,
+  deslocarDia,
+  dataCivil,
+  diaLocal,
+  criarIcs,
+  baixarArquivo,
+} from "@/lib/demo/calendario";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,27 +47,40 @@ interface Item {
   comunidade: string;
   cor: string;
   cancelada?: boolean;
+  realizada?: boolean;
+  inicio?: string;
+  rascunho?: boolean;
 }
-export function AgendaScreen() {
+export function AgendaScreen({ hoje }: { hoje: string }) {
+  const router = useRouter();
   const state = useDemo();
   const [semana, setSemana] = useState(0);
-  const [dia, setDia] = useState<number | null>(null);
+  const [intervalo, setIntervalo] = useState<"todos" | "semana">("todos");
+  const [dia, setDia] = useState<string | null>(null);
   const [detalhe, setDetalhe] = useState<Item | null>(null);
-  const dias = Array.from(
-    { length: 7 },
-    (_, i) => new Date(Date.UTC(2026, 9, 12 + semana * 7 + i, 15)),
+  const dias = Array.from({ length: 7 }, (_, i) =>
+    dataCivil(deslocarDia(inicioSemana(hoje), semana * 7 + i)),
   );
   const itens: Item[] = [
     ...eventosDemo.map((e) => ({
       ...e,
-      data: new Date(Date.UTC(e.ano, e.mes - 1, e.dia, 15)),
+      data: dataCivil(
+        deslocarDia(
+          hoje,
+          e.id === "evento-lideranca" ? 1 : e.id === "comunidade-dados" ? 0 : 4,
+        ),
+      ),
+      inicio: `${deslocarDia(hoje, e.id === "evento-lideranca" ? 1 : e.id === "comunidade-dados" ? 0 : 4)}T${e.horario}:00-03:00`,
     })),
     ...state.convites.map((c) => ({
       id: c.id,
       titulo: `Café com ${obterPerfilDemo(c.perfil_id).nome.split(" ")[0]}`,
       descricao: c.tema,
       tipo: "faisca",
-      data: new Date(c.horario),
+      data: dataCivil(diaLocal(new Date(c.horario))),
+      inicio: c.horario,
+      realizada: c.status === "realizada",
+      rascunho: !!c.rascunho,
       horario: new Intl.DateTimeFormat("pt-BR", {
         timeZone: "America/Sao_Paulo",
         hour: "2-digit",
@@ -72,9 +101,8 @@ export function AgendaScreen() {
     itens.filter(
       (e) =>
         (tipo === "tudo" || e.tipo === tipo) &&
-        (dia === null ||
-          (e.data.getUTCDate() === dia &&
-            e.data.getUTCMonth() === dias[0].getUTCMonth())),
+        (intervalo === "todos" || (e.data >= dias[0] && e.data <= dias[6])) &&
+        (dia === null || e.data.toISOString().slice(0, 10) === dia),
     );
   return (
     <>
@@ -98,6 +126,7 @@ export function AgendaScreen() {
             aria-label="Semana anterior"
             onClick={() => {
               setSemana((x) => x - 1);
+              setIntervalo("semana");
               setDia(null);
             }}
           >
@@ -107,6 +136,7 @@ export function AgendaScreen() {
             aria-label="Próxima semana"
             onClick={() => {
               setSemana((x) => x + 1);
+              setIntervalo("semana");
               setDia(null);
             }}
           >
@@ -118,10 +148,10 @@ export function AgendaScreen() {
         {dias.map((d) => (
           <button
             key={d.toISOString()}
-            className={`calendar-day ${dia === d.getUTCDate() ? "active" : ""} ${itens.some((e) => e.data.getUTCDate() === d.getUTCDate() && e.data.getUTCMonth() === d.getUTCMonth()) ? "has-event" : ""}`}
-            aria-pressed={dia === d.getUTCDate()}
+            className={`calendar-day ${dia === d.toISOString().slice(0, 10) ? "active" : ""} ${itens.some((e) => e.data.toISOString().slice(0, 10) === d.toISOString().slice(0, 10)) ? "has-event" : ""}`}
+            aria-pressed={dia === d.toISOString().slice(0, 10)}
             aria-label={`Dia ${d.getUTCDate()}`}
-            onClick={() => setDia(d.getUTCDate())}
+            onClick={() => setDia(d.toISOString().slice(0, 10))}
           >
             <span>
               {new Intl.DateTimeFormat("pt-BR", {
@@ -135,11 +165,14 @@ export function AgendaScreen() {
           </button>
         ))}
       </div>
-      {dia !== null && (
+      {(dia !== null || intervalo === "semana") && (
         <button
           className="text-link"
           style={{ marginBottom: 17 }}
-          onClick={() => setDia(null)}
+          onClick={() => {
+            setDia(null);
+            setIntervalo("todos");
+          }}
         >
           Ver todos os encontros
         </button>
@@ -154,7 +187,13 @@ export function AgendaScreen() {
         {["tudo", "faisca", "comunidade", "evento"].map((tipo) => (
           <TabsContent key={tipo} value={tipo}>
             <div className="section-heading">
-              <h2>{dia === null ? "Próximos encontros" : `Dia ${dia}`}</h2>
+              <h2>
+                {dia === null
+                  ? intervalo === "semana"
+                    ? "Nesta semana"
+                    : "Próximos encontros"
+                  : `Dia ${dataCivil(dia).getUTCDate()}`}
+              </h2>
               <span className="eyebrow">
                 {filtro(tipo).length} encontro
                 {filtro(tipo).length === 1 ? "" : "s"}
@@ -255,21 +294,81 @@ export function AgendaScreen() {
                 <br />
                 {detalhe.comunidade}
               </p>
+              {detalhe.inicio && !detalhe.cancelada && (
+                <Button
+                  className="full-width"
+                  variant="secondary"
+                  style={{ marginTop: 15 }}
+                  onClick={() => {
+                    baixarArquivo(
+                      "entre-elas-encontro.ics",
+                      criarIcs({
+                        id: detalhe.id,
+                        titulo: detalhe.titulo,
+                        descricao: detalhe.descricao,
+                        inicio: detalhe.inicio,
+                        duracao:
+                          detalhe.tipo === "faisca"
+                            ? 20
+                            : detalhe.duracao === "1 hora"
+                              ? 60
+                              : detalhe.duracao === "45 min"
+                                ? 45
+                                : 30,
+                      }),
+                      "text/calendar;charset=utf-8",
+                    );
+                    toast.success(
+                      "Calendário exportado. O encontro continua sendo demonstrativo.",
+                    );
+                  }}
+                >
+                  <Download size={15} />
+                  Adicionar ao meu calendário
+                </Button>
+              )}
+              {detalhe.tipo === "faisca" &&
+                !detalhe.cancelada &&
+                detalhe.rascunho && (
+                  <Button
+                    className="full-width"
+                    style={{ marginTop: 10 }}
+                    onClick={() => {
+                      try {
+                        retomarEncontro(detalhe.id);
+                        router.push("/?retomar=" + detalhe.id);
+                      } catch (error) {
+                        toast.error(
+                          error instanceof Error
+                            ? error.message
+                            : "Não foi possível retomar.",
+                        );
+                      }
+                    }}
+                  >
+                    <Play size={15} />
+                    {detalhe.realizada
+                      ? "Ver aprendizado"
+                      : "Retomar minha Faísca"}
+                  </Button>
+                )}
               {detalhe.tipo === "faisca" ? (
                 <Button
                   variant="outline"
                   className="full-width"
                   style={{ marginTop: 18 }}
-                  disabled={detalhe.cancelada}
+                  disabled={detalhe.cancelada || detalhe.realizada}
                   onClick={() => {
-                    atualizarDemo((s) => ({
-                      ...s,
-                      convites: s.convites.map((c) =>
-                        c.id === detalhe.id
-                          ? { ...c, status: "cancelada" as const }
-                          : c,
-                      ),
-                    }));
+                    try {
+                      cancelarEncontro(detalhe.id);
+                    } catch (error) {
+                      toast.error(
+                        error instanceof Error
+                          ? error.message
+                          : "Não foi possível cancelar.",
+                      );
+                      return;
+                    }
                     setDetalhe(null);
                     toast.success("Encontro cancelado na demonstração.");
                   }}

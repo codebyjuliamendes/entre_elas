@@ -15,7 +15,7 @@ Projeto de hackathon (prazo de uma semana). Prioridade: funcionar de ponta a pon
 
 ## 2. Escopo visual e organização por domínio
 
-Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual mobile-first, com jornada de seis etapas, navegação, telas periféricas e fallback para apresentação. Next.js 16 e React 19 foram mantidos por escolha explícita da usuária. O restante das regras de domínio continua válido. Portanto:
+Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual mobile-first, com jornada de seis etapas, navegação, telas periféricas e fallback para apresentação. O upgrade autorizado inclui layout desktop, rede, biblioteca, comunidades interativas, backup e PWA, mantendo a separação entre apresentação local e backend real. Next.js 16 e React 19 foram mantidos por escolha explícita da usuária. O restante das regras de domínio continua válido. Portanto:
 
 - Organize o código por **domínio** (perfil, saber, Faísca, comunidade, post, evento, chat, IA),
   **nunca por tela**. Não crie regras de negócio chamadas "home", "tela" ou "page data"; componentes de apresentação podem seguir as rotas.

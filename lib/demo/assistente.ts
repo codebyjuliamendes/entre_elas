@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { perfisDemo, ANA_ID, CARLA_ID } from "./catalogo";
+import { perfisDemo, ANA_ID } from "./catalogo";
 import {
   pedidoSchema,
   matchSchema,
@@ -9,6 +9,7 @@ import {
   resultadoPautaSchema,
   resultadoDicaSchema,
 } from "./schemas";
+import { recomendarPessoa } from "./descoberta";
 export type GeradorPitch = (
   prompt: string,
   schema: z.ZodType,
@@ -70,20 +71,10 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
           throw new Error("Evidência inválida");
         return resultadoMatchSchema.parse({ ...result, fonte: "ia" });
       } catch {
-        const tema = texto
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase();
-        const p =
-          (/dados|excel|planilha|indicador|analise/.test(tema)
-            ? candidatas.find((p) => p.slug === "daniela")
-            : candidatas.find((p) => p.id === CARLA_ID)) ?? candidatas[0];
+        const p = recomendarPessoa(texto, excluido);
         return resultadoMatchSchema.parse({
           perfil_sugerido_id: p.id,
-          motivo_conexao:
-            p.slug === "daniela"
-              ? "Daniela transforma dados em decisões e pode compartilhar maneiras práticas de tornar seus indicadores mais claros. Uma conversa entre áreas para enxergar novas possibilidades."
-              : "Carla já esteve do outro lado desse desafio. Ela pode compartilhar como transformar uma boa ideia em uma apresentação clara, segura e com propósito.",
+          motivo_conexao: `${p.nome.split(" ")[0]} compartilha experiências em ${p.saberes.slice(0, 2).join(" e ").toLowerCase()}. Uma conversa pode ajudar você a explorar esse desafio por outra perspectiva.`,
           evidencia: p.evidencia,
           fonte: "demonstracao",
         });

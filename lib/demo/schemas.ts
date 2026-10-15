@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { quizPerguntas } from "@/lib/schemas/entities";
+export const quizDemoSchema=z.array(z.object({pergunta:z.string().trim().min(1).max(500),alternativas:z.array(z.string().trim().min(1).max(300)).length(4),correta:z.number().int().min(0).max(3)})).length(3);
 export const pedidoSchema = z
   .string()
   .trim()
@@ -15,7 +15,7 @@ export const dicaQuizSchema = z.object({
   titulo: z.string().min(5).max(160),
   dica: z.string().min(20).max(5000),
   saber_reconhecido: z.string().min(3).max(120),
-  perguntas: quizPerguntas,
+  perguntas: quizDemoSchema,
 });
 export const fonteDemoSchema = z.enum(["ia", "demonstracao"]);
 export const resultadoMatchSchema = matchSchema.extend({
@@ -40,6 +40,7 @@ export const stepSchema = z.union([
 ]);
 export type Step = z.infer<typeof stepSchema>;
 export const jornadaSchema = z.object({
+  convite_id: z.uuid().nullable().default(null),
   step: stepSchema,
   pedido: z.string().max(1500),
   match: resultadoMatchSchema.nullable(),
@@ -48,17 +49,17 @@ export const jornadaSchema = z.object({
   resultado: resultadoDicaSchema.nullable(),
   consentimento_ana: z.boolean(),
   consentimento_convidada: z.boolean(),
-  horario: z.string().nullable(),
-  inicio_chamada: z.number().nullable(),
+  horario: z.iso.datetime({ offset: true }).nullable(),
+  inicio_chamada: z.number().finite().nonnegative().nullable(),
 });
 export const publicacaoDemoSchema = z.object({
   id: z.uuid(),
   perfil_id: z.uuid(),
   autora_id: z.uuid(),
-  titulo: z.string(),
-  dica: z.string(),
-  saber_reconhecido: z.string(),
-  perguntas: quizPerguntas,
+  titulo: z.string().min(5).max(160),
+  dica: z.string().min(20).max(5000),
+  saber_reconhecido: z.string().min(3).max(120),
+  perguntas: quizDemoSchema,
   created_at: z.iso.datetime(),
   consentimentos: z.array(z.uuid()).length(2),
   fonte: fonteDemoSchema,
@@ -71,23 +72,44 @@ export const mensagemDemoSchema = z.object({
   created_at: z.iso.datetime(),
 });
 export const conviteDemoSchema = z.object({
+  rascunho: jornadaSchema.nullable().default(null),
   id: z.uuid(),
   perfil_id: z.uuid(),
   tema: z.string(),
-  horario: z.string(),
+  horario: z.iso.datetime({ offset: true }),
   status: z.enum(["aceita", "realizada", "cancelada"]),
 });
+export const postComunidadeSchema = z.object({
+  id: z.uuid(),
+  comunidade_id: z.enum(["tecnologia", "lideranca", "campo", "bem-estar"]),
+  autora_id: z.uuid(),
+  titulo: z.string().trim().min(5).max(160),
+  corpo: z.string().trim().min(10).max(5000),
+  created_at: z.iso.datetime(),
+});
+export const comentarioDemoSchema = z.object({
+  id: z.uuid(),
+  post_id: z.uuid(),
+  autora_id: z.uuid(),
+  corpo: z.string().trim().min(1).max(1500),
+  created_at: z.iso.datetime(),
+});
 export const estadoDemoSchema = z.object({
-  versao: z.literal(1),
+  versao: z.literal(2),
+  posts: z.array(postComunidadeSchema).max(100).default([]),
+  comentarios: z.array(comentarioDemoSchema).max(500).default([]),
+  curtidas: z.array(z.string().max(100)).max(500).default([]),
+  notificacoes_lidas: z.array(z.string().max(100)).max(500).default([]),
   jornada: jornadaSchema,
   publicacoes: z.array(publicacaoDemoSchema).max(50),
   convites: z.array(conviteDemoSchema).max(50),
   mensagens: z.array(mensagemDemoSchema).max(200),
-  comunidades: z.array(z.string()),
-  eventos: z.array(z.string()),
-  salvos: z.array(z.string()),
+  comunidades: z.array(z.string().max(100)).max(30),
+  eventos: z.array(z.string().max(100)).max(200),
+  salvos: z.array(z.string().max(200)).max(200),
   perfil: z.object({
     bio: z.string().max(300),
+    objetivos: z.array(z.string().trim().min(3).max(160)).max(5).default([]),
     saberes: z.array(z.string().min(1).max(80)).max(15),
   }),
 });

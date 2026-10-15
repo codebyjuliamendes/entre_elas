@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import {
   Search,
   Code2,
@@ -9,13 +9,21 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Check,
-  MessageCircle,
+  Plus,
   UsersRound,
 } from "lucide-react";
 import { toast } from "sonner";
-import { comunidadesDemo, perfisDemo } from "@/lib/demo/catalogo";
-import { useDemo, alternarLista } from "@/lib/demo/store";
+import { comunidadesDemo } from "@/lib/demo/catalogo";
+import { useDemo, alternarLista, criarPostDemo } from "@/lib/demo/store";
 import { Avatar } from "@/components/Avatar";
+import { postsIniciais } from "@/lib/demo/conteudo";
+import { CommunityPost } from "./CommunityPost";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 const icons = { code: Code2, sparkles: Sparkles, zap: Zap, heart: Heart };
 export function CommunitiesScreen() {
@@ -23,7 +31,28 @@ export function CommunitiesScreen() {
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState<"explorar" | "minhas">("explorar");
   const [selecionada, setSelecionada] = useState<string | null>(null);
-  const [curtidas, setCurtidas] = useState<string[]>([]);
+  const [escrevendo, setEscrevendo] = useState(false);
+  const [titulo, setTitulo] = useState("");
+  const [corpo, setCorpo] = useState("");
+  function publicar(e: FormEvent) {
+    e.preventDefault();
+    if (titulo.trim().length < 5 || corpo.trim().length < 10) {
+      toast.error("Use pelo menos 5 caracteres no título e 10 no texto.");
+      return;
+    }
+    try {
+      criarPostDemo({ comunidade_id: selecionada, titulo, corpo });
+      setEscrevendo(false);
+      setTitulo("");
+      setCorpo("");
+      toast.success("Sua publicação foi salva nesta demonstração.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Não foi possível publicar.",
+      );
+    }
+  }
+
   const comunidade = comunidadesDemo.find((c) => c.id === selecionada);
   function toggle(id: string) {
     const member = state.comunidades.includes(id);
@@ -82,52 +111,66 @@ export function CommunitiesScreen() {
         <p className="community-topic">
           Conversas fictícias para inspirar novas trocas
         </p>
-        {perfisDemo.slice(1).map((p, i) => {
-          const id = `${comunidade.id}-${p.slug}`;
-          return (
-            <article className="community-post" key={id}>
-              <div className="community-post-author">
-                <Avatar nome={p.nome} src={p.avatar} size={35} />
-                <div>
-                  <strong>{p.nome}</strong>
-                  <small>{p.cargo} · Exemplo</small>
-                </div>
-              </div>
-              <p>
-                {i === 0
-                  ? "Qual foi o melhor conselho que você recebeu no começo da carreira? O meu foi: não espere saber tudo para compartilhar o que já sabe. 💜"
-                  : "Tem algum conhecimento que parece simples para você, mas faria diferença na rotina de outra pessoa? Vamos fazer esse saber circular! ✨"}
-              </p>
-              <div className="community-post-actions">
-                <button
-                  aria-label={`Curtir publicação de ${p.nome}`}
-                  aria-pressed={curtidas.includes(id)}
-                  onClick={() =>
-                    setCurtidas((s) =>
-                      s.includes(id) ? s.filter((x) => x !== id) : [...s, id],
-                    )
-                  }
-                >
-                  <Heart
-                    size={15}
-                    fill={curtidas.includes(id) ? "currentColor" : "none"}
-                  />
-                  {(i === 0 ? 12 : 8) + Number(curtidas.includes(id))}
-                </button>
-                <button
-                  onClick={() =>
-                    toast.info(
-                      "As conversas completas estarão disponíveis na integração real. Nesta apresentação, experimente o chat simulado.",
-                    )
-                  }
-                >
-                  <MessageCircle size={15} />
-                  Conversar sobre isso
-                </button>
-              </div>
-            </article>
-          );
-        })}
+        {membro && (
+          <Button
+            className="full-width"
+            style={{ margin: "16px 0" }}
+            onClick={() => setEscrevendo(true)}
+          >
+            <Plus size={17} />
+            Compartilhar uma experiência
+          </Button>
+        )}
+        <div className="posts-feed">
+          {[...state.posts, ...postsIniciais]
+            .filter((p) => p.comunidade_id === comunidade.id)
+            .map((post) => (
+              <CommunityPost key={post.id} post={post} />
+            ))}
+        </div>
+        <Dialog open={escrevendo} onOpenChange={setEscrevendo}>
+          <DialogContent>
+            <DialogTitle>Seu saber pode abrir caminhos</DialogTitle>
+            <DialogDescription>
+              Compartilhe uma experiência fictícia com a comunidade. A
+              publicação fica apenas neste dispositivo.
+            </DialogDescription>
+            <form onSubmit={publicar}>
+              <label className="form-label" htmlFor="post-titulo">
+                Título da publicação
+              </label>
+              <input
+                id="post-titulo"
+                value={titulo}
+                maxLength={160}
+                onChange={(e) => setTitulo(e.target.value)}
+                required
+              />
+              <label
+                className="form-label"
+                htmlFor="post-corpo"
+                style={{ marginTop: 17 }}
+              >
+                O que você quer compartilhar?
+              </label>
+              <textarea
+                id="post-corpo"
+                value={corpo}
+                maxLength={5000}
+                rows={6}
+                onChange={(e) => setCorpo(e.target.value)}
+                required
+              />
+              <Button
+                className="full-width"
+                style={{ marginTop: 18 }}
+                type="submit"
+              >
+                Publicar na comunidade
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
       </>
     );
   }
@@ -176,68 +219,70 @@ export function CommunitiesScreen() {
           Minhas comunidades ({state.comunidades.length})
         </button>
       </div>
-      {lista.map((c) => {
-        const Icon = icons[c.icon];
-        const membro = state.comunidades.includes(c.id);
-        return (
-          <article className="community-card" key={c.id}>
-            <div className={`community-cover ${c.cor}`}>
-              <span className="icon-tile">
-                <Icon size={25} strokeWidth={1.4} />
-              </span>
-              <span className="tag" style={{ background: "#ffffff80" }}>
-                {c.tag}
-              </span>
-            </div>
-            <div className="community-body">
-              <button
-                style={{ padding: 0, background: "none", textAlign: "left" }}
-                onClick={() => setSelecionada(c.id)}
-              >
-                <h2>{c.nome}</h2>
-              </button>
-              <p>{c.descricao}</p>
-              <div className="community-bottom">
-                <span className="community-members">
-                  <span className="avatar-stack">
-                    {c.avatares.map((slug) => (
-                      <Avatar
-                        key={slug}
-                        nome={slug}
-                        src={`/avatars/${slug}.svg`}
-                        size={22}
-                      />
-                    ))}
-                  </span>
-                  {c.membros + Number(membro)} mulheres
+      <div className="communities-grid">
+        {lista.map((c) => {
+          const Icon = icons[c.icon];
+          const membro = state.comunidades.includes(c.id);
+          return (
+            <article className="community-card" key={c.id}>
+              <div className={`community-cover ${c.cor}`}>
+                <span className="icon-tile">
+                  <Icon size={25} strokeWidth={1.4} />
                 </span>
-                <Button
-                  variant={membro ? "secondary" : "outline"}
-                  size="sm"
-                  onClick={() => toggle(c.id)}
-                >
-                  {membro ? (
-                    <>
-                      <Check size={12} />
-                      Participando
-                    </>
-                  ) : (
-                    "Fazer parte"
-                  )}
-                </Button>
+                <span className="tag" style={{ background: "#ffffff80" }}>
+                  {c.tag}
+                </span>
               </div>
-              <button
-                className="text-link"
-                style={{ marginTop: 16 }}
-                onClick={() => setSelecionada(c.id)}
-              >
-                Ver a comunidade
-                <ArrowUpRight size={12} />
-              </button>
-            </div>
-          </article>
-        );
-      })}
+              <div className="community-body">
+                <button
+                  style={{ padding: 0, background: "none", textAlign: "left" }}
+                  onClick={() => setSelecionada(c.id)}
+                >
+                  <h2>{c.nome}</h2>
+                </button>
+                <p>{c.descricao}</p>
+                <div className="community-bottom">
+                  <span className="community-members">
+                    <span className="avatar-stack">
+                      {c.avatares.map((slug) => (
+                        <Avatar
+                          key={slug}
+                          nome={slug}
+                          src={`/avatars/${slug}.svg`}
+                          size={22}
+                        />
+                      ))}
+                    </span>
+                    {c.membros + Number(membro)} mulheres
+                  </span>
+                  <Button
+                    variant={membro ? "secondary" : "outline"}
+                    size="sm"
+                    onClick={() => toggle(c.id)}
+                  >
+                    {membro ? (
+                      <>
+                        <Check size={12} />
+                        Participando
+                      </>
+                    ) : (
+                      "Fazer parte"
+                    )}
+                  </Button>
+                </div>
+                <button
+                  className="text-link"
+                  style={{ marginTop: 16 }}
+                  onClick={() => setSelecionada(c.id)}
+                >
+                  Ver a comunidade
+                  <ArrowUpRight size={12} />
+                </button>
+              </div>
+            </article>
+          );
+        })}
+      </div>
       {!lista.length && (
         <div className="empty-state">
           <UsersRound size={26} />

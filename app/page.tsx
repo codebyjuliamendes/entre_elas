@@ -1,9 +1,14 @@
 import { AppShell } from "@/components/AppShell";
 import { Journey } from "@/components/demo/Journey";
-export default function Inicio() {
+export default async function Inicio({
+  searchParams,
+}: {
+  searchParams: Promise<{ retomar?: string }>;
+}) {
+  const params = await searchParams;
   return (
     <AppShell>
-      <Journey />
+      <Journey retomar={!!params.retomar} />
     </AppShell>
   );
 }
