@@ -1,5 +1,5 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useState, useRef, useEffect, type FormEvent } from "react";
 import Link from "next/link";
 import {
   Sparkles,
@@ -10,6 +10,7 @@ import {
   Bookmark,
   RotateCcw,
 } from "lucide-react";
+import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
 import { dicasIniciais } from "@/lib/demo/conteudo";
 import { ana, perfisDemo, ANA_ID } from "@/lib/demo/catalogo";
@@ -30,6 +31,33 @@ import {
 import { useRouter } from "next/navigation";
 export function ProfileScreen({ slug }: { slug?: string }) {
   const state = useDemo();
+  const fotoRequest = useRef(0);
+  const [fotoCarregando, setFotoCarregando] = useState(false);
+  useEffect(
+    () => () => {
+      fotoRequest.current++;
+    },
+    [],
+  );
+  async function trocarFoto(file?: File) {
+    if (!file) return;
+    const id = ++fotoRequest.current;
+    setFotoCarregando(true);
+    try {
+      const foto = await prepararFoto(file);
+      if (id !== fotoRequest.current) return;
+      atualizarDemo((s) => ({ ...s, perfil: { ...s.perfil, foto } }));
+      toast.success("Foto atualizada neste dispositivo.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Não foi possível abrir a imagem.",
+      );
+    } finally {
+      if (id === fotoRequest.current) setFotoCarregando(false);
+    }
+  }
   const router = useRouter();
   const perfil = perfisDemo.find((p) => p.slug === slug) ?? ana;
   const proprio = perfil.id === ANA_ID;
@@ -105,6 +133,41 @@ export function ProfileScreen({ slug }: { slug?: string }) {
           </span>
         )}
       </div>
+      {proprio && (
+        <div className="profile-photo-controls">
+          <label className="text-link" htmlFor="foto-perfil">
+            {fotoCarregando ? "Preparando foto…" : "Trocar foto de perfil"}
+          </label>
+          <input
+            id="foto-perfil"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            disabled={fotoCarregando}
+            onChange={(e) => {
+              void trocarFoto(e.target.files?.[0]);
+              e.target.value = "";
+            }}
+          />
+          {state.perfil.foto && (
+            <button
+              className="text-link"
+              disabled={fotoCarregando}
+              onClick={() =>
+                atualizarDemo((s) => ({
+                  ...s,
+                  perfil: { ...s.perfil, foto: null },
+                }))
+              }
+            >
+              Remover foto
+            </button>
+          )}
+          <p className="input-hint">
+            JPEG, PNG ou WebP até 5 MB. Recorte central. Salva apenas neste
+            dispositivo e no seu backup; não é enviada à IA.
+          </p>
+        </div>
+      )}
       <section className="profile-info">
         <h1>{perfil.nome}</h1>
         <p className="profile-role">
@@ -258,7 +321,8 @@ export function ProfileScreen({ slug }: { slug?: string }) {
               >
                 <Link href="/saberes">
                   {dicasIniciais.find((dica) => dica.id === s)?.titulo ??
-                    state.publicacoes.find((dica) => dica.id === s)?.titulo ?? s}
+                    state.publicacoes.find((dica) => dica.id === s)?.titulo ??
+                    s}
                 </Link>
               </div>
             ))

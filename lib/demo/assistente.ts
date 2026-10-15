@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { perfisDemo, ANA_ID } from "./catalogo";
+import { perfisDemo } from "./catalogo";
 import {
   pedidoSchema,
   matchSchema,
@@ -9,7 +9,11 @@ import {
   resultadoPautaSchema,
   resultadoDicaSchema,
 } from "./schemas";
-import { recomendarPessoa } from "./descoberta";
+import {
+  analisarConexao,
+  explicarConexao,
+  contextoCuradoriaSchema,
+} from "./curadoria";
 export type GeradorPitch = (
   prompt: string,
   schema: z.ZodType,
@@ -40,19 +44,34 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
     }
   }
   return {
-    async matchFaisca(pedido: unknown, excluir?: unknown) {
+    async matchFaisca(pedido: unknown, excluir?: unknown, contexto?: unknown) {
       const texto = pedidoSchema.parse(pedido);
       const excluido = z.uuid().optional().parse(excluir);
-      const candidatas = perfisDemo.filter(
-        (p) => p.id !== ANA_ID && p.id !== excluido,
-      );
+      const perfilSolicitante = contextoCuradoriaSchema.parse(contexto);
+      const analise = analisarConexao({
+        pedido: texto,
+        excluir: excluido,
+        contexto: perfilSolicitante,
+      });
+      const candidatas = analise.candidatas;
+      const explicar = (perfil_id: string) =>
+        explicarConexao({
+          pedido: texto,
+          excluir: excluido,
+          contexto: perfilSolicitante,
+          perfil_id,
+        });
       const dados = {
         pedido: texto,
+        foco: analise.foco,
+        solicitante: perfilSolicitante,
         candidatas: candidatas.map(
-          ({ id, nome, cargo, saberes, evidencia }) => ({
+          ({ id, nome, cargo, area, regional, saberes, evidencia }) => ({
             id,
             nome,
             cargo,
+            area,
+            regional,
             saberes,
             evidencia,
           }),
@@ -61,7 +80,7 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
       try {
         const result = await chamar(
           instrucoes(
-            "Escolha uma candidata fornecida e explique a conexão. Copie a evidencia literalmente, sem alterá-la.",
+            "Escolha uma candidata fornecida e explique a conexão com o pedido. O pedido atual tem prioridade sobre os objetivos. Considere as experiências fornecidas e a diversidade de áreas e regionais; não atribua especialidade sem suporte. Copie a evidencia literalmente, sem alterá-la.",
             dados,
           ),
           matchSchema,
@@ -69,10 +88,15 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
         const p = candidatas.find((p) => p.id === result.perfil_sugerido_id);
         if (!p || result.evidencia !== p.evidencia)
           throw new Error("Evidência inválida");
-        return resultadoMatchSchema.parse({ ...result, fonte: "ia" });
-      } catch {
-        const p = recomendarPessoa(texto, excluido);
         return resultadoMatchSchema.parse({
+          ...result,
+          fonte: "ia",
+          leitura: explicar(p.id),
+        });
+      } catch {
+        const p = candidatas[0];
+        return resultadoMatchSchema.parse({
+          leitura: explicar(p.id),
           perfil_sugerido_id: p.id,
           motivo_conexao: `${p.nome.split(" ")[0]} compartilha experiências em ${p.saberes.slice(0, 2).join(" e ").toLowerCase()}. Uma conversa pode ajudar você a explorar esse desafio por outra perspectiva.`,
           evidencia: p.evidencia,
@@ -80,7 +104,12 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
         });
       }
     },
-    async gerarPauta(tema: unknown, perfilA: unknown, perfilB: unknown) {
+    async gerarPauta(
+      tema: unknown,
+      perfilA: unknown,
+      perfilB: unknown,
+      contexto?: unknown,
+    ) {
       const input = z
         .object({
           tema: pedidoSchema,
@@ -88,12 +117,25 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
           perfilB: z.string().trim().min(1).max(100),
         })
         .parse({ tema, perfilA, perfilB });
+      const solicitante = contextoCuradoriaSchema.parse(contexto);
+      const plano = analisarConexao({
+        pedido: input.tema,
+        contexto: solicitante,
+      });
+      const convidada = perfisDemo.find((p) => p.nome === input.perfilB);
       try {
         return resultadoPautaSchema.parse({
           perguntas: await chamar(
             instrucoes(
               "Gere exatamente três perguntas acolhedoras e práticas para uma conversa profissional de vinte minutos.",
-              input,
+              {
+                ...input,
+                solicitante,
+                foco: plano.foco,
+                experiencia_convidada: convidada?.evidencia,
+                estrutura:
+                  "0–3 min: objetivo; 3–15 min: experiência; 15–20 min: ação. Não invente experiências.",
+              },
             ),
             pautaDemoSchema,
           ),
@@ -102,8 +144,10 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
       } catch {
         return resultadoPautaSchema.parse({
           perguntas: [
-            `O que você gostaria de conseguir com essa troca sobre ${input.tema.charAt(0).toLowerCase() + input.tema.slice(1, 100)}?`,
-            "Que experiência sua pode ajudar a iluminar esse caminho?",
+            plano.pergunta,
+            convidada
+              ? `Na sua experiência com ${convidada.saberes[0].toLowerCase()}, o que funcionou e que cuidado você recomenda?`
+              : "Que experiência sua pode ajudar a iluminar esse caminho?",
             "Qual pequeno passo podemos combinar para colocar esse aprendizado em prática?",
           ],
           fonte: "demonstracao",
@@ -118,19 +162,22 @@ export function criarAssistente(gerar: GeradorPitch, timeoutMs = 7500) {
         .max(3000)
         .parse(aprendizado);
       try {
-        return resultadoDicaSchema.parse({
-          ...(await chamar(
-            instrucoes(
-              "Transforme o aprendizado em uma dica breve, acolhedora e profissional e identifique um saber demonstrado. Gere três perguntas sobre a dica, com quatro alternativas cada e correta como índice 0–3. Não invente fatos sobre a convidada.",
-              { aprendizado: texto },
-            ),
-            dicaQuizSchema,
-          )),
-          fonte: "ia",
-        });
+        const gerado = await chamar(
+          instrucoes(
+            "Transforme o aprendizado em uma dica breve, acolhedora e profissional e identifique um saber demonstrado. Gere três perguntas sobre a dica, com quatro alternativas cada e correta como índice 0–3. Não invente fatos sobre a convidada. Inclua trecho_aprendizado copiado literalmente das anotações, com pelo menos 10 caracteres, sustentando a dica. Não atribua à convidada resultados que o texto não relata.",
+            { aprendizado: texto },
+          ),
+          dicaQuizSchema.extend({
+            trecho_aprendizado: z.string().min(10).max(3000),
+          }),
+        );
+        if (!texto.includes(gerado.trecho_aprendizado))
+          throw new Error("Síntese sem evidência nas anotações");
+        return resultadoDicaSchema.parse({ ...gerado, fonte: "ia" });
       } catch {
         const sobreProjetos = /diretoria|apresenta|projeto/i.test(texto);
         return resultadoDicaSchema.parse({
+          trecho_aprendizado: texto,
           titulo: sobreProjetos
             ? "Uma boa apresentação começa com uma intenção clara"
             : "Uma conversa pode abrir novos caminhos",

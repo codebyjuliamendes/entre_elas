@@ -62,6 +62,10 @@ const suggestions = [
 export function Journey({ retomar = false }: { retomar?: boolean }) {
   const state = useDemo();
   const j = state.jornada;
+  const contextoIA = {
+    objetivos: state.perfil.objetivos,
+    saberes: state.perfil.saberes,
+  };
   const [visaoInicio, setVisaoInicio] = useState(!retomar);
   const step: Step = visaoInicio ? 1 : j.step;
   const requisicao = useRef(0);
@@ -101,8 +105,8 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
     try {
       const excluido = outra ? j.match?.perfil_sugerido_id : undefined;
       const match = await comFallbackLocal(
-        () => matchFaisca(input.data, excluido),
-        () => assistenteLocal.matchFaisca(input.data, excluido),
+        () => matchFaisca(input.data, excluido, contextoIA),
+        () => assistenteLocal.matchFaisca(input.data, excluido, contextoIA),
       );
       if (sequencia !== requisicao.current) return;
       escolherConexao(match);
@@ -123,8 +127,14 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
     setErro("");
     try {
       const pauta = await comFallbackLocal(
-        () => gerarPauta(j.pedido, ana.nome, perfil.nome),
-        () => assistenteLocal.gerarPauta(j.pedido, ana.nome, perfil.nome),
+        () => gerarPauta(j.pedido, ana.nome, perfil.nome, contextoIA),
+        () =>
+          assistenteLocal.gerarPauta(
+            j.pedido,
+            ana.nome,
+            perfil.nome,
+            contextoIA,
+          ),
       );
       const horario = horarioDaDemo(dia);
       if (sequencia !== requisicao.current) return;
@@ -418,6 +428,23 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                       Baseado nas experiências compartilhadas na rede
                     </p>
                   </section>
+                  {j.match.leitura && (
+                    <details className="curadoria-explanation">
+                      <summary>Por que esta Faísca faz sentido?</summary>
+                      <h3>{j.match.leitura.foco}</h3>
+                      <ul>
+                        {j.match.leitura.criterios.map((c) => (
+                          <li key={c}>{c}</li>
+                        ))}
+                      </ul>
+                      <p>{j.match.leitura.limite}</p>
+                      <p className="input-hint">
+                        A curadoria usa seu pedido, objetivos e experiências do
+                        catálogo. Foto e conversas de chat não entram nessa
+                        análise.
+                      </p>
+                    </details>
+                  )}
                   <div className="action-stack">
                     <Button
                       onClick={() => setConviteAberto(true)}
@@ -479,6 +506,12 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                   <div className="section-heading">
                     <h2>Três perguntas, muitas possibilidades</h2>
                     <Sparkles size={15} color="#b49ac9" />
+                  </div>
+                  <div className="faisca-plan">
+                    <strong>Vinte minutos com intenção</strong>
+                    <span>0–3 min · alinhar o desafio</span>
+                    <span>3–15 min · trocar experiências</span>
+                    <span>15–20 min · combinar um próximo passo</span>
                   </div>
                   <ul className="agenda-list">
                     {j.pauta.perguntas.map((p, i) => (
@@ -653,6 +686,22 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                         ? "Dica salva"
                         : "Salvar para depois"}
                     </button>
+                    {j.resultado.trecho_aprendizado && (
+                      <details className="curadoria-explanation">
+                        <summary>De onde veio esta síntese?</summary>
+                        <p>
+                          Trecho das suas anotações usado para apoiar a dica:
+                        </p>
+                        <blockquote>
+                          {j.resultado.trecho_aprendizado}
+                        </blockquote>
+                        <p>
+                          Revise a dica antes de autorizar. A síntese pode
+                          precisar de ajustes; volte às anotações para gerar
+                          outra versão.
+                        </p>
+                      </details>
+                    )}
                     <Quiz
                       key={j.resultado.titulo}
                       perguntas={j.resultado.perguntas}
@@ -661,6 +710,20 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                   <Fonte fonte={j.resultado.fonte} />
                   {!publicado ? (
                     <>
+                      <Button
+                        variant="outline"
+                        className="full-width"
+                        style={{ marginBottom: 16 }}
+                        onClick={() => {
+                          atualizarJornada({
+                            consentimento_ana: false,
+                            consentimento_convidada: false,
+                          });
+                          avancar(5);
+                        }}
+                      >
+                        Revisar minhas anotações e gerar outra síntese
+                      </Button>
                       <section className="consent-card">
                         <strong style={{ display: "block", marginBottom: 10 }}>
                           Uma dica só é pública quando as duas querem.

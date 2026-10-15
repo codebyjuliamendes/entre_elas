@@ -123,3 +123,18 @@ automaticamente a configuração. Vercel não foi implantado nesta tarefa.
 As integrações externas, SSO, Storage hospedado, vídeo/chat reais e deploy
 continuam com as limitações anteriores. O upgrade validado é da apresentação
 local e dos contratos/segurança do backend; não é validação de serviços sem chaves.
+
+## Perfil e foco na Faísca — 2026-10-15
+
+- Build, lint e tipos aprovados. 68 testes unitários, 14 de banco local e
+  12 de navegador passaram (94 no total).
+- Foto testada no navegador: processamento raster, atualização no perfil e
+  cabeçalho, persistência após reload e remoção. Schemas recusam SVG/URL externa;
+  arquivos excessivos e a migração de perfis sem foto têm cobertura unitária.
+- Curadoria: pedido prevalece sobre objetivos, candidata excluída não retorna,
+  assuntos sem especialista recebem limite explícito, foto/bio ficam fora do prompt,
+  pauta se adapta ao tema e síntese sem trecho literal usa fallback identificado.
+- Navegador verifica explicação da conexão, plano de vinte minutos, trecho das
+  anotações e revogação dos dois consentimentos ao revisar/regenerar a síntese.
+- Não foram adicionadas dependências nem alteradas migrations. Chamadas reais
+  de IA e upload hospedado continuam pendentes; foto nesta interface é local.

@@ -56,7 +56,7 @@ O banco existente já tem pgvector e schema completo. Use suas migrations e
 
 `npm run build`, `npm run lint`, `npm run typecheck`, `npm test`.
 `npm run test:db` verifica os domínios reais com o banco local preparado.
-`npm run test:e2e` gera o build e executa os dez cenários contra um servidor
+`npm run test:e2e` gera o build e executa os doze cenários contra um servidor
 de produção na porta 3200. Usa `/usr/bin/chromium` quando disponível ou
 PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH. Em máquinas sem Chromium, instale pelo
 Playwright (`npx playwright install chromium`), mantendo TLS e verificação de artefatos.
@@ -84,3 +84,23 @@ Playwright (`npx playwright install chromium`), mantendo TLS e verificação de 
 A migração e os backups são de apresentação: use somente dados fictícios.
 A pipeline em `.github/workflows/qualidade.yml` executa lint, tipos, testes,
 auditoria de produção, navegador e banco local em jobs separados.
+
+## Perfil e curadoria da Faísca
+
+No seu perfil, “Trocar foto de perfil” aceita JPEG/PNG/WebP até 5 MB; a imagem
+recebe recorte quadrado central e é reduzida para 256 px. Pode ser removida,
+persiste após recarregar e acompanha o backup. Nesta apresentação a foto não
+é enviada a um servidor nem à IA. Edite também bio, saberes e objetivos.
+
+Na Faísca, “Por que esta Faísca faz sentido?” mostra o foco do pedido, critérios,
+evidência do catálogo e limites da sugestão. Os objetivos contextualizam a
+curadoria; o pedido tem prioridade. Uma pauta orienta os vinte minutos e as
+perguntas se adaptam ao desafio e à experiência da convidada.
+
+Depois da conversa, “De onde veio esta síntese?” mostra um trecho literal das
+anotações. Revise a dica e, se necessário, use “Revisar minhas anotações e gerar
+outra síntese”. Ambas as autorizações são revogadas nessa revisão. Somente a
+nova versão aprovada pelas duas pode ser publicada. O trecho literal é uma
+verificação de apoio, não uma garantia de que o modelo não inventou outros fatos.
+IA real via OpenRouter continua opcional e pendente de validação externa;
+sem chave, a experiência usa heurística/exemplos locais identificados.

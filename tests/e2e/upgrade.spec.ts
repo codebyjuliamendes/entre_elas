@@ -58,14 +58,12 @@ test("comunidade permite publicar, comentar e persistir após recarregar", async
   await page
     .getByRole("button", { name: "Publicar na comunidade", exact: true })
     .click();
-  const post = page
-    .getByRole("article")
-    .filter({
-      has: page.getByRole("heading", {
-        name: "Um aprendizado que virou prática",
-        exact: true,
-      }),
-    });
+  const post = page.getByRole("article").filter({
+    has: page.getByRole("heading", {
+      name: "Um aprendizado que virou prática",
+      exact: true,
+    }),
+  });
   await expect(post).toBeVisible();
   await post
     .getByRole("button", { name: "Comentários (0)", exact: true })
@@ -160,15 +158,13 @@ test("backup é exportável e arquivo inválido não apaga progresso", async ({
   expect(backup.dados.perfil.bio).toBe(
     "Minha bio fictícia preservada pelo backup.",
   );
-  await page
-    .getByLabel("Arquivo de backup")
-    .setInputFiles({
-      name: "invalido.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(
-        JSON.stringify({ aplicativo: "Entre Elas", dados: { versao: 99 } }),
-      ),
-    });
+  await page.getByLabel("Arquivo de backup").setInputFiles({
+    name: "invalido.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      JSON.stringify({ aplicativo: "Entre Elas", dados: { versao: 99 } }),
+    ),
+  });
   await page
     .getByRole("button", { name: "Confirmar importação", exact: true })
     .click();
@@ -250,4 +246,52 @@ test("PWA possui ícones e cache apenas de recursos públicos", async ({
   });
   expect(caminhos).toContain("/offline");
   expect(caminhos.some((p) => p.startsWith("/api/") || p === "/")).toBe(false);
+});
+
+test("foto de perfil é processada, persiste e pode ser removida", async ({
+  page,
+}) => {
+  await page.goto("/perfil");
+  await page
+    .getByLabel("Trocar foto de perfil", { exact: true })
+    .setInputFiles("public/icon-192.png");
+  const avatar = page.locator(".profile-avatar-row img");
+  await expect(avatar).toHaveAttribute("src", /^data:image\/webp;base64,/);
+  await page.reload();
+  await expect(avatar).toHaveAttribute("src", /^data:image\/webp;base64,/);
+  await expect(page.getByRole("banner").getByRole("img")).toHaveAttribute(
+    "src",
+    /^data:image\/webp;base64,/,
+  );
+  await page.getByRole("button", { name: "Remover foto", exact: true }).click();
+  await expect(avatar).toHaveAttribute("src", "/avatars/ana.svg");
+});
+test("Faísca explica a escolha e contextualiza o plano da conversa", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("button", { name: "Descomplicar os dados", exact: true })
+    .click();
+  await page
+    .getByRole("button", { name: "Encontrar minha Faísca", exact: true })
+    .click();
+  await page
+    .getByText("Por que esta Faísca faz sentido?", { exact: true })
+    .click();
+  await expect(page.locator(".curadoria-explanation")).toContainText(
+    "Dados e indicadores",
+  );
+  await expect(page.locator(".curadoria-explanation")).toContainText(
+    "Foto e conversas de chat não entram",
+  );
+  await page
+    .getByRole("button", {
+      name: "Convidar para um café (20 min)",
+      exact: true,
+    })
+    .click();
+  await page.getByRole("button", { name: /Simular aceite de Daniela/ }).click();
+  await expect(page.locator(".faisca-plan")).toContainText("15–20 min");
+  await expect(page.locator(".agenda-list")).toContainText("indicadores");
 });

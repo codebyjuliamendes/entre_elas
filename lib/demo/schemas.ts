@@ -1,5 +1,15 @@
 import { z } from "zod";
-export const quizDemoSchema=z.array(z.object({pergunta:z.string().trim().min(1).max(500),alternativas:z.array(z.string().trim().min(1).max(300)).length(4),correta:z.number().int().min(0).max(3)})).length(3);
+import { leituraCuradoriaSchema } from "./curadoria";
+import { fotoLocalSchema } from "./foto";
+export const quizDemoSchema = z
+  .array(
+    z.object({
+      pergunta: z.string().trim().min(1).max(500),
+      alternativas: z.array(z.string().trim().min(1).max(300)).length(4),
+      correta: z.number().int().min(0).max(3),
+    }),
+  )
+  .length(3);
 export const pedidoSchema = z
   .string()
   .trim()
@@ -20,12 +30,14 @@ export const dicaQuizSchema = z.object({
 export const fonteDemoSchema = z.enum(["ia", "demonstracao"]);
 export const resultadoMatchSchema = matchSchema.extend({
   fonte: fonteDemoSchema,
+  leitura: leituraCuradoriaSchema.nullable().default(null),
 });
 export const resultadoPautaSchema = z.object({
   perguntas: pautaDemoSchema,
   fonte: fonteDemoSchema,
 });
 export const resultadoDicaSchema = dicaQuizSchema.extend({
+  trecho_aprendizado: z.string().min(10).max(3000).nullable().default(null),
   fonte: fonteDemoSchema,
 });
 export type MatchDemo = z.infer<typeof resultadoMatchSchema>;
@@ -108,6 +120,7 @@ export const estadoDemoSchema = z.object({
   eventos: z.array(z.string().max(100)).max(200),
   salvos: z.array(z.string().max(200)).max(200),
   perfil: z.object({
+    foto: fotoLocalSchema,
     bio: z.string().max(300),
     objetivos: z.array(z.string().trim().min(3).max(160)).max(5).default([]),
     saberes: z.array(z.string().min(1).max(80)).max(15),

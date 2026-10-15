@@ -1083,3 +1083,59 @@
 .settings-grid .button {
   white-space: normal;
 }
+
+.profile-photo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+.profile-photo-controls input {
+  max-width: 100%;
+  font-size: 12px;
+}
+.profile-photo-controls .input-hint {
+  flex-basis: 100%;
+}
+.curadoria-explanation {
+  padding: 16px;
+  margin: 16px 0;
+  background: var(--surface, #f2ecfa);
+  border: 1px solid #e3d8ef;
+  border-radius: 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #59416b;
+}
+.curadoria-explanation summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.curadoria-explanation h3 {
+  font-size: 15px;
+  margin-top: 12px;
+}
+.curadoria-explanation ul {
+  padding-left: 18px;
+}
+.curadoria-explanation p,
+.curadoria-explanation li {
+  margin-top: 10px;
+}
+.curadoria-explanation blockquote {
+  margin: 12px 0;
+  padding-left: 12px;
+  border-left: 3px solid #b69ad2;
+  white-space: pre-wrap;
+}
+.faisca-plan {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  background: #f4f0fa;
+  border-radius: 16px;
+  margin: 16px 0;
+  color: #624979;
+  font-size: 13px;
+}

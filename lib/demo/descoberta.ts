@@ -1,11 +1,8 @@
 import { z } from "zod";
 import { perfisDemo, ANA_ID, perfilDemoSchema } from "./catalogo";
-export function normalizar(texto: string) {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
+import { normalizar } from "./texto";
+import { analisarConexao } from "./curadoria";
+export { normalizar };
 const stop = new Set([
   "para",
   "como",
@@ -59,29 +56,7 @@ export function filtrarPessoas(entrada: unknown) {
     );
 }
 export function recomendarPessoa(pedido: string, excluir?: string) {
-  const tema = normalizar(z.string().min(5).max(1500).parse(pedido));
-  const candidatas = perfisDemo.filter(
-    (p) => p.id !== ANA_ID && p.id !== excluir,
+  return perfilDemoSchema.parse(
+    analisarConexao({ pedido, excluir }).candidatas[0],
   );
-  const regras: [RegExp, string][] = [
-    [/excel|planilha|dado|indicador|analise/, "daniela"],
-    [
-      /diretoria|apresenta.*projeto|projeto.*apresenta|orcamento|gerencia.*projeto/,
-      "carla",
-    ],
-    [/lideran|liderar|mentoria|equipe|carreira/, "gabriela"],
-    [/solar|sustent|ambient|esg/, "fernanda"],
-    [/seguran|risco|prevenc/, "beatriz"],
-    [/automacao|subestac|sistema.*eletric/, "helena"],
-    [/comunic|facilita|fala|conversa/, "mariana"],
-  ];
-  const favoritas = regras
-    .filter(([regex]) => regex.test(tema))
-    .map(([, slug]) => slug);
-  // A alternativa permanece estável quando não há uma segunda especialista no tema.
-  const preferida =
-    candidatas.find((p) => favoritas.includes(p.slug)) ??
-    candidatas.find((p) => p.slug === "carla") ??
-    candidatas[0];
-  return perfilDemoSchema.parse(preferida);
 }

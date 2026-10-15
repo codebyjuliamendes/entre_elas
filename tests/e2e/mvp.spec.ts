@@ -51,7 +51,34 @@ test("ciclo completo sem chaves: consentimento, quiz e reconhecimento persistent
     exact: true,
   });
   await expect(publicar).toBeDisabled();
-  const perguntas = page.getByRole("group");
+  await page.getByText("De onde veio esta síntese?", { exact: true }).click();
+  await expect(page.locator(".curadoria-explanation blockquote")).toContainText(
+    "Aprendi com a Carla",
+  );
+  await page.getByRole("checkbox", { name: /Eu, Ana, autorizo/ }).check();
+  await page
+    .getByRole("button", { name: "Simular autorização de Carla", exact: true })
+    .click();
+  await expect(publicar).toBeEnabled();
+  await page
+    .getByRole("button", {
+      name: "Revisar minhas anotações e gerar outra síntese",
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByLabel("Qual aprendizado você quer levar adiante?"),
+  ).toHaveValue(/Aprendi com a Carla/);
+  await page
+    .getByRole("button", { name: "Sintetizar com IA", exact: true })
+    .click();
+  await expect(publicar).toBeDisabled();
+  await expect(
+    page.getByRole("checkbox", { name: /Eu, Ana, autorizo/ }),
+  ).not.toBeChecked();
+  const perguntas = page
+    .getByRole("region", { name: "Quiz do aprendizado" })
+    .getByRole("group");
   await expect(perguntas).toHaveCount(3);
   await perguntas.nth(0).getByRole("button").nth(1).click();
   await perguntas.nth(1).getByRole("button").nth(0).click();
