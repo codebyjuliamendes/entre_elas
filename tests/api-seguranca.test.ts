@@ -73,3 +73,36 @@ describe("Cookie de demonstração", () => {
     }
   });
 });
+
+it("valida origem pública configurada quando o proxy usa endereço interno", async () => {
+  vi.stubEnv("APP_MODE", "piloto");
+  vi.stubEnv("APP_URL", "https://piloto.test");
+  try {
+    await expect(
+      corpo(
+        new Request("http://interno:3000/api/teste", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            origin: "https://piloto.test",
+          },
+          body: "{}",
+        }),
+      ),
+    ).resolves.toEqual({});
+    await expect(
+      corpo(
+        new Request("http://interno:3000/api/teste", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            origin: "https://outro.test",
+          },
+          body: "{}",
+        }),
+      ),
+    ).rejects.toMatchObject({ status: 403 });
+  } finally {
+    vi.unstubAllEnvs();
+  }
+});

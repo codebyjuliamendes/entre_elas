@@ -429,6 +429,131 @@ export type Database = {
           },
         ]
       }
+      piloto_contas: {
+        Row: {
+          auth_user_id: string
+          consentimento_em: string | null
+          consentimento_versao: string | null
+          created_at: string
+          foto: string | null
+          ia_consentimento: boolean
+          onboarding: boolean
+          profile_id: string
+        }
+        Insert: {
+          auth_user_id: string
+          consentimento_em?: string | null
+          consentimento_versao?: string | null
+          created_at?: string
+          foto?: string | null
+          ia_consentimento?: boolean
+          onboarding?: boolean
+          profile_id: string
+        }
+        Update: {
+          auth_user_id?: string
+          consentimento_em?: string | null
+          consentimento_versao?: string | null
+          created_at?: string
+          foto?: string | null
+          ia_consentimento?: boolean
+          onboarding?: boolean
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "piloto_contas_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      piloto_favoritos: {
+        Row: {
+          post_id: string
+          profile_id: string
+        }
+        Insert: {
+          post_id: string
+          profile_id: string
+        }
+        Update: {
+          post_id?: string
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "piloto_favoritos_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "piloto_favoritos_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      piloto_limites: {
+        Row: {
+          chave: string
+          janela: string
+          quantidade: number
+        }
+        Insert: {
+          chave: string
+          janela: string
+          quantidade: number
+        }
+        Update: {
+          chave?: string
+          janela?: string
+          quantidade?: number
+        }
+        Relationships: []
+      }
+      piloto_mensagens: {
+        Row: {
+          autora_id: string
+          created_at: string
+          faisca_id: string
+          id: string
+        }
+        Insert: {
+          autora_id: string
+          created_at: string
+          faisca_id: string
+          id: string
+        }
+        Update: {
+          autora_id?: string
+          created_at?: string
+          faisca_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "piloto_mensagens_autora_id_fkey"
+            columns: ["autora_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "piloto_mensagens_faisca_id_fkey"
+            columns: ["faisca_id"]
+            isOneToOne: false
+            referencedRelation: "faiscas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_coautoras: {
         Row: {
           created_at: string
@@ -806,6 +931,21 @@ export type Database = {
           similaridade: number
         }[]
       }
+      buscar_saberes_piloto: {
+        Args: {
+          excluir_profile_id: string
+          limite: number
+          query_embedding: string
+        }
+        Returns: {
+          area: string
+          evidencias: string[]
+          nome: string
+          profile_id: string
+          regional: string
+          similaridade: number
+        }[]
+      }
       criar_comunidade: {
         Args: { dados: Json; usuaria_id: string }
         Returns: Json
@@ -820,6 +960,28 @@ export type Database = {
         Returns: Json
       }
       pegar_job: { Args: never; Returns: Json }
+      piloto_autorizar: {
+        Args: {
+          autorizado: boolean
+          faisca_id: string
+          resumo_lido: Json
+          usuaria_id: string
+        }
+        Returns: Json
+      }
+      piloto_consumir: {
+        Args: {
+          chave_input: string
+          janela_input: string
+          limite_input: number
+        }
+        Returns: boolean
+      }
+      piloto_provisionar: { Args: { auth_id: string }; Returns: string }
+      piloto_revisar_resumo: {
+        Args: { faisca_id: string; novo_resumo: Json; usuaria_id: string }
+        Returns: Json
+      }
       publicar_faisca: {
         Args: { faisca_id: string; perguntas: Json; usuaria_id: string }
         Returns: Json

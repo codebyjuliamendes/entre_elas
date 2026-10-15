@@ -1,3 +1,6 @@
+import { identificarIA } from "@/lib/piloto/ia";
+import { pilotoAtivo } from "@/lib/piloto/config";
+import { identidadePiloto } from "./piloto";
 import { cookies } from "next/headers";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
@@ -44,7 +47,12 @@ export function validarCookie(cookie: string): string {
   return id.parse(pid);
 }
 export async function getCurrentUser(): Promise<Profile> {
-  // Substituir este adaptador pela identidade verificada do SSO no futuro.
+  if (pilotoAtivo()) {
+    const u = (await identidadePiloto()).perfil;
+    identificarIA(u.id);
+    return u;
+  }
+  // Identidade fictícia restrita ao modo de apresentação.
   if (process.env.DEMO_MODE !== "true")
     throw new ErroDominio("SSO ainda não configurado.", 401);
   const cookie = (await cookies()).get("entre_elas_demo")?.value;

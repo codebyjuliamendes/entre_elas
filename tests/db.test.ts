@@ -1,7 +1,7 @@
 import { describe,it,expect,beforeAll,afterAll,vi } from 'vitest';
 import { getDb,verificarErro } from '@/lib/db/client';
 import { seed } from '@/scripts/seed';
-import { uuid,posts } from '@/scripts/fixtures';
+import { uuid,posts,profiles,communities,comments,events } from '@/scripts/fixtures';
 import * as f from '@/lib/domain/faisca';
 import * as c from '@/lib/domain/comunidade';
 import * as conteudo from '@/lib/domain/conteudo';
@@ -18,7 +18,7 @@ const enabled=process.env.TEST_DATABASE==='true';
 describe.skipIf(!enabled)('Domínios com Postgres e pgvector reais',()=>{
  const saberesTeste:string[]=[];let comunidadeTeste='';let grupoTeste=''; let fid='';const horario='2026-12-01T10:00:00Z';const anotacao1='Aprendi a apresentar.';const anotacao2='Ensinei com evidências.';
  beforeAll(async()=>{if(new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').hostname!=='127.0.0.1')throw new Error('Testes de banco exigem Supabase local.');await seed();vi.mocked(gerar).mockImplementation(async (_prompt,schema)=>schema.parse({perguntas:['Uma?','Duas?','Três?']}));});
- it('seed é idempotente e cria as quantidades esperadas',async()=>{await seed();for(const [table,count] of [['profiles',12],['communities',4],['posts',15],['comments',15],['events',5]] as const){const r=await getDb().from(table).select('id',{count:'exact',head:true});verificarErro(r.error);expect(r.count).toBe(count);}});
+ it('seed é idempotente e cria as quantidades esperadas',async()=>{await seed();for(const [table,count] of [['profiles',12],['communities',4],['posts',15],['comments',15],['events',5]] as const){const fixtures={profiles,communities,posts,comments,events};const r=await getDb().from(table).select('id',{count:'exact',head:true}).in('id',fixtures[table].map(x=>x.id));verificarErro(r.error);expect(r.count).toBe(count);}});
  it('oculta comunidades privadas e bloqueia ingresso sem convite',async()=>{expect((await c.listarComunidades(uuid(1))).some(c=>c.is_private)).toBe(false);await expect(c.entrarComunidade(uuid(104),uuid(1))).rejects.toThrow('privada');expect((await c.listarComunidades(uuid(2))).some(c=>c.is_private)).toBe(true);});
  it('protege posts e comentários privados e autoria',async()=>{const privado=posts.find(p=>p.community_id===uuid(104))!;await expect(conteudo.obterPost(privado.id,uuid(1))).rejects.toThrow('privada');await expect(conteudo.comentar({post_id:uuid(201),autora_id:uuid(2),corpo:'Teste'},uuid(1))).rejects.toThrow('Autoria');expect((await conteudo.listarPosts(uuid(1))).every(p=>p.community_id!==uuid(104))).toBe(true);});
  it('enfileira extração sem enviar mensagens de chat ao banco',async()=>{const {data,error}=await getDb().from('ia_jobs').select('id');verificarErro(error);expect((data?.length ?? 0)).toBeGreaterThanOrEqual(30);});

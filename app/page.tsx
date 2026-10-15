@@ -1,3 +1,5 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
+import { redirect } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { Journey } from "@/components/demo/Journey";
 export default async function Inicio({
@@ -5,6 +7,7 @@ export default async function Inicio({
 }: {
   searchParams: Promise<{ retomar?: string }>;
 }) {
+  if (pilotoAtivo()) redirect("/piloto");
   const params = await searchParams;
   return (
     <AppShell>

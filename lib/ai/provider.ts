@@ -1,3 +1,4 @@
+import { consumirIA } from "@/lib/piloto/ia";
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { ErroIA } from '@/lib/domain/erros';
@@ -62,5 +63,5 @@ export function criarProvider(deps: DependenciasIA) {
  };
 }
 const provider = criarProvider({ gemini: gerarGemini, groq: gerarGroq, embedding: embedGemini, cache: cacheDb });
-export const gerar = provider.gerar;
-export const embed = provider.embed;
+export async function gerar<T>(prompt:string,schema:z.ZodType<T>,opcoes:OpcoesIA={}) { await consumirIA(); return provider.gerar(prompt,schema,opcoes); }
+export async function embed(texto:string) { await consumirIA(); return provider.embed(texto); }

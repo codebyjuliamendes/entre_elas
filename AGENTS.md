@@ -15,7 +15,7 @@ Projeto de hackathon (prazo de uma semana). Prioridade: funcionar de ponta a pon
 
 ## 2. Escopo visual e organização por domínio
 
-Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual mobile-first, com jornada de seis etapas, navegação, telas periféricas e fallback para apresentação. O upgrade autorizado inclui layout desktop, rede, biblioteca, comunidades interativas, backup e PWA, mantendo a separação entre apresentação local e backend real. Next.js 16 e React 19 foram mantidos por escolha explícita da usuária. O restante das regras de domínio continua válido. Portanto:
+Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual mobile-first, com jornada de seis etapas, navegação, telas periféricas e fallback para apresentação. O upgrade autorizado inclui layout desktop, rede, biblioteca, comunidades interativas, backup e PWA, mantendo a separação entre apresentação local e backend real. Next.js 16 e React 19 foram mantidos por escolha explícita da usuária. Em 15/10/2026 a usuária ampliou o escopo para um piloto real de três dias, até dez pessoas, login por link mágico e trocas entre participantes. APP_MODE=piloto usa identidade verificada e dados no servidor, sem aceite/consentimento simulado; exige aviso e opção explícita de IA, preservando alternativa manual. A interface de apresentação permanece isolada. O restante das regras de domínio continua válido. Portanto:
 
 - Organize o código por **domínio** (perfil, saber, Faísca, comunidade, post, evento, chat, IA),
   **nunca por tela**. Não crie regras de negócio chamadas "home", "tela" ou "page data"; componentes de apresentação podem seguir as rotas.
@@ -141,7 +141,7 @@ Funções da curadora (cada uma com prompt próprio em `lib/ai/prompts/`):
 Regras dos prompts: uma tarefa por prompt, saída sempre em JSON, português do Brasil,
 nunca inventar evidências que não estão na entrada.
 
-**Privacidade:** o plano gratuito do Gemini pode usar os dados enviados. Use **somente dados fictícios**.
+**Privacidade:** o plano gratuito do Gemini pode usar os dados enviados. Na apresentação e nos testes, use **somente dados fictícios**. No piloto autorizado pela usuária, textos reais só podem ser enviados após aviso explícito e consentimento registrado; a alternativa manual deve continuar disponível. Verifique o consentimento de ambas antes de processar anotações da Faísca.
 
 ## 8. Variáveis de ambiente
 

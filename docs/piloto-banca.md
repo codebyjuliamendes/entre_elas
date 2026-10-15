@@ -3,6 +3,10 @@
 Escopo solicitado em 15/10/2026. Este documento descreve a transição necessária;
 não declara o aplicativo atual pronto para uso real.
 
+Atualização: a implementação do modo piloto foi adicionada. O diagnóstico abaixo
+registra o ponto de partida; configuração e validação externa continuam pendentes.
+Consulte `docs/ativar-piloto.md` e `docs/validacao.md` para o estado entregue.
+
 ## Diagnóstico do código atual
 
 - `components/demo` usa catálogo fictício e estado local. Não há sincronização

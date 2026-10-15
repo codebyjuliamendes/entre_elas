@@ -138,3 +138,31 @@ local e dos contratos/segurança do backend; não é validação de serviços se
   anotações e revogação dos dois consentimentos ao revisar/regenerar a síntese.
 - Não foram adicionadas dependências nem alteradas migrations. Chamadas reais
   de IA e upload hospedado continuam pendentes; foto nesta interface é local.
+
+## Piloto multiusuário — 2026-10-15
+
+- Build de produção, lint sem avisos e TypeScript aprovados.
+- 72 testes unitários passaram; os 20 testes de banco ficam ignorados nessa
+  execução e passaram separadamente com Postgres/pgvector locais.
+- Os 12 testes de apresentação continuaram passando. Dois testes de navegador
+  do piloto passaram com Postgres real e Auth local simulado: PKCE, duas contas,
+  onboarding, convite, aceite independente, anotações, conclusão manual,
+  duas autorizações e publicação; também painel restrito, novo navegador,
+  persistência da identidade, refresh e rejeição de token forjado/login demo.
+- Total local: 106 testes aprovados. Serviços remotos não estão incluídos nesse
+  total. Revisão/consentimento usam operações SQL com lock e rejeitam versão antiga.
+- Migrations 006–010 aplicadas localmente; tipos regenerados a partir desse banco.
+  Há cobertura de provisionamento concorrente, quota atômica, consentimento e
+  revogação, perfil sem IA, exclusão de personas e publicação idempotente.
+- O teste do seed conta seus IDs conhecidos, sem exigir que o banco inteiro
+  contenha exclusivamente fixtures; não apaga contas extras para passar.
+- APP_MODE=apresentacao permanece o padrão. A ativação externa está documentada
+  em docs/ativar-piloto.md. Não houve deploy ou aplicação de migrations no Supabase
+  hospedado; Auth/SMTP, geração/embeddings, Stream e Daily reais seguem pendentes.
+- Chave pública Auth, credenciais dos provedores, domínio público e lista de
+  convidados não estavam configurados. As credenciais locais Docker não comprovam
+  configuração do projeto hospedado. Nenhum e-mail ou WhatsApp foi enviado.
+
+O código do piloto inclui integração de chat/vídeo, não uma validação desses
+serviços sem chaves. Não liberar os três dias para a banca antes dos testes
+externos descritos no guia de ativação. Execução da pipeline remota não foi confirmada.

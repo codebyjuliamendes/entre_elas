@@ -1,3 +1,4 @@
+import { comContextoIA } from "@/lib/piloto/ia";
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
@@ -6,7 +7,7 @@ export async function resposta(acao: () => Promise<unknown>) {
   const requestId = randomUUID();
   const headers = { "Cache-Control": "no-store", "X-Request-Id": requestId };
   try {
-    return NextResponse.json(await acao(), { headers });
+    return NextResponse.json(await comContextoIA(acao), { headers });
   } catch (error) {
     if (error instanceof z.ZodError)
       return NextResponse.json(
@@ -49,10 +50,12 @@ export async function resposta(acao: () => Promise<unknown>) {
 const LIMITE = 100_000;
 export async function corpo(
   request: Request,
+  limite = LIMITE,
 ): Promise<Record<string, unknown>> {
   const origem = request.headers.get("origin");
+  const origemEsperada=process.env.APP_MODE === "piloto" && process.env.APP_URL ? new URL(process.env.APP_URL).origin : new URL(request.url).origin;
   if (
-    (origem && origem !== new URL(request.url).origin) ||
+    (origem && origem !== origemEsperada) ||
     request.headers.get("sec-fetch-site") === "cross-site"
   )
     throw new ErroDominio("Origem da requisição não permitida.", 403);
@@ -67,7 +70,7 @@ export async function corpo(
   )
     throw new ErroDominio("Envie o corpo como application/json.", 415);
   const tamanho = request.headers.get("content-length");
-  if (tamanho !== null && (!/^\d+$/.test(tamanho) || Number(tamanho) > LIMITE))
+  if (tamanho !== null && (!/^\d+$/.test(tamanho) || Number(tamanho) > limite))
     throw new ErroDominio("Requisição muito grande ou tamanho inválido.", 413);
   const reader = request.body?.getReader();
   if (!reader) throw new ErroDominio("Corpo JSON inválido.");
@@ -79,7 +82,7 @@ export async function corpo(
       const { done, value } = await reader.read();
       if (done) break;
       bytes += value.byteLength;
-      if (bytes > LIMITE) {
+      if (bytes > limite) {
         await reader.cancel();
         throw new ErroDominio("Requisição muito grande.", 413);
       }

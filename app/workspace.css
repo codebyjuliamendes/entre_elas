@@ -1139,3 +1139,167 @@
   color: #624979;
   font-size: 13px;
 }
+
+.pilot-login,
+.pilot-welcome {
+  max-width: 720px;
+  margin: 48px auto;
+  padding: 24px;
+  line-height: 1.7;
+}
+.pilot-app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+  color: #302638;
+  line-height: 1.6;
+}
+.pilot-app header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.pilot-brand {
+  font-size: 30px;
+  font-weight: 700;
+  color: #654296;
+}
+.pilot-app nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 32px;
+}
+.pilot-app nav button[aria-current] {
+  background: #654296;
+  color: white;
+}
+.pilot-app button,
+.pilot-welcome button,
+.pilot-login button {
+  padding: 10px 16px;
+  border: 1px solid #d5c4e4;
+  border-radius: 14px;
+  background: white;
+  color: #593d76;
+  cursor: pointer;
+  line-height: 1.4;
+}
+.pilot-app button:disabled,
+.pilot-welcome button:disabled,
+.pilot-login button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.pilot-app .pilot-button,
+.pilot-welcome .pilot-button,
+.pilot-login .pilot-button {
+  display: block;
+  background: #6a45a0;
+  color: white;
+  margin: 16px 0;
+}
+.pilot-app label,
+.pilot-welcome label {
+  display: block;
+  margin: 16px 0 6px;
+  font-weight: 600;
+}
+.pilot-app input:not([type="checkbox"]),
+.pilot-app select,
+.pilot-app textarea,
+.pilot-welcome input:not([type="checkbox"]),
+.pilot-welcome textarea,
+.pilot-login input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  border: 1px solid #d5c4e4;
+  border-radius: 12px;
+  background: white;
+  color: #302638;
+  font: inherit;
+  box-sizing: border-box;
+}
+.pilot-app textarea,
+.pilot-welcome textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+.pilot-card {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 20px 0;
+  padding: 24px;
+  border: 1px solid #e2d8ed;
+  border-radius: 24px;
+  background: white;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.pilot-card p {
+  margin: 12px 0;
+}
+.pilot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+}
+.pilot-encounter span {
+  display: block;
+}
+.pilot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pilot-avatar {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.pilot-video {
+  width: 100%;
+  height: 65vh;
+  border: 0;
+  border-radius: 16px;
+}
+.pilot-messages {
+  max-height: 420px;
+  overflow: auto;
+}
+.pilot-messages article {
+  border-bottom: 1px solid #eee;
+  padding: 12px 0;
+}
+.pilot-app footer {
+  font-size: 12px;
+  color: #72627e;
+  margin: 32px 0;
+}
+@media (max-width: 600px) {
+  .pilot-app {
+    padding: 16px;
+  }
+  .pilot-card {
+    padding: 18px;
+  }
+  .pilot-login,
+  .pilot-welcome {
+    margin: 16px auto;
+    padding: 20px;
+  }
+  .pilot-app header span {
+    font-size: 12px;
+  }
+  .pilot-app h1,
+  .pilot-welcome h1 {
+    font-size: 28px;
+  }
+}

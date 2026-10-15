@@ -18,12 +18,13 @@
     "avaliar-match": "tsx --env-file-if-exists=.env.local scripts/avaliar-match.ts",
     "demo:reset": "tsx --env-file-if-exists=.env.local scripts/demo.ts",
     "db:types": "XDG_CONFIG_HOME=/tmp/entre-elas-config SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io supabase gen types typescript --db-url postgresql://postgres@127.0.0.1:54330/postgres > lib/db/types.ts",
-    "test:db": "node scripts/with-local-env.mjs env TEST_DATABASE=true node_modules/.bin/vitest run tests/db.test.ts",
+    "test:db": "node scripts/with-local-env.mjs env TEST_DATABASE=true node_modules/.bin/vitest run tests/db.test.ts tests/piloto-db.test.ts",
     "setup:local": "node scripts/setup-local.mjs",
     "seed:local": "node scripts/with-local-env.mjs npm run seed",
     "dev:local": "node scripts/with-local-env.mjs npm run dev",
     "test:e2e": "npm run build && playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:piloto": "npm run build && playwright test --config playwright.piloto.config.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.69",
