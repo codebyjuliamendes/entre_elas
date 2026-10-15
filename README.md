@@ -1,8 +1,8 @@
-# Entre Elas — back-end
+# Entre Elas — MVP e back-end
 
 Next.js App Router + TypeScript estrito, Supabase/Postgres/pgvector, Zod,
-Gemini com alternativa Groq, Stream e Daily. Sem interfaces de produto;
-`app/dev` contém somente formulários de debug sem estilos.
+Gemini com alternativa Groq, Stream e Daily. MVP visual mobile-first com uma jornada de apresentação que funciona sem chaves.
+`app/dev` mantém formulários de debug independentes.
 
 Leia `AGENTS.md`, `docs/decisoes.md`, `docs/api.md` e `docs/demo.md`.
 
@@ -25,3 +25,7 @@ Consulte `docs/demo.md` para seed, processamento de saberes e roteiro completo.
 
 Os campos de configuração da nuvem não publicam a aplicação nem aplicam migrations
 no Supabase hospedado. Nunca inclua credenciais no controle de versão.
+
+## Apresentação visual
+
+`npm run dev` abre o MVP mesmo sem credenciais externas. Veja [docs/mvp.md](docs/mvp.md) para o roteiro de seis etapas, modo IA via OpenRouter, persistência local e deploy na Vercel. O backend real continua documentado separadamente.

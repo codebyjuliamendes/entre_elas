@@ -7,3 +7,5 @@ coverage/
 supabase/.temp/
 supabase/.branches/
 .local/
+playwright-report/
+test-results/

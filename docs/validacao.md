@@ -70,3 +70,30 @@ Foram salvos no draft: install_script, start_skill, variáveis, requisitos de
 segredos e destinos de rede. A publicação/snapshot e a restauração numa nova
 tarefa não foram executadas ou validadas. Revise e salve nas configurações do
 ambiente e publique pelo produto quando as configurações estiverem completas.
+
+## MVP visual — 2026-10-15
+
+- Next.js 16 e React 19 mantidos conforme escolha da usuária.
+- Interface mobile-first de 430 px, tema lilás, componentes Radix no padrão
+  shadcn/ui, animações com reduced-motion, notificações e avatares fictícios locais.
+- Build de produção, lint e checagem de tipos passaram com as cinco rotas visuais.
+- 36 testes unitários passaram (incluindo sete novos de IA/fallback da apresentação).
+- Os 14 testes de banco real passaram separadamente, preservando o backend.
+- Quatro testes Playwright passaram em Chromium: ciclo completo de seis etapas,
+  consentimento das duas, quiz com correção, publicação e reconhecimento após reload;
+  comunidades/chats/agenda/edição de perfil; outra candidata/retomada; layout desktop 430 px.
+- O download do Chromium via cdn.playwright.dev retornou 403; os testes usaram o
+  navegador instalado em /usr/bin/chromium, sem desativar verificações de instalação.
+- O seed mínimo supabase/seed/mvp.sql foi aplicado duas vezes em transação revertida:
+  três saberes na primeira aplicação e nenhum duplicado na segunda. Sem vetores fictícios.
+- Auditoria de dependências de produção: zero vulnerabilidades reportadas.
+- Revisão visual com capturas mobile e desktop, incluindo ajuste de contraste.
+
+O MVP visual funciona em demonstração sem chaves ou banco. O fluxo e as mensagens
+fictícias ficam no dispositivo; não são gravações reais no Supabase/Stream/Daily.
+OpenRouter via Vercel AI SDK está implementado com deadline de 7,5 segundos e
+fallback validado, mas a chamada real depende de chave/modelo e não foi validada.
+PITCH_AI_MODE=demo é o padrão. OpenRouter é opcional e openrouter.ai foi adicionado
+aos destinos de rede no draft. Também foram salvos o requisito opcional da chave,
+as variáveis do MVP e instruções de inicialização. Isso não aplica nem publica
+automaticamente a configuração. Vercel não foi implantado nesta tarefa.

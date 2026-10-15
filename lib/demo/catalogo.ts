@@ -1,0 +1,168 @@
+import { z } from "zod";
+export const perfilDemoSchema = z.object({
+  id: z.uuid(),
+  slug: z.string(),
+  nome: z.string(),
+  cargo: z.string(),
+  area: z.string(),
+  regional: z.string(),
+  cidade: z.string(),
+  avatar: z.string(),
+  cor: z.string(),
+  bio: z.string(),
+  saberes: z.array(z.string()),
+  evidencia: z.string(),
+  tags: z.array(z.string()),
+});
+export type PerfilDemo = z.infer<typeof perfilDemoSchema>;
+export const ANA_ID = "00000000-0000-4000-8000-000000000001";
+export const CARLA_ID = "00000000-0000-4000-8000-000000000002";
+export const perfisDemo = z.array(perfilDemoSchema).parse([
+  {
+    id: ANA_ID,
+    slug: "ana",
+    nome: "Ana Ribeiro",
+    cargo: "Técnica de campo",
+    area: "Operações",
+    regional: "Sul",
+    cidade: "Pelotas, RS",
+    avatar: "/avatars/ana.svg",
+    cor: "peach",
+    bio: "Entre redes de energia e novas ideias. Acredito que toda experiência merece ser compartilhada.",
+    saberes: [
+      "Manutenção de redes",
+      "Segurança em campo",
+      "Trabalho em equipe",
+    ],
+    evidencia:
+      "Compartilhou aprendizados sobre manutenção de redes e segurança em campo.",
+    tags: ["Energia", "Aprendizado", "Conexões"],
+  },
+  {
+    id: CARLA_ID,
+    slug: "carla",
+    nome: "Carla Souza",
+    cargo: "Gerente de projetos",
+    area: "Projetos",
+    regional: "Metropolitana",
+    cidade: "Porto Alegre, RS",
+    avatar: "/avatars/carla.svg",
+    cor: "lilac",
+    bio: "Transformo boas ideias em projetos que fazem a diferença. Adoro uma conversa e um café com propósito.",
+    saberes: [
+      "Apresentações à diretoria",
+      "Gestão de projetos",
+      "Comunicação estratégica",
+    ],
+    evidencia:
+      "Já apresentou projetos à diretoria e compartilhou como organizar objetivo, indicadores e decisão esperada.",
+    tags: ["Liderança", "Projetos", "Comunicação"],
+  },
+  {
+    id: "00000000-0000-4000-8000-000000000004",
+    slug: "daniela",
+    nome: "Daniela Costa",
+    cargo: "Analista de dados",
+    area: "Dados",
+    regional: "Pará",
+    cidade: "Belém, PA",
+    avatar: "/avatars/daniela.svg",
+    cor: "mint",
+    bio: "Dados também contam histórias. Compartilho jeitos simples de transformar números em decisões.",
+    saberes: [
+      "Excel e indicadores",
+      "Análise de dados",
+      "Visualização de dados",
+    ],
+    evidencia:
+      "Usou análise de dados de consumo de energia para transformar indicadores em decisões da equipe.",
+    tags: ["Dados", "Tecnologia", "Inovação"],
+  },
+]);
+export const ana = perfisDemo[0];
+export function obterPerfilDemo(id: string): PerfilDemo {
+  return perfisDemo.find((p) => p.id === id) ?? perfisDemo[1];
+}
+export const comunidadesDemo = [
+  {
+    id: "tecnologia",
+    nome: "Mulheres na Tecnologia",
+    descricao: "Código, inovação e espaço para todas nós.",
+    membros: 128,
+    icon: "code",
+    cor: "lilac",
+    tag: "Tecnologia",
+    avatares: ["ana", "daniela", "carla"],
+  },
+  {
+    id: "lideranca",
+    nome: "Liderança que inspira",
+    descricao: "Liderar também é aprender umas com as outras.",
+    membros: 86,
+    icon: "sparkles",
+    cor: "peach",
+    tag: "Carreira",
+    avatares: ["carla", "ana", "daniela"],
+  },
+  {
+    id: "campo",
+    nome: "Conectadas em Campo",
+    descricao: "Experiências que levam energia mais longe.",
+    membros: 94,
+    icon: "zap",
+    cor: "mint",
+    tag: "Operações",
+    avatares: ["ana", "carla", "daniela"],
+  },
+  {
+    id: "bem-estar",
+    nome: "Pausa para nós",
+    descricao: "Uma rede de apoio para além do crachá.",
+    membros: 63,
+    icon: "heart",
+    cor: "pink",
+    tag: "Bem-estar",
+    avatares: ["daniela", "carla", "ana"],
+  },
+] as const;
+export const eventosDemo = [
+  {
+    id: "evento-lideranca",
+    titulo: "Mulheres que abrem caminhos",
+    descricao: "Uma conversa sobre protagonismo e carreira.",
+    tipo: "evento",
+    dia: 16,
+    mes: 10,
+    ano: 2026,
+    horario: "16:00",
+    duracao: "1 hora",
+    comunidade: "Liderança que inspira",
+    cor: "lilac",
+  },
+  {
+    id: "comunidade-dados",
+    titulo: "Dados sem complicação",
+    descricao: "Troque dicas de Excel e indicadores com a comunidade.",
+    tipo: "comunidade",
+    dia: 15,
+    mes: 10,
+    ano: 2026,
+    horario: "15:00",
+    duracao: "45 min",
+    comunidade: "Mulheres na Tecnologia",
+    cor: "mint",
+  },
+  {
+    id: "evento-cafe",
+    titulo: "Café com conexões",
+    descricao: "Conheça mulheres de outras áreas e regionais.",
+    tipo: "evento",
+    dia: 19,
+    mes: 10,
+    ano: 2026,
+    horario: "10:00",
+    duracao: "30 min",
+    comunidade: "Entre Elas",
+    cor: "peach",
+  },
+] as const;

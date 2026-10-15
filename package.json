@@ -6,7 +6,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0",
+    "dev": "next dev --webpack --hostname 0.0.0.0",
     "build": "next build --webpack",
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint . --max-warnings=0",
@@ -21,17 +21,33 @@
     "test:db": "node scripts/with-local-env.mjs env TEST_DATABASE=true node_modules/.bin/vitest run tests/db.test.ts",
     "setup:local": "node scripts/setup-local.mjs",
     "seed:local": "node scripts/with-local-env.mjs npm run seed",
-    "dev:local": "node scripts/with-local-env.mjs npm run dev"
+    "dev:local": "node scripts/with-local-env.mjs npm run dev",
+    "test:e2e": "npm run build && playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.69",
+    "@radix-ui/react-dialog": "^1.3.1",
+    "@radix-ui/react-slot": "^1.5.0",
+    "@radix-ui/react-tabs": "^1.2.1",
     "@supabase/supabase-js": "^2.117.3",
+    "@tailwindcss/postcss": "^4.3.3",
+    "ai": "^7.0.141",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^14.3.0",
+    "lucide-react": "^1.57.0",
     "next": "^16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "sonner": "^2.0.8",
     "stream-chat": "^9.54.0",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.3",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",

@@ -13,16 +13,16 @@ com pauta gerada antes e resumo gerado depois. O resumo volta para a IA e alimen
 
 Projeto de hackathon (prazo de uma semana). Prioridade: funcionar de ponta a ponta, com código simples.
 
-## 2. Regra mais importante: o design ainda não está fechado
+## 2. Escopo visual e organização por domínio
 
-As telas e a jornada **vão mudar**. Portanto:
+Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual mobile-first, com jornada de seis etapas, navegação, telas periféricas e fallback para apresentação. Next.js 16 e React 19 foram mantidos por escolha explícita da usuária. O restante das regras de domínio continua válido. Portanto:
 
 - Organize o código por **domínio** (perfil, saber, Faísca, comunidade, post, evento, chat, IA),
-  **nunca por tela**. Não crie nada chamado "home", "tela", "page data" ou similar.
-- **Não crie componentes visuais, páginas ou estilos.** A única exceção é `app/dev/` (ver seção 9).
+  **nunca por tela**. Não crie regras de negócio chamadas "home", "tela" ou "page data"; componentes de apresentação podem seguir as rotas.
+- Componentes, páginas e estilos do MVP são permitidos em `components/` e `app/`. A página `app/dev/` continua sendo um debug independente, sem reaproveitamento no produto.
 - Não codifique regras de **ordem de jornada** (ex.: "só pode entrar na chamada depois de abrir o chat").
   Implemente apenas regras de **domínio** (ex.: "só a convidada pode aceitar uma Faísca").
-- Toda função pública recebe e devolve dados validados por **Zod**. Esses schemas são o contrato
+- Toda função pública de domínio recebe e devolve dados validados por **Zod**. Esses schemas são o contrato
   que o front vai consumir, seja qual for o desenho final.
 - Na dúvida entre algo genérico e algo específico de uma tela, escolha o genérico e registre a dúvida
   em `docs/decisoes.md`.
@@ -35,7 +35,9 @@ As telas e a jornada **vão mudar**. Portanto:
 - IA de embeddings: Gemini (um único modelo, fixado em configuração)
 - Chat: Stream Chat (SDK de servidor)
 - Vídeo: Daily (API REST para criar salas)
-- Validação: Zod · Testes: Vitest · Deploy: Vercel
+- Front-end: Tailwind CSS, Framer Motion, componentes no padrão shadcn/ui com primitivas Radix, Lucide e Sonner
+- IA da apresentação: Vercel AI SDK + OpenRouter (Llama); fallback fictício identificado, em até 8 segundos. Gemini/Groq e embeddings existentes continuam na integração real.
+- Validação: Zod · Testes: Vitest + Playwright · Deploy: Vercel
 
 Não instale outras bibliotecas sem justificar em `docs/decisoes.md`.
 
@@ -69,7 +71,7 @@ docs/
   decisoes.md
 ```
 
-Server actions podem ser criadas depois pelo front; elas devem apenas chamar `lib/domain`.
+Server Actions devem ser finas e chamar `lib/domain` no backend real ou os contratos e funções de apresentação em `lib/demo`, via adaptador `lib/ai/pitch.ts`.
 
 ## 5. Modelo de dados (Postgres)
 
@@ -113,7 +115,7 @@ os saberes mais próximos por similaridade de cosseno, já agregados por pessoa.
 
 ## 7. IA curadora
 
-Toda chamada passa por `lib/ai/provider.ts`:
+No backend real, chamadas Gemini/Groq passam por `lib/ai/provider.ts` (a apresentação usa a camada Vercel AI SDK documentada na seção 3):
 
 - `gerar<T>(prompt, schemaZod, opcoes)`: pede saída em JSON, valida com Zod, tenta de novo uma vez
   se o JSON for inválido, usa o Groq se o Gemini responder 429 ou passar do tempo limite (8 s),
@@ -180,4 +182,5 @@ funções do domínio e da IA. Ela só aparece quando `DEMO_MODE=true` e não de
 Uma tarefa está pronta quando:
 1. `npm run build`, `npm run lint` e `npm test` passam;
 2. a função pode ser chamada pela página de debug ou por um script;
-3. nenhuma tela ou estilo foi criado fora de `app/dev/`.
+3. o fluxo de apresentação funciona sem credenciais, identifica simulações e exige autorização das duas participantes para publicar;
+4. o fluxo real mantém as permissões e não recebe dados simulados como se fossem reais.
