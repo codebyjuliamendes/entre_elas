@@ -11,6 +11,7 @@ import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
+import { Atencao } from "./Atencao";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useNavegacaoPiloto } from "@/lib/piloto/navegacao";
 import { useOnline } from "@/lib/browser/conexao";
@@ -24,6 +25,8 @@ export function Piloto() {
   const online = useOnline();
   const { tab, encontro, setTab, setEncontro } = useNavegacaoPiloto();
   const atualizacao = useRef({ numero: 0 });
+  const consultaPedido = useRef(0);
+  const [buscou, setBuscou] = useState(false);
   const chaveConvite = useRef<{ assinatura: string; id: string } | null>(null);
   useEffect(() => {
     const login = () =>
@@ -114,6 +117,25 @@ export function Piloto() {
   const ativo = d.faiscas.find((f) => f.id === encontro);
   const pessoa = (id: string) =>
     d.pessoas.find((p) => p.id === id)?.nome ?? "Participante";
+  function editarPedido(texto: string) {
+    consultaPedido.current++;
+    setPedido(texto);
+    setIndicacoes([]);
+    setBuscou(false);
+  }
+  async function buscarConexoes() {
+    const consulta = ++consultaPedido.current;
+    setIndicacoes([]);
+    setBuscou(false);
+    await executar(async () => {
+      const resposta = await api<typeof indicacoes>("/api/faiscas/buscar", {
+        pedido,
+      });
+      if (consulta !== consultaPedido.current) return;
+      setIndicacoes(resposta);
+      setBuscou(true);
+    });
+  }
   async function convidar(e: FormEvent) {
     e.preventDefault();
     await executar(async () => {
@@ -131,7 +153,7 @@ export function Piloto() {
         chave_pedido: chaveConvite.current.id,
       });
       chaveConvite.current = null;
-      setPedido("");
+      editarPedido("");
       setDestino("");
       setIndicacoes([]);
     }, "Convite enviado. A outra pessoa poderá responder na própria conta.");
@@ -299,6 +321,7 @@ export function Piloto() {
         )}
         {ativo ? (
           <Encontro
+            key={ativo.id}
             faisca={ativo}
             dados={d}
             atualizar={carregar}
@@ -315,7 +338,21 @@ export function Piloto() {
                   Uma conversa de vinte minutos com alguém desta rede. O convite
                   depende da resposta da outra pessoa.
                 </p>
-                <form className="pilot-card" onSubmit={convidar}>
+                <Atencao dados={d} />
+                <form
+                  className="pilot-card"
+                  onSubmit={convidar}
+                  aria-busy={busy}
+                >
+                  <span className="eyebrow">
+                    Comece uma troca de 20 minutos
+                  </span>
+                  <h2>Do seu desafio a uma conexão</h2>
+                  <p>
+                    Conte a situação, o que está difícil e o que quer levar da
+                    conversa. Quanto mais concreto o pedido, mais útil a
+                    curadoria.
+                  </p>
                   <label htmlFor="pedido-real">O que você quer aprender?</label>
                   <textarea
                     id="pedido-real"
@@ -323,12 +360,19 @@ export function Piloto() {
                     minLength={5}
                     maxLength={1500}
                     value={pedido}
-                    onChange={(e) => setPedido(e.target.value)}
+                    aria-describedby="pedido-ajuda"
+                    onChange={(e) => editarPedido(e.target.value)}
                   />
+                  <p id="pedido-ajuda" className="input-hint">
+                    Exemplo: “Vou apresentar indicadores à liderança e preciso
+                    escolher três métricas. Quero sair com um roteiro de
+                    apresentação.” Não inclua informações confidenciais.
+                  </p>
                   <button
                     type="button"
+                    disabled={busy}
                     onClick={() =>
-                      setPedido(
+                      editarPedido(
                         perfil.objetivos[0]
                           ? `Quero aprender sobre ${perfil.objetivos[0]}. Quem pode trocar experiências comigo?`
                           : "Como posso compartilhar melhor uma ideia com minha equipe?",
@@ -337,28 +381,64 @@ export function Piloto() {
                   >
                     Usar uma sugestão para começar
                   </button>
+                  <div
+                    className="pilot-actions"
+                    aria-label="Exemplos de pedidos"
+                  >
+                    {[
+                      [
+                        "Comunicar uma ideia",
+                        "Tenho uma ideia para melhorar a rotina da equipe e quero apresentar sem me perder nos detalhes. Como estruturar uma conversa de cinco minutos?",
+                      ],
+                      [
+                        "Trabalhar com dados",
+                        "Preciso acompanhar um projeto e tenho muitos dados disponíveis. Como escolher três indicadores que ajudem a decidir o próximo passo?",
+                      ],
+                      [
+                        "Crescer na carreira",
+                        "Quero me preparar para assumir mais responsabilidades. Como transformar minhas experiências em um plano de desenvolvimento com uma primeira ação?",
+                      ],
+                    ].map(([rotulo, exemplo]) => (
+                      <button
+                        key={rotulo}
+                        type="button"
+                        disabled={busy}
+                        onClick={() => editarPedido(exemplo)}
+                      >
+                        {rotulo}
+                      </button>
+                    ))}
+                  </div>
                   <button
                     className="pilot-button"
                     type="button"
                     disabled={
                       busy ||
+                      !online ||
                       pedido.trim().length < 5 ||
                       !d.conta.ia_consentimento
                     }
-                    onClick={() =>
-                      void executar(async () =>
-                        setIndicacoes(
-                          await api("/api/faiscas/buscar", { pedido }),
-                        ),
-                      )
-                    }
+                    onClick={() => void buscarConexoes()}
                   >
-                    Encontrar conexões com IA
+                    {busy ? "Aguarde…" : "Encontrar conexões com IA"}
                   </button>
                   {!d.conta.ia_consentimento && (
                     <p className="input-hint">
                       Você pode autorizar a IA no perfil ou escolher alguém
                       abaixo.
+                    </p>
+                  )}
+                  <p className="input-hint">
+                    A IA busca experiências nos perfis e saberes da rede e
+                    explica cada indicação com evidências. É uma sugestão para
+                    você avaliar; a conversa depende do aceite da outra pessoa.
+                  </p>
+                  {buscou && indicacoes.length === 0 && (
+                    <p role="status" className="pilot-card">
+                      Ainda não encontramos uma indicação para este pedido.
+                      Tente descrever uma habilidade específica ou escolha uma
+                      pessoa abaixo. A rede cresce conforme as participantes
+                      completam e indexam seus perfis.
                     </p>
                   )}
                   {indicacoes.length > 0 && (
@@ -368,6 +448,9 @@ export function Piloto() {
                         <article className="pilot-card" key={i.profile_id}>
                           <h3>{pessoa(i.profile_id)}</h3>
                           <p>{i.motivo}</p>
+                          <span className="eyebrow">
+                            Evidências usadas na indicação
+                          </span>
                           {i.evidencias.map((ev) => (
                             <blockquote key={ev}>{ev}</blockquote>
                           ))}
@@ -375,7 +458,9 @@ export function Piloto() {
                             type="button"
                             onClick={() => setDestino(i.profile_id)}
                           >
-                            Escolher esta pessoa
+                            {destino === i.profile_id
+                              ? "Pessoa selecionada ✓"
+                              : "Escolher esta pessoa"}
                           </button>
                         </article>
                       ))}
@@ -415,6 +500,12 @@ export function Piloto() {
                     value={horario}
                     onChange={(e) => setHorario(e.target.value)}
                   />
+                  {destino && (
+                    <p className="input-hint">
+                      Convite para {pessoa(destino)} · 20 minutos. Depois de
+                      enviar, a pessoa decide na própria conta.
+                    </p>
+                  )}
                   <button
                     className="pilot-button"
                     disabled={busy || !destino || !online}

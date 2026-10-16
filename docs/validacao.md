@@ -201,3 +201,20 @@ externos descritos no guia de ativação. Execução da pipeline remota não foi
 - Retorno após autenticação: testes rejeitam destinos externos e parâmetros
   desconhecidos; o navegador verifica renovação com acesso expirado sem perder
   a Faísca aberta. Auth continua simulado no teste, sem envio de e-mail real.
+
+## Curadoria explicável e próximos passos — 2026-10-15
+
+- Build de produção e lint passaram. Vitest: 88 testes unitários passaram;
+  os 21 testes de banco são executados separadamente e também passaram.
+- Três cenários Playwright do piloto passaram em Chromium com viewport mobile,
+  usando Auth simulado e Postgres real. Incluem abertura de convite pela central
+  de atenção, duas contas até publicação, bloqueios de acesso e retorno ao encontro.
+- O teste de curadoria segura a resposta da busca, edita o pedido e só então
+  libera uma indicação fictícia: ela não aparece no pedido novo. Também verifica
+  a orientação para resultado vazio e o preenchimento de um exemplo editável.
+  A resposta de IA deste teste é interceptada, não comprova Gemini/Groq.
+- Quatro testes de domínio verificam prioridades, privacidade entre participantes,
+  espera sem falsa pendência, síntese com duas notas, revisão, publicação já feita
+  e ordenação cronológica dos encontros aceitos.
+- Não há nova migration, dependência ou variável. SMTP, Auth hospedado, modelos,
+  chat e vídeo reais continuam dependentes da configuração externa.

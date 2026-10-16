@@ -56,3 +56,6 @@
 - 2026-10-15 (confiabilidade): Orientação da Faísca descreve o próximo passo de cada participante conforme estado, anotações, consentimentos e publicação; não introduz pré-requisitos de navegação nem simula decisões de outra pessoa.
 
 - 2026-10-15 (retomada): Renovação e link mágico preservam o destino de navegação em cookie HttpOnly temporário. O retorno aceita somente `/piloto` e parâmetros conhecidos, evitando redirecionamento aberto; não altera ConfirmationURL nem templates de e-mail.
+
+- 2026-10-15 (curadoria e retomada): A página de Faíscas prioriza convites recebidos, dicas prontas para publicar, revisões, sínteses e conversas com ação da própria participante. Não confunde espera pela outra pessoa com pendência própria, nem impõe ordem de jornada. Contadores pessoais derivam de Faíscas reais e publicações acessíveis; nenhuma migração ou evento de analytics adicional é necessário.
+- 2026-10-15 (pedidos): Exemplos editáveis ajudam a contextualizar pedidos sem alegar geração de IA. Editar o pedido descarta indicações antigas e invalida respostas ainda em voo. Resultado vazio oferece busca mais específica ou escolha manual; evidências e limites da curadoria ficam visíveis. Trocar de encontro remonta o editor para não carregar rascunhos de outra Faísca.

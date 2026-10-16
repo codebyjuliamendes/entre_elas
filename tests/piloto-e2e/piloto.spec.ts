@@ -108,11 +108,13 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
   ).toBeVisible();
   await expect(page.getByRole("button", { name: /Aceitar ·/ })).toHaveCount(0);
   await outra.reload();
-  await outra
-    .getByRole("button", {
-      name: /Primeira Participante.*Como escolher indicadores/,
-    })
-    .click();
+  const atencao = outra.getByRole("region", {
+    name: "O que merece sua atenção",
+  });
+  await expect(
+    atencao.getByText("Você recebeu um convite", { exact: true }),
+  ).toBeVisible();
+  await atencao.getByRole("link", { name: /Primeira Participante/ }).click();
   await outra.getByRole("button", { name: /Aceitar ·/ }).click();
   await expect(
     outra.getByRole("heading", { name: "Vinte minutos com intenção" }),
@@ -231,6 +233,82 @@ test("sessão não verificada, identidade demo e liderança não autorizada fica
     },
   ]);
   expect((await page.request.get("/api/faiscas")).status()).toBe(401);
+});
+
+test("curadoria não mantém indicações de um pedido que foi editado", async ({
+  page,
+}) => {
+  await entrar(page, "terceira@banca.test", "Terceira Participante");
+  await page.getByRole("button", { name: "Meu perfil", exact: true }).click();
+  await page
+    .getByRole("checkbox", {
+      name: "Autorizo esse uso dos meus textos nesta experiência.",
+    })
+    .click();
+  await expect(
+    page.getByRole("checkbox", {
+      name: "Autorizo esse uso dos meus textos nesta experiência.",
+    }),
+  ).toBeChecked();
+  await page.getByRole("button", { name: "Faíscas", exact: true }).click();
+  const d = await (await page.request.get("/api/piloto")).json();
+  const pessoa = d.pessoas.find((p: { id: string }) => p.id !== d.perfil.id);
+  let liberar!: () => void;
+  const espera = new Promise<void>((resolve) => {
+    liberar = resolve;
+  });
+  await page.route("**/api/faiscas/buscar", async (route) => {
+    await espera;
+    await route.fulfill({
+      json: [
+        {
+          profile_id: pessoa.id,
+          motivo: "Indicação do pedido anterior",
+          evidencias: ["Experiência anterior"],
+        },
+      ],
+    });
+  });
+  await page
+    .getByLabel("O que você quer aprender?", { exact: true })
+    .fill("Quero aprender indicadores");
+  const iniciou = page.waitForRequest("**/api/faiscas/buscar");
+  await page
+    .getByRole("button", { name: "Encontrar conexões com IA", exact: true })
+    .click();
+  await iniciou;
+  await page
+    .getByLabel("O que você quer aprender?", { exact: true })
+    .fill("Agora quero conversar sobre carreira");
+  liberar();
+  await expect(
+    page.getByRole("button", {
+      name: "Encontrar conexões com IA",
+      exact: true,
+    }),
+  ).toBeEnabled();
+  await expect(
+    page.getByText("Indicação do pedido anterior", { exact: true }),
+  ).toHaveCount(0);
+  await page.unroute("**/api/faiscas/buscar");
+  await page.route("**/api/faiscas/buscar", (route) =>
+    route.fulfill({ json: [] }),
+  );
+  await page
+    .getByRole("button", { name: "Encontrar conexões com IA", exact: true })
+    .click();
+  await expect(
+    page.getByText(/Ainda não encontramos uma indicação/),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Trabalhar com dados", exact: true })
+    .click();
+  await expect(
+    page.getByLabel("O que você quer aprender?", { exact: true }),
+  ).toHaveValue(/três indicadores/);
+  await expect(
+    page.getByText(/Ainda não encontramos uma indicação/),
+  ).toHaveCount(0);
 });
 
 test.afterAll(async () => {

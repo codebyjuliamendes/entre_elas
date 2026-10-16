@@ -1303,3 +1303,44 @@
     font-size: 28px;
   }
 }
+
+/* Próximos passos reais da rede, sem contadores de demonstração. */
+.pilot-attention {
+  margin: 28px 0;
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid #dfd1ee;
+  border-radius: 24px;
+  background: linear-gradient(125deg, #f5edfc, #fff9ef);
+}
+.pilot-attention-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.pilot-attention h2,
+.pilot-attention-item strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pilot-impact { max-width: 300px; font-size: 14px; color: #59446b; }
+.pilot-attention-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid #dfd1ee;
+  border-radius: 18px;
+  background: #fff;
+  color: #302638;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.pilot-attention-item:hover { border-color: #6a45a0; }
+.pilot-attention-item > span:not(.eyebrow) { font-size: 14px; }
+.pilot-app :is(button, a, input, select, textarea):focus-visible {
+  outline: 3px solid #7547a8;
+  outline-offset: 4px;
+}
