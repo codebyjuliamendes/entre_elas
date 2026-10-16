@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { permitirIA } from "@/lib/piloto/ia";
 import { z } from "zod";
 import { getDb, verificarErro } from "@/lib/db/client";
@@ -39,7 +40,7 @@ export async function criarFaisca(entrada: unknown, usuaria: string) {
   const u = s.id.parse(usuaria);
   if (input.solicitante_id !== u || u === input.convidada_id)
     throw new ErroDominio("Solicitante inválida.");
-  if (process.env.APP_MODE === "piloto") {
+  if (pilotoAtivo()) {
     const chave = z.object({ chave_pedido: s.id }).parse(entrada).chave_pedido;
     const { data, error } = await getDb().rpc("piloto_criar_convite", {
       usuaria_id: u,
@@ -96,7 +97,7 @@ export async function cancelarFaisca(entrada: unknown, usuaria: string) {
   return desativarVideo(cancelada);
 }
 async function desativarVideo(f: s.Faisca) {
-  if (process.env.APP_MODE !== "piloto" || !f.daily_room_url) return f;
+  if (!pilotoAtivo() || !f.daily_room_url) return f;
   try {
     await encerrarSala(f.id);
     const { data, error } = await getDb()
@@ -147,7 +148,7 @@ export async function publicarComoDica(entrada: unknown, usuaria: string) {
   const f = await obterFaisca(s.id.parse(entrada), usuaria);
   validarPublicacao(f);
   let perguntas;
-  if (process.env.APP_MODE === "piloto") {
+  if (pilotoAtivo()) {
     // Quiz de leitura determinístico: publicação manual não exige compartilhar textos com IA.
     const r = f.resumo!;
     perguntas = s.quizPerguntas.parse([

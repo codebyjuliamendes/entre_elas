@@ -9,7 +9,9 @@ Leia `AGENTS.md`, `docs/decisoes.md`, `docs/api.md` e `docs/demo.md`.
 ## Desenvolvimento
 
 Node >=22. `npm ci`, configure `.env.local` a partir de `.env.example` e aplique
-as migrations em `supabase/migrations`. Execute `npm run seed`, `npm run dev`.
+as migrations em `supabase/migrations`. Execute `npm run dev`. Para o piloto real,
+configure Auth e integrações conforme [ativar o piloto](docs/ativar-piloto.md).
+O seed é exclusivo do desenvolvimento com dados fictícios; não o execute no banco da banca.
 O Postgres com pgvector e a API REST compatível com Supabase podem ser preparados
 com Docker por `npm run setup:local`. Storage e Auth hospedados não são simulados.
 Ela não modifica o projeto Supabase hospedado nem usa suas credenciais.
@@ -20,7 +22,8 @@ com dados fictícios. Esses testes devem rodar somente no banco local de desenvo
 não aponte a execução para um projeto hospedado.
 
 A API `/api/health` testa o acesso ao banco. `/dev` exige `DEMO_MODE=true`.
-Sem DEMO_MODE, a identidade precisa da futura integração SSO.
+O piloto usa Supabase Auth por link mágico. Em produção ele é o padrão;
+a apresentação exige `APP_MODE=apresentacao` explícito e `/dev` fica bloqueado no piloto.
 Consulte `docs/demo.md` para seed, processamento de saberes e roteiro completo.
 
 Os campos de configuração da nuvem não publicam a aplicação nem aplicam migrations
@@ -50,3 +53,5 @@ e os serviços externos ainda precisam ser ativados e testados. Siga
 ou serviços de IA/chat/vídeo reais. Não use o servidor fixture em produção.
 
 E-mails com a identidade do app: [templates e remetente SMTP](supabase/templates/README.md).
+
+Para a avaliação real de 18 a 23 de outubro, siga [Operação da banca](docs/operacao-banca.md). `npm run verificar:piloto -- --ia` verifica as integrações disponíveis com conteúdo técnico fictício, sem imprimir credenciais.

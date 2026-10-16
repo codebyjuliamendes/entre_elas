@@ -1,7 +1,12 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { generateObject } from "ai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { criarAssistente, type GeradorPitch } from "@/lib/demo/assistente";
 const gerar: GeradorPitch = async (prompt, schema, signal) => {
+  if (pilotoAtivo())
+    throw new Error(
+      "O assistente de apresentação não está disponível no piloto.",
+    );
   const key = process.env.OPENROUTER_API_KEY;
   if (!key || process.env.PITCH_AI_MODE !== "live")
     throw new Error("Modo de apresentação");

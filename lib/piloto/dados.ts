@@ -58,7 +58,10 @@ export async function dadosPiloto(profileId: string, email: string) {
     fotos: Object.fromEntries(contas.data!.map((c) => [c.profile_id, c.foto])),
     faiscas: fs,
     comunidades: cs,
-    posts: ps,
+    // O piloto não apresenta posts de personas que não possuem conta verificada.
+    posts: ps.filter((p) =>
+      pessoas.some((pessoa) => pessoa.id === p.autora_id),
+    ),
     eventos: es,
     membros: membros.data!.map((m) => m.community_id),
     inscricoes: inscricoes.data!.map((e) => e.event_id),

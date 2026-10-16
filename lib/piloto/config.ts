@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { ErroDominio } from "@/lib/domain/erros";
-export const pilotoAtivo = () => process.env.APP_MODE === "piloto";
+export const pilotoAtivo = () =>
+  process.env.APP_MODE === "piloto" ||
+  (process.env.NODE_ENV === "production" &&
+    process.env.APP_MODE !== "apresentacao");
 export function exigirEmail(email: unknown) {
   const valor = z.string().trim().email().max(254).parse(email).toLowerCase();
   if (!pilotoAtivo())

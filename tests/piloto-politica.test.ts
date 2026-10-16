@@ -3,6 +3,13 @@ import { exigirEmail, lider, pilotoAtivo } from "@/lib/piloto/config";
 import { perfilPilotoSchema } from "@/lib/piloto/acoes";
 afterEach(() => vi.unstubAllEnvs());
 describe("Política de admissão do piloto", () => {
+  it("produção usa dados reais por padrão e exige apresentação explícita", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("APP_MODE", "");
+    expect(pilotoAtivo()).toBe(true);
+    vi.stubEnv("APP_MODE", "apresentacao");
+    expect(pilotoAtivo()).toBe(false);
+  });
   it("aceita qualquer e-mail válido no piloto sem lista de convites", () => {
     vi.stubEnv("APP_MODE", "piloto");
     expect(exigirEmail("  NOVA@exemplo.com  ")).toBe("nova@exemplo.com");

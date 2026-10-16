@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { resposta, corpo, type RotaAcao } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import * as f from "@/lib/domain/faisca";
@@ -30,7 +31,7 @@ export async function POST(request: Request, ctx: RotaAcao) {
       case "revisar":
         return f.revisarResumoPiloto(input, u.id);
       case "autorizar":
-        return process.env.APP_MODE === "piloto"
+        return pilotoAtivo()
           ? f.autorizarPiloto(input, u.id)
           : f.autorizarPublicacao(fid, u.id);
       case "publicar":

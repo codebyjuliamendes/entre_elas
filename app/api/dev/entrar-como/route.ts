@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { cookies } from "next/headers";
 import { resposta, corpo } from "@/lib/api";
 import { assinarCookie } from "@/lib/auth/current-user";
@@ -6,7 +7,7 @@ import { id } from "@/lib/schemas/entities";
 import { ErroDominio } from "@/lib/domain/erros";
 export async function POST(request: Request) {
   return resposta(async () => {
-    if (process.env.APP_MODE === "piloto" || process.env.DEMO_MODE !== "true")
+    if (pilotoAtivo() || process.env.DEMO_MODE !== "true")
       throw new ErroDominio("Modo demo desativado.", 404);
     const input = await corpo(request);
     const p = await obterPerfil(id.parse(input.profile_id));

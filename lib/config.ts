@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { z } from "zod";
 export function variavel(nome: string): string {
   const value = process.env[nome];
@@ -13,6 +14,6 @@ export function dimensaoEmbedding(): number {
     .parse(process.env.EMBEDDING_DIM ?? "768");
 }
 export function exigirDemo(): void {
-  if (process.env.APP_MODE === "piloto" || process.env.DEMO_MODE !== "true")
+  if (pilotoAtivo() || process.env.DEMO_MODE !== "true")
     throw new Error("Operação disponível somente em modo demo.");
 }

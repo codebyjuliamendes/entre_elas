@@ -271,10 +271,17 @@ export function Encontro({
             anotações podem ser vistas pela outra participante e apoiar a
             síntese.
           </p>
+          <p id="notas-ajuda" className="input-hint">
+            Dê um exemplo concreto e uma ação que deseja experimentar. A IA
+            usará somente as anotações das duas pessoas; não acessa a gravação
+            nem o chat.
+          </p>
           <label htmlFor="notas-reais">Suas anotações</label>
           <textarea
             id="notas-reais"
             maxLength={5000}
+            aria-describedby="notas-ajuda"
+            placeholder="Aprendi que… Um exemplo foi… Meu próximo passo será…"
             value={notas}
             onChange={(e) => setNotas(e.target.value)}
           />
@@ -394,6 +401,29 @@ export function Encontro({
                 </form>
               )}
             </>
+          )}
+          <h3>Aprendizados da troca</h3>
+          <ul>
+            {f.resumo.aprendizados.map((a, i) => (
+              <li key={i}>{a}</li>
+            ))}
+          </ul>
+          {f.resumo.evidencias && f.resumo.evidencias.length > 0 && (
+            <details className="pilot-card">
+              <summary>Trechos usados pela IA nesta síntese</summary>
+              <p>
+                Estes trechos foram conferidos nas anotações. Revise se a
+                interpretação representa o que vocês conversaram.
+              </p>
+              {f.resumo.evidencias.map((ev, i) => (
+                <figure key={i}>
+                  <figcaption>
+                    {nome(ev.autora_id)} · aprendizado {ev.aprendizado + 1}
+                  </figcaption>
+                  <blockquote>{ev.trecho}</blockquote>
+                </figure>
+              ))}
+            </details>
           )}
           <h3>Próximos passos</h3>
           <ul>

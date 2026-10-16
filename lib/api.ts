@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { comContextoIA } from "@/lib/piloto/ia";
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
@@ -53,7 +54,10 @@ export async function corpo(
   limite = LIMITE,
 ): Promise<Record<string, unknown>> {
   const origem = request.headers.get("origin");
-  const origemEsperada=process.env.APP_MODE === "piloto" && process.env.APP_URL ? new URL(process.env.APP_URL).origin : new URL(request.url).origin;
+  const origemEsperada =
+    pilotoAtivo() && process.env.APP_URL
+      ? new URL(process.env.APP_URL).origin
+      : new URL(request.url).origin;
   if (
     (origem && origem !== origemEsperada) ||
     request.headers.get("sec-fetch-site") === "cross-site"

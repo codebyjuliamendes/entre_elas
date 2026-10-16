@@ -218,3 +218,30 @@ externos descritos no guia de ativação. Execução da pipeline remota não foi
   e ordenação cronológica dos encontros aceitos.
 - Não há nova migration, dependência ou variável. SMTP, Auth hospedado, modelos,
   chat e vídeo reais continuam dependentes da configuração externa.
+
+## IA e operação de 18 a 23 de outubro — 2026-10-15
+
+- Build de produção (incluindo TypeScript) e lint passaram. 107 testes unitários,
+  21 testes com Postgres local, 3 cenários de navegador do piloto e 12 da
+  apresentação explícita passaram: 143 testes no total. Auth e provedores são
+  simulados nos testes funcionais; isso não certifica integrações remotas.
+- Provider: fallback 429/timeout/5xx/rede/JSON inválido, cancelamento externo,
+  orçamento total que também limita Groq, falha de ambos sem conteúdo inventado,
+  cache inválido/indisponível/lento e validação semântica antes de gravar/reutilizar.
+- Síntese: rejeita trecho inventado, autoria trocada, terceira pessoa, aprendizado
+  sem suporte e omissão de uma participante. Banco preserva citações em JSONB;
+  snapshots sem evidências continuam aceitos para síntese manual/histórica.
+- Piloto E2E foi executado com APP_MODE vazio e servidor de produção: usa Auth,
+  bloqueia identidade fictícia mesmo com DEMO_MODE local e completa a publicação
+  com duas contas. A apresentação continua exigindo APP_MODE=apresentacao.
+- Uma execução inicial teve colisão dos arquivos de trace entre runners.
+  Os diretórios foram separados, o upload de evidências do CI atualizado e as
+  suítes reexecutadas com sucesso. Artefatos gerados ficam fora do lint; arquivos
+  de testes e código da aplicação continuam incluídos.
+- `npm run verificar:piloto -- --ia` executou e encerrou com código 1 esperado:
+  encontrou banco local, mas não chave pública Auth, APP_URL ou credenciais de
+  Gemini/Groq/Stream/Daily nesta sessão. Não houve geração remota nem e-mail.
+  O resultado não invalida variáveis cadastradas em outro ambiente/deploy.
+- Nenhuma nova migration, seed hospedado ou deploy foi executado. A usuária
+  informou que aplicou as migrations no Supabase. A conferência hospedada e o
+  ensaio com dois aparelhos seguem pendentes, conforme docs/operacao-banca.md.

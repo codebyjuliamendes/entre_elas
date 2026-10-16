@@ -1,12 +1,14 @@
 # Contratos da API
 
 Todas as entradas e saídas de domínio são definidas em `lib/schemas/entities.ts`.
-Não há páginas ou estilos de produto. `/dev` é um formulário genérico de debug,
-exclusivamente com `DEMO_MODE=true`. Use somente dados fictícios.
+O piloto real usa Supabase Auth verificado, cookies HttpOnly e autorização por
+participante. `/api/auth/link`, `/auth/callback`, `/api/auth/renovar` e
+`/api/auth/sair` implementam entrada e sessão. As APIs de IA exigem consentimento
+registrado e quota por conta. Veja [ativação](ativar-piloto.md).
 
-`POST /api/dev/entrar-como` recebe `{ "profile_id": "UUID" }` e emite cookie
-httpOnly assinado, válido por 24 horas. Exige um perfil existente. Todas as demais
-rotas, exceto health, exigem esse cookie. SSO não está implementado.
+`POST /api/dev/entrar-como` é exclusivo da apresentação explícita com
+`DEMO_MODE=true`; fica bloqueado no piloto. Seu cookie fictício nunca autentica
+uma participante do piloto.
 
 | Método e rota | Entrada / comportamento |
 | --- | --- |
@@ -14,8 +16,8 @@ rotas, exceto health, exigem esse cookie. SSO não está implementado.
 | GET /api/perfis | Lista perfis |
 | PATCH /api/perfis | Atualiza o perfil atual com profileInput |
 | GET /api/faiscas | Lista só as Faíscas das participantes |
-| POST /api/faiscas | convidada_id, pedido, tema, horarios_propostos; solicitante vem da sessão |
-| POST /api/faiscas/buscar | pedido → até 3 indicações fundamentadas; limite de 9,5 s |
+| POST /api/faiscas | convidada_id, pedido, tema, horarios_propostos; no piloto, chave_pedido UUID por envio; solicitante vem da sessão |
+| POST /api/faiscas/buscar | pedido → até 3 indicações fundamentadas; prazo total de 45 s com cancelamento da IA |
 | POST /api/faiscas/obter | faisca_id |
 | POST /api/faiscas/aceitar | faisca_id, horario; só convidada |
 | POST /api/faiscas/recusar | faisca_id; só convidada |

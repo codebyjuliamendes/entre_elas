@@ -1,6 +1,6 @@
 import { pilotoAtivo } from "@/lib/piloto/config";
 import { z } from "zod";
-import { gerar, embed } from "@/lib/ai/provider";
+import { gerar, embed, type OpcoesIA } from "@/lib/ai/provider";
 import { getDb, verificarErro } from "@/lib/db/client";
 import * as s from "@/lib/schemas/entities";
 import { prompt } from "@/lib/ai/prompts/contexto";
@@ -13,6 +13,7 @@ import * as resumo from "@/lib/ai/prompts/gerar-resumo";
 import * as quiz from "@/lib/ai/prompts/gerar-quiz";
 import * as mensagens from "@/lib/ai/prompts/sugerir-mensagens";
 import * as assuntos from "@/lib/ai/prompts/sugerir-assunto";
+import { validarResumoFundamentado } from "@/lib/domain/resumo-fundamentacao";
 import { ErroIA } from "@/lib/domain/erros";
 export async function extrairSaberes(entrada: unknown) {
   const input = z
@@ -30,21 +31,27 @@ export async function extrairSaberes(entrada: unknown) {
     throw new ErroIA("A evidência extraída não consta no texto da autora.");
   return s.extraidos.parse(result);
 }
-export async function interpretarPedido(entrada: unknown) {
+export async function interpretarPedido(
+  entrada: unknown,
+  opcoes: Pick<OpcoesIA, "signal"> = {},
+) {
   const pedido = s.texto.parse(entrada);
   return s.pedidoInterpretado.parse(
     await gerar(
       prompt(interpretacao.instrucao, { pedido }),
       s.pedidoInterpretado,
-      { cache: true, versao: interpretacao.versao, prazoMs: 8500 },
+      { cache: true, versao: interpretacao.versao, prazoMs: 16000, ...opcoes },
     ),
   );
 }
-export async function buscarCandidatas(entrada: unknown) {
+export async function buscarCandidatas(
+  entrada: unknown,
+  opcoes: Pick<OpcoesIA, "signal"> = {},
+) {
   const input = z
     .object({ saberes: z.array(s.texto).min(2).max(3), solicitante_id: s.id })
     .parse(entrada);
-  const vetor = await embed(input.saberes.join("; "));
+  const vetor = await embed(input.saberes.join("; "), opcoes);
   const { data, error } = await getDb().rpc(
     pilotoAtivo() ? "buscar_saberes_piloto" : "buscar_saberes",
     {
@@ -110,7 +117,10 @@ export function diversificar(entrada: unknown) {
   }
   return s.candidatas.parse(escolhidas);
 }
-export async function ranquear(entrada: unknown) {
+export async function ranquear(
+  entrada: unknown,
+  opcoes: Pick<OpcoesIA, "signal"> = {},
+) {
   const input = z
     .object({ pedido: s.texto, candidatas: s.candidatas, solicitante_id: s.id })
     .parse(entrada);
@@ -119,7 +129,7 @@ export async function ranquear(entrada: unknown) {
   const result = await gerar(
     prompt(ranking.instrucao, { ...input, candidatas }),
     s.indicacoes,
-    { cache: true, versao: ranking.versao, prazoMs: 8500 },
+    { cache: true, versao: ranking.versao, prazoMs: 16000, ...opcoes },
   );
   return validarIndicacoes({ ...input, indicacoes: result });
 }
@@ -178,12 +188,24 @@ export async function gerarResumo(entrada: unknown) {
   const input = z.object({ anotacoes: z.record(s.id, s.texto) }).parse(entrada);
   if (Object.keys(input.anotacoes).length !== 2)
     throw new ErroIA("São necessárias anotações das duas participantes.");
-  return s.resumo.parse(
-    await gerar(prompt(resumo.instrucao, input), s.resumo, {
+  const resultado = await gerar(
+    prompt(resumo.instrucao, input),
+    s.resumoFundamentado,
+    {
       cache: true,
       versao: resumo.versao,
-    }),
+      validar: (resultado) => {
+        validarResumoFundamentado({
+          anotacoes: input.anotacoes,
+          resumo: resultado,
+        });
+      },
+    },
   );
+  return validarResumoFundamentado({
+    anotacoes: input.anotacoes,
+    resumo: resultado,
+  });
 }
 export async function gerarQuiz(entrada: unknown) {
   const input = s.texto.parse(entrada);

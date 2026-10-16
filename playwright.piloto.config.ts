@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 import { existsSync } from "node:fs";
 export default defineConfig({
   testDir: "./tests/piloto-e2e",
+  outputDir: ".local/piloto-test-results",
   workers: 1,
   timeout: 60000,
   expect: { timeout: 15000 },

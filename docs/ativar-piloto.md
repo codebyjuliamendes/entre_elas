@@ -1,3 +1,5 @@
+> Período atualizado: **18 a 23 de outubro de 2026, seis dias**. Consulte [operação da banca](operacao-banca.md) para o diagnóstico real e o ensaio antes da liberação.
+
 # Ativar o piloto real da banca
 
 O piloto foi dimensionado inicialmente para até dez pessoas, com cadastro aberto,

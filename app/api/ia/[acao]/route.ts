@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { resposta, corpo, type RotaAcao } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { sugerirMensagensFaisca, sugerirAssuntoGrupo } from "@/lib/domain/chat";
@@ -13,10 +14,7 @@ export async function POST(request: Request, ctx: RotaAcao) {
     const u = await getCurrentUser();
     const input = await corpo(request);
     const { acao } = await ctx.params;
-    if (
-      process.env.APP_MODE === "piloto" &&
-      ["mensagens", "assuntos"].includes(acao)
-    )
+    if (pilotoAtivo() && ["mensagens", "assuntos"].includes(acao))
       throw new ErroDominio(
         "Sugestões sobre mensagens não estão habilitadas no piloto.",
         403,

@@ -51,5 +51,6 @@ jobs:
         if: failure()
         with:
           name: evidencias-piloto
-          path: test-results/
+          path: .local/piloto-test-results/
+          include-hidden-files: true
           retention-days: 7

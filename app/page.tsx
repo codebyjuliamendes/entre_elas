@@ -2,6 +2,7 @@ import { pilotoAtivo } from "@/lib/piloto/config";
 import { redirect } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { Journey } from "@/components/demo/Journey";
+export const dynamic = "force-dynamic";
 export default async function Inicio({
   searchParams,
 }: {

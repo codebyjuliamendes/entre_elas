@@ -1,3 +1,4 @@
+import { pilotoAtivo } from "@/lib/piloto/config";
 import { z } from "zod";
 import { id } from "@/lib/schemas/entities";
 import { variavel } from "@/lib/config";
@@ -43,9 +44,7 @@ export async function tokenSala(entrada: unknown) {
     properties: {
       room_name: `faisca-${input.faisca_id}`,
       user_id: input.profile_id,
-      exp:
-        Math.floor(Date.now() / 1000) +
-        (process.env.APP_MODE === "piloto" ? 300 : 3600),
+      exp: Math.floor(Date.now() / 1000) + (pilotoAtivo() ? 300 : 3600),
     },
   });
   if (!r.ok) throw new ErroIntegracao(`Daily respondeu HTTP ${r.status}.`);

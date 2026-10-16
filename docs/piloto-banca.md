@@ -1,4 +1,6 @@
-# Piloto de três dias com a banca
+# Histórico da transição para o piloto
+
+> O período foi ampliado para **18 a 23 de outubro, seis dias**. O plano atual está em [operação da banca](operacao-banca.md). O diagnóstico abaixo é histórico.
 
 Escopo solicitado em 15/10/2026. Este documento descreve a transição necessária;
 não declara o aplicativo atual pronto para uso real.

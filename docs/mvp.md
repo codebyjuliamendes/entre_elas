@@ -8,12 +8,13 @@ Agenda, Chats, Comunidades, Perfil e Configurações. `/dev` continua independen
 
 ## Executar e publicar na Vercel
 
-1. Node >=22, `npm ci`, `npm run dev`.
+1. Node >=22, `npm ci`, defina `APP_MODE=apresentacao` e execute `npm run dev`.
 2. Sem nenhuma chave, o modo de apresentação funciona: pedido, match com
    evidência do catálogo fictício, convite e aceite simulado, pauta, chamada
    simulada de vinte minutos, anotação, dica, quiz, autorizações e publicação.
 3. Para produção: `npm run build` e `npm start`. Na Vercel, selecione o projeto
-   Next.js e mantenha as variáveis padrão para uma apresentação sem dependências externas.
+   Next.js e defina `APP_MODE=apresentacao` explicitamente para a apresentação fictícia.
+   Para testes reais de 18 a 23 de outubro, use o piloto e [a orientação de operação](operacao-banca.md).
 4. Para usar IA de verdade apenas na apresentação, configure PITCH_AI_MODE=live,
    OPENROUTER_API_KEY e OPENROUTER_MODEL com um modelo disponível na conta.
    O modelo gratuito sugerido pode mudar ou ter quota indisponível. Qualquer falha,

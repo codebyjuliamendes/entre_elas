@@ -31,7 +31,8 @@ const server=createServer(async(req,res)=>{try{
  res.statusCode=404;res.end('{}');
  }catch{res.statusCode=500;res.end('{"message":"Falha no contrato local"}');}});
 await new Promise(resolve=>server.listen(54322,'127.0.0.1',resolve));
-const child=spawn('npm',['run','start','--','--port','3400'],{stdio:'inherit',env:{...process.env,...env,APP_MODE:'piloto',PILOT_STARTS_AT:new Date().toISOString(),APP_URL:'http://127.0.0.1:3400',NEXT_PUBLIC_SUPABASE_URL:'http://127.0.0.1:54322',NEXT_PUBLIC_SUPABASE_ANON_KEY:'chave-publica-apenas-do-teste',PILOT_LEADER_EMAILS:emails[0],GEMINI_API_KEY:'',GROQ_API_KEY:'',DAILY_API_KEY:'',STREAM_API_KEY:'',STREAM_API_SECRET:''}});
+// APP_MODE vazio verifica o padrão real de produção; DEMO_MODE local não deve abrir o debug.
+const child=spawn('npm',['run','start','--','--port','3400'],{stdio:'inherit',env:{...process.env,...env,APP_MODE:'',PILOT_STARTS_AT:new Date().toISOString(),APP_URL:'http://127.0.0.1:3400',NEXT_PUBLIC_SUPABASE_URL:'http://127.0.0.1:54322',NEXT_PUBLIC_SUPABASE_ANON_KEY:'chave-publica-apenas-do-teste',PILOT_LEADER_EMAILS:emails[0],GEMINI_API_KEY:'',GROQ_API_KEY:'',DAILY_API_KEY:'',STREAM_API_KEY:'',STREAM_API_SECRET:''}});
 let terminando=false;
 async function limpar(){
  for(const u of usuarios.values()){
