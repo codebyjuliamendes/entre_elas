@@ -40,7 +40,7 @@ async function limpar(){
   if(!c)continue;const pid=c.profile_id;
   const {data:fs}=await db.from('faiscas').select('id').or(`solicitante_id.eq.${pid},convidada_id.eq.${pid}`);const ids=fs?.map(f=>f.id)??[];
   if(ids.length){await db.from('posts').delete().in('origem_faisca_id',ids);await db.from('faiscas').delete().in('id',ids);}
-  await db.from('ia_jobs').delete().eq('profile_id',pid);await db.from('piloto_favoritos').delete().eq('profile_id',pid);await db.from('community_members').delete().eq('profile_id',pid);await db.from('event_participantes').delete().eq('profile_id',pid);await db.from('piloto_contas').delete().eq('auth_user_id',u.id);await db.from('piloto_limites').delete().eq('chave','ia:'+pid);await db.from('profiles').delete().eq('id',pid);
+  await db.from('ia_jobs').delete().eq('profile_id',pid);await db.from('piloto_favoritos').delete().eq('profile_id',pid);await db.from('community_members').delete().eq('profile_id',pid);await db.from('event_participantes').delete().eq('profile_id',pid);await db.from('piloto_contas').delete().eq('auth_user_id',u.id);await db.from('piloto_limites').delete().in('chave',['ia:'+pid,'relato:'+pid]);await db.from('profiles').delete().eq('id',pid);
  }
 }
 async function encerrar(){if(terminando)return;terminando=true;child.kill('SIGTERM');server.close();await limpar();process.exit(0);}

@@ -99,6 +99,7 @@ async function main() {
           .limit(0),
         db.from("faiscas").select("id,chave_pedido,anotacoes,resumo").limit(0),
         db.from("piloto_mensagens").select("id").limit(0),
+        db.from("piloto_relatos").select("id,profile_id,estado").limit(0),
         db.from("piloto_limites").select("chave").limit(0),
       ];
       for (const resultado of await Promise.all(consultas))

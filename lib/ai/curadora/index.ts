@@ -129,7 +129,15 @@ export async function ranquear(
   const result = await gerar(
     prompt(ranking.instrucao, { ...input, candidatas }),
     s.indicacoes,
-    { cache: true, versao: ranking.versao, prazoMs: 16000, ...opcoes },
+    {
+      cache: true,
+      versao: ranking.versao,
+      prazoMs: 16000,
+      ...opcoes,
+      validar: (indicacoes) => {
+        validarIndicacoes({ ...input, indicacoes });
+      },
+    },
   );
   return validarIndicacoes({ ...input, indicacoes: result });
 }
@@ -148,7 +156,17 @@ export async function sugerirConexoes(entrada: unknown) {
       candidatas,
     }),
     s.indicacoes,
-    { cache: true, versao: conexoes.versao },
+    {
+      cache: true,
+      versao: conexoes.versao,
+      validar: (indicacoes) => {
+        validarIndicacoes({
+          indicacoes,
+          candidatas,
+          solicitante_id: input.perfil.id,
+        });
+      },
+    },
   );
   return validarIndicacoes({
     indicacoes: result,

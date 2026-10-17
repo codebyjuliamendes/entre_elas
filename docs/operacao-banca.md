@@ -12,8 +12,10 @@ a apresentação fictícia exige `APP_MODE=apresentacao` explicitamente.
 As páginas e APIs usam a mesma decisão de modo. As actions de apresentação
 não substituem a curadoria real.
 
-As migrations 001–011 continuam suficientes: este upgrade não exige nova
-migration. Não execute `seed:local`, `seed` ou scripts de reset no projeto da
+O estado atual exige as migrations **001–012**. Se você já aplicou 001–011,
+aplique somente `202610160012_operacao_piloto.sql`, que adiciona indexação
+atômica e relatos privados. O arquivo foi validado no banco local; ele não
+foi aplicado automaticamente ao Supabase hospedado. Não execute `seed:local`, `seed` ou scripts de reset no projeto da
 banca. O feed do piloto exclui autoras sem conta verificada no piloto.
 Se houver comunidades/eventos de demonstração importados anteriormente,
 revise esses registros antes de liberar a agenda; o aplicativo não apaga
@@ -98,3 +100,40 @@ de disponibilidade de plano gratuito por seis dias só porque um teste passou.
 Não trate `/api/health` como prova de IA: ele verifica somente o banco.
 Quando houver falha, o estado salvo deve continuar acessível e nenhuma
 participante deve receber um aceite, mensagem ou evidência inventada.
+
+
+## Indexação, horários e ajuda
+
+Salvar o perfil não equivale a aparecer na busca. O perfil mostra os saberes
+indexados e os que faltam, respeitando a opção de consentimento. A indexação
+atual grava o conjunto completo em uma transação e rejeita um perfil alterado
+durante a geração. Saberes removidos deixam de participar da busca do piloto
+mesmo antes da reindexação. A escolha manual de pessoa continua disponível.
+
+Um convite pode oferecer até três horários. A convidada confirma uma opção;
+horários expirados são recusados pela aplicação. Após o aceite, cada pessoa
+pode baixar um arquivo ICS com vinte minutos e o link para a Faísca. O arquivo
+não envia e-mail, não marca presença e não contém anotações, chat ou token Daily.
+É um arquivo estático: cancelar a Faísca não remove o evento do calendário pessoal.
+Se for necessário mudar um encontro aceito, cancele e envie novo convite;
+reagendamento automático e contraproposta não estão implementados.
+
+A aba Ajuda registra problemas no servidor, sem enviar seu conteúdo à IA.
+Cada participante consulta os próprios relatos; a liderança configurada pode
+acompanhar e marcar resolução. Não há promessa de atendimento imediato nem
+notificação externa automática. O limite é de dez relatos por conta/hora.
+
+## Regressão da qualidade da curadoria
+
+```sh
+npm run avaliar:curadoria
+npm run avaliar:curadoria -- --live
+```
+
+O primeiro comando valida seis casos fictícios sem chamar IA. O segundo usa
+os geradores reais com apresentações, dados, carreira, ausência de experiência,
+interesse sem domínio e uma instrução maliciosa inserida na evidência. Não lê
+perfis do banco, não altera dados e exige Gemini/Groq configurados. As chamadas
+consomem quota; os resultados são uma pequena regressão, não prova estatística
+da qualidade de todos os pedidos. A busca vetorial e o encontro real precisam
+do ensaio separado com duas contas.

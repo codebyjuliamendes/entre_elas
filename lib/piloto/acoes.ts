@@ -37,43 +37,27 @@ export async function indexarPerfil(pid: string) {
     .single();
   verificarErro(error);
   const perfil = profile.parse(p);
-  const { data: antigos, error: ae } = await getDb()
-    .from("saberes")
-    .select("*")
-    .eq("profile_id", pid)
-    .eq("fonte", "perfil");
-  verificarErro(ae);
-  for (const saber of perfil.interesses) {
-    const existente = antigos?.find((s) => s.saber === saber && s.embedding);
-    if (existente) continue;
+  const dados = [];
+  for (const saber of [...new Set(perfil.interesses)]) {
     const vetor = await embed(saber);
-    const { error: se } = await getDb().rpc("registrar_saber", {
-      dados: {
-        profile_id: pid,
-        saber,
-        evidencia: `${perfil.nome} declara no perfil: ${saber}`,
-        fonte: "perfil",
-        fonte_id: null,
-        confianca: 1,
-        confirmado: true,
-        embedding: JSON.stringify(vetor),
-      },
-    });
-    verificarErro(se);
+    dados.push({ saber, embedding: JSON.stringify(vetor) });
   }
-  const removidos =
-    antigos
-      ?.filter((s) => !perfil.interesses.includes(s.saber))
-      .map((s) => s.id) ?? [];
-  if (removidos.length) {
-    const { error: re } = await getDb()
-      .from("saberes")
-      .delete()
-      .in("id", removidos);
-    verificarErro(re);
-  }
-  return { ok: true };
+  const { data, error: indexacaoErro } = await getDb().rpc(
+    "piloto_indexar_perfil",
+    {
+      usuaria_id: pid,
+      perfil_lido: perfil,
+      saberes_input: dados,
+    },
+  );
+  if (indexacaoErro)
+    throw new ErroDominio(
+      "Não foi possível indexar. Seu perfil pode ter mudado ou a configuração do banco precisa ser atualizada. Recarregue e tente novamente.",
+      409,
+    );
+  return z.object({ ok: z.literal(true), indexados: z.number().int().min(0).max(8) }).parse(data);
 }
+
 export async function consentirIA(pid: string, entrada: unknown) {
   const autorizado = z.boolean().parse(entrada);
   const { error } = await getDb()

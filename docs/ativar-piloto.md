@@ -11,7 +11,8 @@ no Supabase; não há aceite simulado nem fonte de dados em localStorage.
 
 ## Configuração externa necessária
 
-1. Aplique as migrations em ordem no Supabase escolhido, incluindo 006–011.
+1. Aplique as migrations em ordem no Supabase escolhido, incluindo 006–012.
+   Se 001–011 já foram aplicadas, aplique apenas `202610160012_operacao_piloto.sql`.
    Elas adicionam contas vinculadas à identidade Auth, favoritos, limites atômicos,
    miniaturas de foto, busca vetorial restrita e metadados de mensagens e revisão atômica da síntese. Não
    habilite políticas públicas: a service role fica exclusivamente no servidor.

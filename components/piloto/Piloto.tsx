@@ -11,6 +11,7 @@ import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
+import { Ajuda } from "./Ajuda";
 import { Atencao } from "./Atencao";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useNavegacaoPiloto } from "@/lib/piloto/navegacao";
@@ -51,6 +52,7 @@ export function Piloto() {
     >([]),
     [destino, setDestino] = useState(""),
     [horario, setHorario] = useState(""),
+    [alternativos, setAlternativos] = useState<string[]>([]),
     [metricas, setMetricas] = useState<Record<string, number | string> | null>(
       null,
     );
@@ -143,7 +145,13 @@ export function Piloto() {
         convidada_id: destino,
         pedido,
         tema: pedido.slice(0, 160),
-        horarios_propostos: [new Date(horario).toISOString()],
+        horarios_propostos: [
+          ...new Set(
+            [horario, ...alternativos]
+              .filter(Boolean)
+              .map((h) => new Date(h).toISOString()),
+          ),
+        ],
       };
       const assinatura = JSON.stringify(envio);
       if (chaveConvite.current?.assinatura !== assinatura)
@@ -155,6 +163,8 @@ export function Piloto() {
       chaveConvite.current = null;
       editarPedido("");
       setDestino("");
+      setHorario("");
+      setAlternativos([]);
       setIndicacoes([]);
     }, "Convite enviado. A outra pessoa poderá responder na própria conta.");
   }
@@ -242,6 +252,7 @@ export function Piloto() {
             {consentimento}
             <PerfilPiloto
               perfil={perfil}
+              indexacao={d.indexacao}
               ia={d.conta.ia_consentimento}
               concluir={true}
               atualizar={carregar}
@@ -277,6 +288,7 @@ export function Piloto() {
           ["saberes", "Saberes"],
           ["agenda", "Agenda"],
           ["perfil", "Meu perfil"],
+          ["ajuda", "Ajuda"],
           ...(d.lider ? [["lideranca", "Liderança"]] : []),
         ].map(([key, label]) => (
           <button
@@ -500,6 +512,51 @@ export function Piloto() {
                     value={horario}
                     onChange={(e) => setHorario(e.target.value)}
                   />
+                  {alternativos.map((valor, i) => (
+                    <div key={i}>
+                      <label htmlFor={`horario-alternativo-${i}`}>
+                        Horário alternativo {i + 1}
+                      </label>
+                      <input
+                        id={`horario-alternativo-${i}`}
+                        type="datetime-local"
+                        required
+                        value={valor}
+                        disabled={busy}
+                        onChange={(e) =>
+                          setAlternativos((valores) =>
+                            valores.map((v, indice) =>
+                              indice === i ? e.target.value : v,
+                            ),
+                          )
+                        }
+                      />
+                      <button
+                        type="button"
+                        disabled={busy}
+                        onClick={() =>
+                          setAlternativos((valores) =>
+                            valores.filter((_, indice) => indice !== i),
+                          )
+                        }
+                      >
+                        Remover horário alternativo {i + 1}
+                      </button>
+                    </div>
+                  ))}
+                  {alternativos.length < 2 && (
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => setAlternativos((v) => [...v, ""])}
+                    >
+                      Adicionar outra opção de horário
+                    </button>
+                  )}
+                  <p className="input-hint">
+                    Até três opções. A convidada escolhe uma delas para
+                    confirmar o encontro.
+                  </p>
                   {destino && (
                     <p className="input-hint">
                       Convite para {pessoa(destino)} · 20 minutos. Depois de
@@ -539,6 +596,7 @@ export function Piloto() {
                 ))}
               </>
             )}
+            {tab === "ajuda" && <Ajuda lider={d.lider} pessoas={d.pessoas} />}
             {tab === "rede" && (
               <>
                 <h1>Conheça quem está aqui</h1>
@@ -676,6 +734,7 @@ export function Piloto() {
                 {consentimento}
                 <PerfilPiloto
                   perfil={perfil}
+                  indexacao={d.indexacao}
                   ia={d.conta.ia_consentimento}
                   atualizar={carregar}
                 />

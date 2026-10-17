@@ -4,6 +4,7 @@ import { listarFaiscas } from "@/lib/domain/faisca";
 import { listarComunidades } from "@/lib/domain/comunidade";
 import { listarPosts } from "@/lib/domain/conteudo";
 import { listarEventos } from "@/lib/domain/evento";
+import { avaliarIndexacao } from "@/lib/domain/perfil-indexacao";
 import { lider } from "./config";
 import { z } from "zod";
 export async function dadosPiloto(profileId: string, email: string) {
@@ -67,6 +68,12 @@ export async function dadosPiloto(profileId: string, email: string) {
     inscricoes: inscricoes.data!.map((e) => e.event_id),
     favoritos: favoritos.data!.map((p) => p.post_id),
     saberes: z.array(s.saber).parse(saberes.data),
+    indexacao: avaliarIndexacao({
+      consentimento: contas.data!.find((c) => c.profile_id === profileId)!
+        .ia_consentimento,
+      interesses: pessoas.find((p) => p.id === profileId)!.interesses,
+      saberes: saberes.data,
+    }),
     lider: lider(email),
   };
 }

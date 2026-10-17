@@ -1,6 +1,7 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import type { Profile } from "@/lib/schemas/entities";
+import type { EstadoIndexacao } from "@/lib/domain/perfil-indexacao";
 import { api } from "@/lib/piloto/browser";
 import { toast } from "sonner";
 const campos = [
@@ -15,11 +16,13 @@ export function PerfilPiloto({
   ia,
   atualizar,
   concluir = false,
+  indexacao,
 }: {
   perfil: Profile;
   ia: boolean;
   atualizar: () => Promise<void>;
   concluir?: boolean;
+  indexacao: EstadoIndexacao;
 }) {
   const [form, setForm] = useState(
       Object.fromEntries(
@@ -166,12 +169,18 @@ export function PerfilPiloto({
           disabled={busy}
           onClick={() => {
             setBusy(true);
-            void api("/api/piloto/indexar", {})
-              .then(() =>
-                toast.success(
-                  "Seus saberes estão disponíveis para a busca com IA.",
-                ),
-              )
+            void api<{ indexados: number }>("/api/piloto/indexar", {})
+              .then(async (r) => {
+                await atualizar();
+                if (r.indexados)
+                  toast.success(
+                    "Seus saberes estão disponíveis para a busca com IA.",
+                  );
+                else
+                  toast.info(
+                    "Adicione ao menos um saber ao perfil para aparecer na busca.",
+                  );
+              })
               .catch((e) => toast.error(e.message))
               .finally(() => setBusy(false));
           }}
@@ -179,6 +188,28 @@ export function PerfilPiloto({
           Atualizar meus saberes na busca com IA
         </button>
       )}
+      <section className="pilot-card" aria-label="Seu perfil na busca com IA">
+        <h3>Seu perfil na busca com IA</h3>
+        <p role="status">
+          {
+            {
+              sem_consentimento:
+                "Você continua na lista de pessoas. Autorize a IA para participar das indicações automáticas.",
+              sem_saberes:
+                "Adicione os saberes que deseja compartilhar e salve seu perfil.",
+              pendente: `${indexacao.indexados} de ${indexacao.total} saberes indexados. Atualize a busca para incluir os que faltam.`,
+              pronto: `${indexacao.indexados} saberes indexados. Seu perfil pode ser considerado pela curadoria; cada indicação depende do pedido.`,
+            }[indexacao.estado]
+          }
+        </p>
+        {indexacao.estado === "pendente" && (
+          <p>Falta indexar: {indexacao.pendentes.join(", ")}.</p>
+        )}
+        <p className="input-hint">
+          Este status corresponde ao perfil salvo no servidor. Alterações no
+          formulário precisam ser salvas.
+        </p>
+      </section>
       <p className="input-hint">
         Salvar é independente da IA. Depois de salvar, atualize a busca para
         indexar suas experiências. Sem IA, as pessoas ainda podem encontrar e

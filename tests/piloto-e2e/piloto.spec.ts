@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import { test, expect, type Page } from "@playwright/test";
 async function linkEntrada(page: Page, email: string) {
   await page.goto("/entrar");
@@ -57,6 +58,15 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
   await page
     .getByLabel("Propor um horário no seu fuso local", { exact: true })
     .fill(futuro);
+  await page
+    .getByRole("button", {
+      name: "Adicionar outra opção de horário",
+      exact: true,
+    })
+    .click();
+  await page
+    .getByLabel("Horário alternativo 1", { exact: true })
+    .fill(new Date(Date.now() + 2 * 86400000).toISOString().slice(0, 16));
   const chaves: string[] = [];
   let perderResposta = true;
   await page.route("**/api/faiscas", async (route) => {
@@ -115,7 +125,20 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
     atencao.getByText("Você recebeu um convite", { exact: true }),
   ).toBeVisible();
   await atencao.getByRole("link", { name: /Primeira Participante/ }).click();
-  await outra.getByRole("button", { name: /Aceitar ·/ }).click();
+  await outra
+    .getByRole("button", { name: /Aceitar ·/ })
+    .nth(1)
+    .click();
+  const downloadPromise = outra.waitForEvent("download");
+  await outra
+    .getByRole("button", { name: "Adicionar ao meu calendário", exact: true })
+    .click();
+  const download = await downloadPromise;
+  const arquivo = await download.path();
+  expect(arquivo).not.toBeNull();
+  const ics = await readFile(arquivo!, "utf8");
+  expect(ics).toContain("BEGIN:VEVENT");
+  expect(ics).not.toContain("fictício");
   await expect(
     outra.getByRole("heading", { name: "Vinte minutos com intenção" }),
   ).toBeVisible();
@@ -250,6 +273,9 @@ test("curadoria não mantém indicações de um pedido que foi editado", async (
       name: "Autorizo esse uso dos meus textos nesta experiência.",
     }),
   ).toBeChecked();
+  await expect(
+    page.getByRole("region", { name: "Seu perfil na busca com IA" }),
+  ).toContainText("0 de 1 saberes indexados");
   await page.getByRole("button", { name: "Faíscas", exact: true }).click();
   const d = await (await page.request.get("/api/piloto")).json();
   const pessoa = d.pessoas.find((p: { id: string }) => p.id !== d.perfil.id);
@@ -309,6 +335,59 @@ test("curadoria não mantém indicações de um pedido que foi editado", async (
   await expect(
     page.getByText(/Ainda não encontramos uma indicação/),
   ).toHaveCount(0);
+});
+
+test("relato persiste, fica privado e a liderança acompanha a resolução", async ({
+  page,
+  browser,
+}) => {
+  await entrar(page, "ajuda@banca.test", "Participante Ajuda");
+  await page.getByRole("button", { name: "Ajuda", exact: true }).click();
+  const descricao =
+    "Não consegui encontrar uma conexão para conversar sobre indicadores.";
+  await page
+    .getByLabel("O que aconteceu e o que você esperava?", { exact: true })
+    .fill(descricao);
+  await page
+    .getByRole("button", { name: "Salvar relato", exact: true })
+    .click();
+  const relatos = page.getByRole("region", {
+    name: "Acompanhamento dos relatos",
+  });
+  await expect(relatos.getByText(descricao, { exact: true })).toBeVisible();
+  await page.reload();
+  await expect(relatos.getByText(descricao, { exact: true })).toBeVisible();
+  const dados = await (
+    await page.request.post("/api/piloto/relatos", { data: {} })
+  ).json();
+  expect(
+    (
+      await page.request.post("/api/piloto/resolver-relato", {
+        data: { relato_id: dados[0].id, resolvido: true },
+      })
+    ).status(),
+  ).toBe(403);
+  const contexto = await browser.newContext();
+  const lider = await contexto.newPage();
+  await linkEntrada(lider, "primeira@banca.test");
+  await lider.getByRole("button", { name: "Ajuda", exact: true }).click();
+  const acompanhamento = lider.getByRole("region", {
+    name: "Acompanhamento dos relatos",
+  });
+  await expect(
+    acompanhamento.getByText(descricao, { exact: true }),
+  ).toBeVisible();
+  await acompanhamento
+    .getByRole("button", { name: "Marcar como resolvido", exact: true })
+    .click();
+  await expect(
+    acompanhamento.getByRole("heading", { name: /Curadoria e IA · Resolvido/ }),
+  ).toBeVisible();
+  await page.reload();
+  await expect(
+    relatos.getByRole("heading", { name: /Curadoria e IA · Resolvido/ }),
+  ).toBeVisible();
+  await contexto.close();
 });
 
 test.afterAll(async () => {

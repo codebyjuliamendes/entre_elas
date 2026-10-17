@@ -12,6 +12,7 @@ export function rotaPiloto(entrada: unknown) {
           "agenda",
           "perfil",
           "lideranca",
+          "ajuda",
         ])
         .optional()
         .catch(undefined),

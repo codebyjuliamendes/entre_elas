@@ -4,6 +4,8 @@ import type { Faisca } from "@/lib/schemas/entities";
 import type { DadosPiloto } from "@/lib/piloto/dados";
 import { orientarFaisca } from "@/lib/domain/faisca-orientacao";
 import { api, dataHora } from "@/lib/piloto/browser";
+import { calendarioFaisca } from "@/lib/domain/faisca-calendario";
+import { baixarArquivo } from "@/lib/browser/arquivo";
 import { toast } from "sonner";
 export function Encontro({
   faisca: f,
@@ -94,6 +96,32 @@ export function Encontro({
         <h2>{orientacao.titulo}</h2>
         <p>{orientacao.descricao}</p>
       </section>
+      {f.status === "aceita" && f.horario && (
+        <button
+          onClick={() => {
+            try {
+              const arquivo = calendarioFaisca({
+                encontro: f,
+                usuaria_id: pid,
+                origem: window.location.origin,
+              });
+              baixarArquivo(
+                arquivo.nome,
+                arquivo.conteudo,
+                "text/calendar;charset=utf-8",
+              );
+            } catch (e) {
+              toast.error(
+                e instanceof Error
+                  ? e.message
+                  : "Não foi possível exportar o calendário.",
+              );
+            }
+          }}
+        >
+          Adicionar ao meu calendário
+        </button>
+      )}
       {f.status === "pendente" && (
         <section className="pilot-card">
           <h2>Um convite para trocar experiências</h2>
@@ -103,7 +131,7 @@ export function Encontro({
               {f.horarios_propostos.map((h) => (
                 <button
                   className="pilot-button"
-                  disabled={busy}
+                  disabled={busy || Date.parse(h) <= Date.parse(d.agora)}
                   key={h}
                   onClick={() =>
                     void acao(
@@ -115,6 +143,14 @@ export function Encontro({
                   Aceitar · {dataHora(h)}
                 </button>
               ))}
+              {f.horarios_propostos.every(
+                (h) => Date.parse(h) <= Date.parse(d.agora),
+              ) && (
+                <p role="status">
+                  Os horários propostos já passaram. Peça à outra pessoa um novo
+                  convite com horários futuros.
+                </p>
+              )}
               <button
                 disabled={busy}
                 onClick={() => void acao(() => operar("recusar"))}

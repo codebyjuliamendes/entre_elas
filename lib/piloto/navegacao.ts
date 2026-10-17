@@ -9,6 +9,7 @@ const abas = z.enum([
   "agenda",
   "perfil",
   "lideranca",
+  "ajuda",
 ]);
 export function useNavegacaoPiloto() {
   const params = useSearchParams();

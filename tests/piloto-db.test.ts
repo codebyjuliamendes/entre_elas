@@ -1,3 +1,8 @@
+import {
+  listarRelatos,
+  relatarProblema,
+  resolverRelato,
+} from "@/lib/piloto/relatos";
 import { beforeAll, afterAll, describe, it, expect, vi } from "vitest";
 import { randomUUID } from "node:crypto";
 import { getDb, verificarErro } from "@/lib/db/client";
@@ -48,7 +53,11 @@ describe.skipIf(!enabled)(
       await getDb()
         .from("piloto_limites")
         .delete()
-        .in("chave", [chave, ...pids.map((p) => "ia:" + p)]);
+        .in("chave", [
+          chave,
+          ...pids.map((p) => "ia:" + p),
+          ...pids.map((p) => "relato:" + p),
+        ]);
       await getDb().from("profiles").delete().in("id", pids);
       vi.unstubAllEnvs();
     });
@@ -233,6 +242,84 @@ describe.skipIf(!enabled)(
       });
       verificarErro(error);
       expect(data?.every((p) => pids.includes(p.profile_id))).toBe(true);
+    });
+    it("indexa o conjunto completo com snapshot e rejeita alteração concorrente", async () => {
+      await consentirIA(pids[0], true);
+      await getDb()
+        .from("profiles")
+        .update({ interesses: ["Primeiro", "Segundo"] })
+        .eq("id", pids[0]);
+      const leitura = await getDb()
+        .from("profiles")
+        .select("*")
+        .eq("id", pids[0])
+        .single();
+      verificarErro(leitura.error);
+      const vetor = JSON.stringify([1, ...Array(767).fill(0)]); // Vetor sintético somente neste teste local.
+      const args = {
+        usuaria_id: pids[0],
+        perfil_lido: leitura.data!,
+        saberes_input: [
+          { saber: "Primeiro", embedding: vetor },
+          { saber: "Segundo", embedding: "[1,2]" },
+        ],
+      };
+      expect(
+        (await getDb().rpc("piloto_indexar_perfil", args)).error,
+      ).not.toBeNull();
+      const antes = await getDb()
+        .from("saberes")
+        .select("id")
+        .eq("profile_id", pids[0])
+        .eq("fonte", "perfil")
+        .eq("saber", "Primeiro");
+      expect(antes.data).toHaveLength(0);
+      args.saberes_input[1].embedding = vetor;
+      const r = await getDb().rpc("piloto_indexar_perfil", args);
+      verificarErro(r.error);
+      expect(r.data).toEqual({ ok: true, indexados: 2 });
+      await getDb()
+        .from("profiles")
+        .update({ interesses: ["Terceiro"] })
+        .eq("id", pids[0]);
+      expect(
+        (await getDb().rpc("piloto_indexar_perfil", args)).error?.message,
+      ).toContain("mudou");
+      const busca = await getDb().rpc("buscar_saberes_piloto", {
+        query_embedding: vetor,
+        limite: 10,
+        excluir_profile_id: pids[1],
+      });
+      verificarErro(busca.error);
+      expect(busca.data?.some((p) => p.profile_id === pids[0])).toBe(false);
+      await consentirIA(pids[0], false);
+      expect(
+        (await getDb().rpc("piloto_indexar_perfil", args)).error?.message,
+      ).toContain("Autorize");
+    });
+    it("relatos são privados, ignoram autoria forjada e só liderança pode resolver", async () => {
+      const r = await relatarProblema(pids[0], {
+        categoria: "ia",
+        descricao: "Não encontrei uma conexão para meu pedido de teste.",
+        profile_id: pids[1],
+      });
+      expect(r.profile_id).toBe(pids[0]);
+      expect(
+        (await listarRelatos(pids[0], false)).some((x) => x.id === r.id),
+      ).toBe(true);
+      expect(
+        (await listarRelatos(pids[1], false)).some((x) => x.id === r.id),
+      ).toBe(false);
+      expect(
+        (await listarRelatos(pids[1], true)).some((x) => x.id === r.id),
+      ).toBe(true);
+      await expect(
+        resolverRelato({ relato_id: r.id, resolvido: true }, false),
+      ).rejects.toMatchObject({ status: 403 });
+      expect(
+        (await resolverRelato({ relato_id: r.id, resolvido: true }, true))
+          .estado,
+      ).toBe("resolvido");
     });
   },
 );

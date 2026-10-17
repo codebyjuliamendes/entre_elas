@@ -25,7 +25,8 @@
     "test:e2e": "npm run build && playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:piloto": "npm run build && playwright test --config playwright.piloto.config.ts",
-    "verificar:piloto": "tsx --env-file-if-exists=.env.local scripts/verificar-piloto.ts"
+    "verificar:piloto": "tsx --env-file-if-exists=.env.local scripts/verificar-piloto.ts",
+    "avaliar:curadoria": "tsx --env-file-if-exists=.env.local scripts/avaliar-curadoria-piloto.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.69",

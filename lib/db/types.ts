@@ -557,6 +557,44 @@ export type Database = {
           },
         ]
       }
+      piloto_relatos: {
+        Row: {
+          categoria: string
+          created_at: string
+          descricao: string
+          estado: string
+          id: string
+          profile_id: string
+          updated_at: string
+        }
+        Insert: {
+          categoria: string
+          created_at?: string
+          descricao: string
+          estado?: string
+          id?: string
+          profile_id: string
+          updated_at?: string
+        }
+        Update: {
+          categoria?: string
+          created_at?: string
+          descricao?: string
+          estado?: string
+          id?: string
+          profile_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "piloto_relatos_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_coautoras: {
         Row: {
           created_at: string
@@ -982,6 +1020,10 @@ export type Database = {
       }
       piloto_criar_convite: {
         Args: { chave: string; dados: Json; usuaria_id: string }
+        Returns: Json
+      }
+      piloto_indexar_perfil: {
+        Args: { perfil_lido: Json; saberes_input: Json; usuaria_id: string }
         Returns: Json
       }
       piloto_provisionar: { Args: { auth_id: string }; Returns: string }

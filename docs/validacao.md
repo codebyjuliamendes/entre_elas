@@ -245,3 +245,32 @@ externos descritos no guia de ativação. Execução da pipeline remota não foi
 - Nenhuma nova migration, seed hospedado ou deploy foi executado. A usuária
   informou que aplicou as migrations no Supabase. A conferência hospedada e o
   ensaio com dois aparelhos seguem pendentes, conforme docs/operacao-banca.md.
+
+## Operação sem depender do deploy — 2026-10-17
+
+- Migration 012 aplicada somente ao banco local; tipos regenerados a partir dele.
+  O teste fornece dois vetores sintéticos locais e faz o segundo inválido: nenhuma
+  parte do conjunto é gravada. Conjunto válido grava os dois; perfil alterado
+  rejeita o snapshot antigo; consentimento revogado bloqueia nova indexação.
+  Saber removido do perfil deixa de retornar na busca do piloto.
+- Banco também verifica autoria não forjável dos relatos, isolamento entre contas,
+  acesso da liderança e bloqueio de resolução por participante. RLS permanece
+  habilitada e o acesso é pelo serviço no servidor.
+- 115 testes unitários e 23 de banco passaram. Os quatro cenários de navegador
+  do piloto passaram: incluem duas opções de horário com aceite da segunda,
+  download ICS, status de indexação pendente, relato persistido, acesso restrito
+  e resolução pela liderança. Auth e serviços remotos são simulados nestes testes.
+- Calendário cobre UTC/vinte minutos, escape e dobra UTF-8, ausência de notas,
+  pedido privado, chat/token/sala e acesso de terceiros. Horário expirado é
+  recusado mesmo se estivesse na lista de propostas.
+- `avaliar:curadoria` validou seis casos fictícios sem chamadas remotas. A variante
+  `--live` foi executada e encerrou com código 1 porque Gemini/Groq não estavam
+  configurados neste processo; não houve geração remota. Casos cobrem adequação,
+  abstenção, interesse sem domínio e instrução inserida na evidência.
+- Build e TypeScript passaram. A configuração hospedada ainda precisa receber a
+  migration 012 antes de usar indexação atômica e relatos; nenhuma mudança foi
+  aplicada automaticamente ao Supabase hospedado.
+- Regressão final da apresentação: 12 cenários Chromium passaram após o build.
+  Total desta entrega: 154 testes (115 unitários, 23 de banco, 4 do piloto e
+  12 da apresentação). A porta local foi verificada sem proxy, definindo
+  NO_PROXY=127.0.0.1,localhost; nenhum servidor anterior foi reutilizado.

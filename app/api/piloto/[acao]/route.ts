@@ -1,3 +1,9 @@
+import {
+  listarRelatos,
+  relatarProblema,
+  resolverRelato,
+} from "@/lib/piloto/relatos";
+import { lider } from "@/lib/piloto/config";
 import { resposta, corpo, type RotaAcao } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { identidadePiloto } from "@/lib/auth/piloto";
@@ -11,6 +17,12 @@ export async function POST(request: Request, ctx: RotaAcao) {
     await identidadePiloto();
     const input = await corpo(request, acao === "foto" ? 250000 : 100000);
     switch (acao) {
+      case "relatos":
+        return listarRelatos(u.id, lider((await identidadePiloto()).email));
+      case "relatar":
+        return relatarProblema(u.id, input);
+      case "resolver-relato":
+        return resolverRelato(input, lider((await identidadePiloto()).email));
       case "perfil":
         return a.salvarPerfilPiloto(input, u.id);
       case "perfil-ia":
