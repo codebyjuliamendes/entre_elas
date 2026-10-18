@@ -1,7 +1,10 @@
 # E-mails de autenticação — Entre Elas
 
-Os HTMLs usam a paleta lilás do app, logo em texto, tabelas e estilos inline,
-sem imagens, fontes externas ou scripts. Funcionam como templates do Supabase Auth.
+Os HTMLs usam a identidade rosa/coral/roxo/azul do app, wordmark em texto,
+ícone PNG, tabelas e estilos inline, sem fontes externas ou scripts.
+O ícone é carregado de `{{ .SiteURL }}/icon-192.png`; configure Site URL com a
+URL pública do aplicativo. Se o cliente bloquear imagens, o nome e todos os
+controles de acesso continuam disponíveis. Funcionam como templates do Supabase Auth.
 
 | Supabase → Authentication → Email Templates | Arquivo | Assunto sugerido |
 | --- | --- | --- |

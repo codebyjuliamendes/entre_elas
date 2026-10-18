@@ -1,8 +1,10 @@
+import { coresMarca } from "@/lib/identidade";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
 import "./workspace.css";
+import "./identidade.css";
 import { PwaRegistration } from "@/components/PwaRegistration";
 export const metadata: Metadata = {
   title: "Entre Elas · Saber que conecta",
@@ -15,12 +17,12 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Entre Elas",
   },
-  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+  icons: { icon: "/icon.svg", apple: "/icon-192.png" },
 };
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#7352c7",
+  themeColor: coresMarca.azul,
 };
 export default function Layout({ children }: { children: ReactNode }) {
   return (

@@ -9,6 +9,7 @@ import {
 import type { DadosPiloto } from "@/lib/piloto/dados";
 import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
+import { Marca } from "@/components/Marca";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
 import { Ajuda } from "./Ajuda";
@@ -213,6 +214,7 @@ export function Piloto() {
   if (!d.conta.onboarding)
     return (
       <main className="pilot-welcome">
+        <Marca className="welcome-brand" />
         <span className="eyebrow">Boas-vindas · {passo + 1} de 3</span>
         <h1>
           {
@@ -265,7 +267,7 @@ export function Piloto() {
     <div className="pilot-app">
       <header>
         <a href="/piloto" className="pilot-brand">
-          entreelas.
+          <Marca />
         </a>
         <span>Piloto · dados salvos no servidor</span>
         <button

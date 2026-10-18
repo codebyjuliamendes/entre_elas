@@ -1,3 +1,4 @@
+import { coresMarca } from "@/lib/identidade";
 import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -14,8 +15,8 @@ export default function manifest(): MetadataRoute.Manifest {
       { name: "Minha agenda", url: "/agenda" },
     ],
     display: "standalone",
-    background_color: "#faf9fc",
-    theme_color: "#7352c7",
+    background_color: coresMarca.fundo,
+    theme_color: coresMarca.azul,
     lang: "pt-BR",
     icons: [
       {

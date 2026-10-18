@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { Marca } from "./Marca";
 import { usePathname } from "next/navigation";
 import {
   House,
@@ -9,7 +10,6 @@ import {
   MessageCircle,
   HeartHandshake,
   Settings,
-  Sparkles,
 } from "lucide-react";
 import { Avatar } from "./Avatar";
 import { ana } from "@/lib/demo/catalogo";
@@ -26,11 +26,7 @@ export function Navigation() {
   return (
     <aside className="workspace-sidebar">
       <Link href="/" className="sidebar-brand">
-        <span className="brand-icon">
-          <Sparkles size={23} />
-        </span>
-        entre<strong>elas</strong>
-        <i />
+        <Marca />
       </Link>
       <div className="sidebar-intro">
         <span className="eyebrow">NOSSO ESPAÇO</span>

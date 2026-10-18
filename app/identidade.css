@@ -1,0 +1,363 @@
+/* Identidade reconstruída a partir do kit raster fornecido pela designer. */
+body {
+  background: var(--canvas);
+}
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--brand-azul);
+  white-space: nowrap;
+  line-height: 1;
+}
+.marca-simbolo {
+  display: block;
+  flex-shrink: 0;
+}
+.marca-nome {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+}
+.marca-nome > span {
+  font-weight: 400;
+}
+.marca-nome > b {
+  color: var(--brand-coral);
+}
+.wordmark .marca-simbolo {
+  color: var(--brand-roxo);
+}
+.pilot-brand {
+  text-decoration: none;
+}
+.pilot-app > header {
+  padding: 10px 0 24px;
+  border-bottom: 1px solid var(--line);
+}
+.pilot-app > header > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.pilot-app nav {
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: #fff0f7;
+  border-radius: 20px;
+}
+.pilot-app nav button {
+  border-color: transparent;
+  background: transparent;
+}
+.pilot-app nav button[aria-current] {
+  background: var(--brand-azul);
+  color: white;
+}
+.pilot-app h1,
+.pilot-app h2,
+.pilot-welcome h1,
+.pilot-login h1,
+.pilot-login h2 {
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+.pilot-app h1 {
+  font-size: clamp(28px, 3vw, 42px);
+  max-width: 24ch;
+}
+.pilot-app .pilot-button,
+.pilot-welcome .pilot-button,
+.pilot-login .pilot-button {
+  border-color: var(--brand-roxo);
+  background: var(--brand-roxo);
+  color: white;
+  font-weight: 700;
+  min-height: 48px;
+  box-shadow: 0 5px 14px #a32fa618;
+}
+.pilot-app .pilot-button:hover:not(:disabled),
+.pilot-welcome .pilot-button:hover:not(:disabled),
+.pilot-login .pilot-button:hover:not(:disabled) {
+  background: var(--purple-dark);
+}
+.pilot-card {
+  box-shadow: 0 4px 20px #100c4d03;
+}
+.pilot-app details > summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 12px 0;
+}
+.pilot-app blockquote {
+  border-left: 3px solid var(--brand-rosa);
+  padding-left: 16px;
+  margin-left: 0;
+  color: #514761;
+}
+.pilot-app .eyebrow,
+.pilot-welcome .eyebrow {
+  color: #76217b;
+}
+.pilot-attention {
+  background: linear-gradient(120deg, #ffe8f3, #fff2f0);
+  border-color: #f1c9df;
+}
+.pilot-attention-item {
+  border-top: 3px solid var(--brand-rosa);
+}
+.welcome-brand {
+  margin-bottom: 36px;
+}
+.pilot-welcome {
+  background: white;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--brand-coral);
+  border-radius: 24px;
+  color: var(--ink);
+}
+.pilot-welcome h1 {
+  max-width: 18ch;
+  font-size: clamp(30px, 5vw, 46px);
+}
+.pilot-login.brand-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
+  max-width: 1120px;
+  min-height: 720px;
+  margin: 40px auto;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background: white;
+  overflow: hidden;
+  box-shadow: 0 24px 90px #100c4d0b;
+}
+.login-story {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 40px;
+  gap: 28px;
+  background: var(--brand-azul);
+  color: var(--brand-rosa-claro);
+}
+.login-story::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 48% -90% -90% -30%;
+  background: radial-gradient(ellipse, #a32fa66e, transparent 65%);
+}
+.login-story .marca {
+  color: var(--brand-rosa-claro);
+}
+.login-story .marca-nome > b {
+  color: var(--brand-rosa);
+}
+.login-story-copy {
+  margin-top: 14px;
+}
+.login-story .eyebrow {
+  color: var(--brand-rosa-claro);
+  letter-spacing: 0.18em;
+  font-size: 11px;
+}
+.login-story h1 {
+  margin: 18px 0;
+  font-size: clamp(38px, 4vw, 52px);
+  max-width: 14ch;
+  font-weight: 650;
+}
+.login-story-copy > p {
+  font-size: 16px;
+  max-width: 29ch;
+  line-height: 1.7;
+  margin: 0;
+}
+.login-flare {
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  width: 260px;
+  height: 230px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--brand-gradient);
+  color: var(--brand-rosa-claro);
+  transform: rotate(-9deg);
+}
+.login-flare > svg {
+  width: 250px;
+  height: 230px;
+  transform: rotate(9deg);
+}
+.login-story-footer {
+  margin-top: auto;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.login-content {
+  align-self: center;
+  padding: 48px;
+  color: var(--ink);
+}
+.login-content > .eyebrow {
+  color: #76217b;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.login-content h2 {
+  font-size: 36px;
+  margin: 16px 0;
+  font-weight: 700;
+}
+.login-content > p {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.login-content label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 28px;
+}
+.login-content input {
+  min-height: 52px;
+  margin-top: 8px;
+}
+.login-content .pilot-button {
+  width: 100%;
+}
+.login-content > p.input-hint {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.login-content > .login-signature {
+  margin-top: 32px;
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  font-size: 12px;
+  color: #76217b;
+}
+.pilot-login :is(button, a, input):focus-visible,
+.pilot-welcome :is(button, a, input, textarea):focus-visible {
+  outline: 3px solid var(--brand-roxo);
+  outline-offset: 4px;
+}
+/* A apresentação usa a mesma identidade; seus rótulos de simulação permanecem. */
+.hero {
+  background: linear-gradient(125deg, #100c4d, #76217b 90%);
+}
+.hero h2 em,
+.hero-top,
+.hero-description {
+  color: var(--brand-rosa-claro);
+}
+.hero:after {
+  background: #ef59a418;
+}
+.hero-textarea::placeholder {
+  color: #ffe6f2;
+}
+.hero-textarea:focus {
+  border-color: var(--brand-rosa-claro);
+}
+@media (min-width: 1100px) {
+  body {
+    background:
+      radial-gradient(ellipse at 80% 0%, #ffe8f3, transparent 65%),
+      var(--canvas);
+  }
+  .workspace-sidebar {
+    background: linear-gradient(160deg, #100c4d, #35104f 85%, #76217b);
+    border-color: #100c4d;
+  }
+  .sidebar-brand .marca {
+    color: var(--brand-rosa-claro);
+    gap: 5px;
+  }
+  .sidebar-brand .marca-nome {
+    font-size: 25px;
+  }
+  .sidebar-brand .marca-simbolo {
+    width: 34px;
+  }
+}
+@media (max-width: 760px) {
+  .pilot-login.brand-login {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    margin: 12px;
+    border-radius: 24px;
+  }
+  .login-story {
+    padding: 28px;
+    gap: 22px;
+  }
+  .login-story-copy {
+    margin: 0;
+  }
+  .login-story h1 {
+    font-size: 36px;
+    max-width: 16ch;
+    margin: 12px 0;
+  }
+  .login-story-copy > p {
+    max-width: 32ch;
+    font-size: 14px;
+  }
+  .login-flare {
+    position: absolute;
+    right: -50px;
+    bottom: -80px;
+    opacity: 0.12;
+    z-index: -1;
+  }
+  .login-story-footer {
+    display: none;
+  }
+  .login-content {
+    padding: 28px;
+  }
+  .login-content h2 {
+    font-size: 30px;
+  }
+  .pilot-app nav {
+    padding: 6px;
+    gap: 4px;
+  }
+  .pilot-app nav button {
+    padding: 10px 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+@media (max-width: 480px) {
+  .app-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .wordmark .marca {
+    gap: 6px;
+  }
+  .wordmark .marca-nome {
+    font-size: 24px;
+  }
+  .wordmark .marca-simbolo {
+    width: 32px;
+    height: 32px;
+  }
+  .app-header .global-search {
+    margin-right: 4px;
+  }
+  .header-actions {
+    gap: 10px;
+  }
+}

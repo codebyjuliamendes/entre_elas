@@ -1,0 +1,12 @@
+/** Cores aproximadas do kit enviado como imagem; não são valores oficiais da designer. */
+export const coresMarca = {
+  rosaClaro: "#ffd4e8",
+  coral: "#ff514b",
+  rosa: "#ef59a4",
+  roxo: "#a32fa6",
+  azul: "#100c4d",
+  fundo: "#fff8fb",
+} as const;
+/** Reconstrução vetorial da referência, com recortes vazados e raios assimétricos. */
+export const tracoFaisca =
+  "M145 28Q150 12 156 29L175 87Q178 96 186 91L237 62Q247 57 245 67L202 109L286 28L279 73L327 86L239 117L193 153L280 125Q293 120 291 131L213 172L286 283L201 249L180 291L175 223L155 290Q149 301 144 286L122 217L59 258Q49 265 54 252L97 201L34 160Q23 152 39 151L100 145L74 103Q67 91 80 97L126 122ZM153 116L167 151L209 142L183 165L210 187L180 187L258 253L174 204L176 278L161 206L159 201L139 226L142 190L111 196L128 175L107 157L142 159ZM0 163L61 190L14 244L27 196Z";

@@ -1,5 +1,5 @@
 /* Cache exclusivo de recursos públicos. APIs, ações POST e páginas autenticadas nunca entram no cache. */
-const CACHE = "entre-elas-public-v1";
+const CACHE = "entre-elas-public-v2-identidade";
 const ESSENCIAIS = ["/offline", "/icon.svg", "/icon-192.png", "/icon-512.png"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(ESSENCIAIS)));

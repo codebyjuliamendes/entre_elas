@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { Marca } from "./Marca";
 import { useState, type ReactNode } from "react";
 import {
   Bell,
@@ -38,7 +39,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Navigation />
       <div className="desktop-note" aria-hidden="true">
         <span className="desktop-wordmark">
-          <Sparkles size={20} /> entre elas
+          <Marca />
         </span>
         <span>
           Quando uma cresce,
@@ -51,13 +52,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </a>
         <header className="app-header">
           <Link href="/" className="wordmark" aria-label="Entre Elas — início">
-            <span className="brand-icon">
-              <Sparkles size={21} fill="currentColor" />
-            </span>
-            <span>
-              entre<span className="brand-light">elas</span>
-              <i />
-            </span>
+            <Marca />
           </Link>
           <SearchDialog />
           <div className="header-actions">

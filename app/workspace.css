@@ -1,8 +1,8 @@
 /* Espaço de trabalho · experiência 2.0 */
 :root {
-  --muted: #756b80;
-  --line: #e8e2ee;
-  --canvas: #faf8fc;
+  --muted: #68627a;
+  --line: #f0d6e5;
+  --canvas: #fff8fb;
 }
 .workspace-sidebar {
   display: none;
@@ -1151,7 +1151,7 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 24px;
-  color: #302638;
+  color: var(--ink);
   line-height: 1.6;
 }
 .pilot-app header {
@@ -1165,7 +1165,7 @@
 .pilot-brand {
   font-size: 30px;
   font-weight: 700;
-  color: #654296;
+  color: var(--purple);
 }
 .pilot-app nav {
   display: flex;
@@ -1174,17 +1174,17 @@
   margin: 20px 0 32px;
 }
 .pilot-app nav button[aria-current] {
-  background: #654296;
+  background: var(--purple);
   color: white;
 }
 .pilot-app button,
 .pilot-welcome button,
 .pilot-login button {
   padding: 10px 16px;
-  border: 1px solid #d5c4e4;
+  border: 1px solid var(--line);
   border-radius: 14px;
   background: white;
-  color: #593d76;
+  color: var(--ink);
   cursor: pointer;
   line-height: 1.4;
 }
@@ -1198,7 +1198,7 @@
 .pilot-welcome .pilot-button,
 .pilot-login .pilot-button {
   display: block;
-  background: #6a45a0;
+  background: var(--purple);
   color: white;
   margin: 16px 0;
 }
@@ -1218,10 +1218,10 @@
   width: 100%;
   max-width: 100%;
   padding: 12px;
-  border: 1px solid #d5c4e4;
+  border: 1px solid var(--line);
   border-radius: 12px;
   background: white;
-  color: #302638;
+  color: var(--ink);
   font: inherit;
   box-sizing: border-box;
 }
@@ -1236,7 +1236,7 @@
   box-sizing: border-box;
   margin: 20px 0;
   padding: 24px;
-  border: 1px solid #e2d8ed;
+  border: 1px solid var(--line);
   border-radius: 24px;
   background: white;
   text-align: left;
@@ -1280,7 +1280,7 @@
 }
 .pilot-app footer {
   font-size: 12px;
-  color: #72627e;
+  color: var(--muted);
   margin: 32px 0;
 }
 @media (max-width: 600px) {
@@ -1308,9 +1308,9 @@
 .pilot-attention {
   margin: 28px 0;
   padding: clamp(18px, 3vw, 30px);
-  border: 1px solid #dfd1ee;
+  border: 1px solid var(--line);
   border-radius: 24px;
-  background: linear-gradient(125deg, #f5edfc, #fff9ef);
+  background: linear-gradient(125deg, #fff0f7, #ffe6ed);
 }
 .pilot-attention-heading {
   display: flex;
@@ -1325,22 +1325,22 @@
   align-items: center;
   gap: 8px;
 }
-.pilot-impact { max-width: 300px; font-size: 14px; color: #59446b; }
+.pilot-impact { max-width: 300px; font-size: 14px; color: var(--muted); }
 .pilot-attention-item {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-  border: 1px solid #dfd1ee;
+  border: 1px solid var(--line);
   border-radius: 18px;
   background: #fff;
-  color: #302638;
+  color: var(--ink);
   text-decoration: none;
   overflow-wrap: anywhere;
 }
-.pilot-attention-item:hover { border-color: #6a45a0; }
+.pilot-attention-item:hover { border-color: var(--purple); }
 .pilot-attention-item > span:not(.eyebrow) { font-size: 14px; }
 .pilot-app :is(button, a, input, select, textarea):focus-visible {
-  outline: 3px solid #7547a8;
+  outline: 3px solid var(--purple);
   outline-offset: 4px;
 }

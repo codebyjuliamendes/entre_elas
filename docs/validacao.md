@@ -274,3 +274,20 @@ externos descritos no guia de ativação. Execução da pipeline remota não foi
   Total desta entrega: 154 testes (115 unitários, 23 de banco, 4 do piloto e
   12 da apresentação). A porta local foi verificada sem proxy, definindo
   NO_PROXY=127.0.0.1,localhost; nenhum servidor anterior foi reutilizado.
+
+## Identidade visual da designer — 2026-10-17
+
+- Símbolo reconstruído em vetor e assets SVG/PNG gerados localmente; nenhuma
+  dependência foi instalada e não houve edição de dados ou contratos do piloto.
+- Build/TypeScript passaram. 115 testes unitários, 12 cenários da apresentação e
+  quatro do piloto passaram: 131 testes executados nesta alteração. Os testes de
+  banco separados não foram repetidos porque não houve alteração de domínio/SQL.
+- Login inspecionado em Chromium em 320, 390, 768 e 1440 pixels, sem rolagem
+  horizontal. O botão calculado usa rgb(163,47,166) com branco (5,98:1).
+  Capturas desktop/mobile e dos dois e-mails em `.local/identidade/`.
+- Botão e dois links alternativos mantêm as três ocorrências de ConfirmationURL
+  em cada template. O ícone usa SiteURL e tem fallback textual se bloqueado.
+  Previews locais usam URL fictícia e imagem embutida apenas na captura; não
+  houve envio, atualização dos templates hospedados ou validação SMTP.
+- PWA recebe ícones 192/512, cor do navegador azul e nova versão do cache público.
+  As restrições de cache de APIs e páginas autenticadas foram preservadas.
