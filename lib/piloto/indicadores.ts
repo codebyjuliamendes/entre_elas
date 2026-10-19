@@ -31,7 +31,10 @@ export async function indicadoresPiloto(email: string) {
       avaliacoes: [],
     });
   const [perfis, fs, ss, ps, es, msgs, avs] = await Promise.all([
-    db.from("profiles").select("id,area,regional").in("id", ids),
+    db
+      .from("profiles")
+      .select("id,area,regional,interesses,objetivos")
+      .in("id", ids),
     db
       .from("faiscas")
       .select("id,solicitante_id,convidada_id,status")

@@ -448,3 +448,18 @@
     height: 40px;
   }
 }
+
+/* Acesso à demonstração isolada (outra implantação, em modo apresentação). */
+.login-demo {
+  display: block;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--linha);
+  color: var(--brand-azul);
+  font-weight: 600;
+  text-decoration: none;
+}
+.login-demo:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

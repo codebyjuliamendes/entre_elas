@@ -201,6 +201,11 @@ export function Login() {
           poderá autorizar o envio dos seus textos. Não informe dados sensíveis,
           confidenciais ou de terceiros.
         </p>
+        {process.env.NEXT_PUBLIC_DEMO_URL && (
+          <a className="login-demo" href={process.env.NEXT_PUBLIC_DEMO_URL}>
+            Conhecer a demonstração sem cadastro →
+          </a>
+        )}
         <p className="login-signature">
           Uma Faísca. Vinte minutos. Novas possibilidades.
         </p>

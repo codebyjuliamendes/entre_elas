@@ -118,6 +118,57 @@ export function PainelLideranca() {
               }
             />
           </div>
+          <h2>Mapa de saberes e lacunas</h2>
+          <p>
+            {m.mapa.objetivos_sem_par} de {m.mapa.objetivos} objetivos de
+            aprendizagem ainda não encontram ninguém na rede que ofereça o tema.
+          </p>
+          <div className="pilot-grid">
+            <article className="pilot-card">
+              <h3>O que a rede mais oferece</h3>
+              <ul>
+                {m.mapa.oferta.map((o) => (
+                  <li key={o.saber}>
+                    {o.saber} · {o.pessoas}{" "}
+                    {o.pessoas === 1 ? "pessoa" : "pessoas"}
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article className="pilot-card">
+              <h3>Temas procurados sem oferta</h3>
+              {m.mapa.temas_sem_par.length ? (
+                <ul>
+                  {m.mapa.temas_sem_par.map((t) => (
+                    <li key={t.tema}>
+                      {t.tema} · {t.pessoas} pessoas
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Nenhum tema citado por duas ou mais pessoas.</p>
+              )}
+              <p className="input-hint">
+                Indica onde vale formar ou convidar quem possa ensinar.
+              </p>
+            </article>
+            <article className="pilot-card">
+              <h3>Saberes com uma só pessoa</h3>
+              <ul>
+                {m.mapa.concentrados.map((c) => (
+                  <li key={c}>{c}</li>
+                ))}
+              </ul>
+              <p className="input-hint">
+                Conhecimento concentrado: risco de se perder se ela sair.
+              </p>
+            </article>
+          </div>
+          <p className="input-hint">
+            Estimativa por palavras-chave dos perfis completos. Objetivos
+            individuais não são exibidos; temas só aparecem quando citados por
+            duas ou mais pessoas.
+          </p>
           <p className="input-hint">
             Somente contas do piloto; conteúdo do seed e demonstrações são
             excluídos. {m.inscricoes} inscrições em eventos (não representam

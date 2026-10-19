@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   avaliacaoFaiscaInput,
+  mapaDeSaberes,
   consolidarIndicadores,
   resumoParaApresentacao,
 } from "@/lib/piloto/metricas";
@@ -70,5 +71,20 @@ describe("Indicadores do piloto", () => {
     expect(avaliacaoFaiscaInput.parse(ok)).toEqual(ok);
     expect(() => avaliacaoFaiscaInput.parse({ ...ok, utilidade: 6 })).toThrow();
     expect(() => avaliacaoFaiscaInput.parse({ ...ok, utilidade: 2.5 })).toThrow();
+  });
+});
+describe("Mapa de saberes do piloto", () => {
+  it("mostra oferta, saberes concentrados e lacunas sem expor objetivos", () => {
+    const m = mapaDeSaberes([
+      { id: A, area: "x", regional: "y", interesses: ["Gestão de projetos", "Excel"], objetivos: ["Aprender negociação com fornecedores"] },
+      { id: B, area: "x", regional: "y", interesses: ["Gestão de projetos"], objetivos: ["Melhorar negociação de contratos", "Aprender Excel avançado"] },
+      { id: C, area: "x", regional: "y", interesses: ["Segurança em campo"], objetivos: ["Liderar projetos maiores"] },
+    ]);
+    expect(m.oferta[0]).toEqual({ saber: "Gestão de projetos", pessoas: 2 });
+    expect(m.concentrados).toEqual(["Excel", "Segurança em campo"]);
+    expect(m.objetivos).toBe(4);
+    // Negociação ninguém oferece; Excel e projetos têm quem ofereça.
+    expect(m.objetivos_sem_par).toBe(2);
+    expect(m.temas_sem_par).toEqual([{ tema: "negociação", pessoas: 2 }]);
   });
 });
