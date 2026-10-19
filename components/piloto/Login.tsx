@@ -145,13 +145,19 @@ export function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          <label className="form-label" htmlFor="senha" style={{ marginTop: "1rem" }}>
-            Sua senha
+          <label
+            className="form-label"
+            htmlFor="senha"
+            style={{ marginTop: "1rem" }}
+          >
+            {modo === "cadastrar" ? "Crie uma senha" : "Sua senha"}
           </label>
           <input
             id="senha"
             type="password"
-            autoComplete={modo === "entrar" ? "current-password" : "new-password"}
+            autoComplete={
+              modo === "entrar" ? "current-password" : "new-password"
+            }
             required
             minLength={6}
             maxLength={128}
@@ -160,7 +166,11 @@ export function Login() {
             onChange={(e) => setSenha(e.target.value)}
           />
 
-          <button className="pilot-button" disabled={busy} style={{ marginTop: "1.25rem" }}>
+          <button
+            className="pilot-button"
+            disabled={busy}
+            style={{ marginTop: "1.25rem" }}
+          >
             {busy
               ? "Aguarde…"
               : modo === "entrar"
@@ -181,7 +191,7 @@ export function Login() {
               textDecoration: "underline",
               fontSize: "0.85rem",
               cursor: "pointer",
-              padding: "0.5rem"
+              padding: "0.5rem",
             }}
           >
             {modo === "entrar"
@@ -192,7 +202,8 @@ export function Login() {
 
         {params.get("erro") && (
           <p role="alert">
-            Link inválido ou expirado. Entre com sua senha ou solicite outro link.
+            Link inválido ou expirado. Entre com sua senha ou solicite outro
+            link.
           </p>
         )}
         <p role="status">{status}</p>

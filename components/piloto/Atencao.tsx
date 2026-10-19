@@ -61,8 +61,8 @@ export function Atencao({ dados: d }: { dados: DadosPiloto }) {
       )}
       {!itens.length && (
         <p>
-          <IconeFaisca size={18} aria-hidden="true" /> Uma boa pergunta pode virar
-          conhecimento para toda a rede.
+          <IconeFaisca size={18} aria-hidden="true" /> Uma boa pergunta pode
+          virar conhecimento para toda a rede.
         </p>
       )}
     </section>

@@ -10,7 +10,9 @@ import type { DadosPiloto } from "@/lib/piloto/dados";
 import type { Faisca } from "@/lib/schemas/entities";
 import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
-import { Marca } from "@/components/Marca";
+import { Marca, SimboloFaisca } from "@/components/Marca";
+import { motion } from "framer-motion";
+import { Avatar } from "./Visual";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
 import { PainelLideranca } from "./PainelLideranca";
@@ -364,32 +366,23 @@ export function Piloto() {
           <>
             {tab === "faiscas" && (
               <>
-                <h1>
-                  Qual é a sua próxima Faísca, {perfil.nome.split(" ")[0]}?
-                </h1>
-                <p>
-                  Uma conversa de vinte minutos com alguém desta rede. O convite
-                  depende da resposta da outra pessoa.
-                </p>
-                <Atencao dados={d} />
-                <form
-                  className="pilot-card"
-                  onSubmit={convidar}
-                  aria-busy={busy}
-                >
-                  <span className="eyebrow">
-                    Comece uma troca de 20 minutos
-                  </span>
-                  <h2>Do seu desafio a uma conexão</h2>
+                <section className="pilot-hero" aria-labelledby="hero-titulo">
+                  <SimboloFaisca
+                    degrade
+                    size={460}
+                    className="pilot-hero-simbolo"
+                  />
+                  <span className="eyebrow">Uma conversa de 20 minutos</span>
+                  <h1 id="hero-titulo">
+                    Qual é a sua próxima Faísca, {perfil.nome.split(" ")[0]}?
+                  </h1>
                   <p>
-                    Conte a situação, o que está difícil e o que quer levar da
-                    conversa. Quanto mais concreto o pedido, mais útil a
-                    curadoria.
+                    Conte o desafio com as suas palavras. A curadoria encontra
+                    quem já viveu algo parecido e mostra por quê.
                   </p>
                   <label htmlFor="pedido-real">O que você quer aprender?</label>
                   <textarea
                     id="pedido-real"
-                    required
                     minLength={5}
                     maxLength={1500}
                     value={pedido}
@@ -466,39 +459,142 @@ export function Piloto() {
                     explica cada indicação com evidências. É uma sugestão para
                     você avaliar; a conversa depende do aceite da outra pessoa.
                   </p>
-                  {buscou && indicacoes.length === 0 && (
-                    <p role="status" className="pilot-card">
-                      Ainda não encontramos uma indicação para este pedido.
-                      Tente descrever uma habilidade específica ou escolha uma
-                      pessoa abaixo. A rede cresce conforme as participantes
-                      completam e indexam seus perfis.
+                </section>
+                {buscou && indicacoes.length === 0 && (
+                  <p role="status" className="pilot-card">
+                    Ainda não encontramos uma indicação para este pedido. Tente
+                    descrever uma habilidade específica ou escolha uma pessoa
+                    abaixo. A rede cresce conforme as participantes completam e
+                    indexam seus perfis.
+                  </p>
+                )}
+                {indicacoes.length > 0 && (
+                  <section
+                    className="pilot-indicacoes"
+                    aria-labelledby="indicacoes-titulo"
+                  >
+                    <h2 id="indicacoes-titulo">Sua Faísca pode estar aqui</h2>
+                    <p className="input-hint">
+                      Cada indicação mostra a experiência que a motivou. Quem
+                      decide é você.
+                    </p>
+                    <div className="pilot-indicacoes-grade">
+                      {indicacoes.map((i, n) => {
+                        const p = d.pessoas.find((x) => x.id === i.profile_id);
+                        return (
+                          <motion.article
+                            className="pilot-indicacao"
+                            key={i.profile_id}
+                            data-escolhida={
+                              destino === i.profile_id || undefined
+                            }
+                            initial={{ opacity: 0, y: 28 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                              delay: n * 0.18,
+                              duration: 0.5,
+                              ease: "easeOut",
+                            }}
+                          >
+                            <div className="pilot-indicacao-topo">
+                              <Avatar
+                                id={i.profile_id}
+                                nome={pessoa(i.profile_id)}
+                                foto={d.fotos[i.profile_id]}
+                                tamanho={56}
+                              />
+                              <div>
+                                <h3>{pessoa(i.profile_id)}</h3>
+                                {p && (
+                                  <small>
+                                    {p.cargo} · {p.regional}
+                                  </small>
+                                )}
+                              </div>
+                            </div>
+                            <p>{i.motivo}</p>
+                            {i.evidencias.map((ev) => (
+                              <blockquote key={ev}>{ev}</blockquote>
+                            ))}
+                            <button
+                              type="button"
+                              className="pilot-escolher"
+                              onClick={() => {
+                                setDestino(i.profile_id);
+                                document
+                                  .getElementById("destino-real")
+                                  ?.scrollIntoView({
+                                    behavior: "smooth",
+                                    block: "center",
+                                  });
+                              }}
+                            >
+                              {destino === i.profile_id
+                                ? "Pessoa escolhida ✓"
+                                : "Quero conversar com ela"}
+                            </button>
+                          </motion.article>
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
+                <Atencao dados={d} />
+                <section
+                  className="pilot-card pilot-forum"
+                  aria-labelledby="forum-titulo"
+                >
+                  <div className="pilot-forum-topo">
+                    <div>
+                      <span className="eyebrow">Fórum da rede</span>
+                      <h2 id="forum-titulo">O que a rede está conversando</h2>
+                    </div>
+                    <button type="button" onClick={() => setTab("comunidades")}>
+                      Ver o fórum completo →
+                    </button>
+                  </div>
+                  {d.posts.length ? (
+                    <ul>
+                      {d.posts.slice(0, 3).map((p) => (
+                        <li key={p.id}>
+                          <Avatar
+                            id={p.autora_id}
+                            nome={pessoa(p.autora_id)}
+                            foto={d.fotos[p.autora_id]}
+                            tamanho={40}
+                          />
+                          <div>
+                            <small>
+                              {pessoa(p.autora_id)} ·{" "}
+                              {p.tipo === "dica" ? "Dica" : "Discussão"}
+                            </small>
+                            <strong>{p.titulo}</strong>
+                            <p>{p.corpo}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>
+                      Ainda não há conversas.{" "}
+                      <button
+                        type="button"
+                        className="pilot-link"
+                        onClick={() => setTab("comunidades")}
+                      >
+                        Comece a primeira no fórum
+                      </button>
+                      .
                     </p>
                   )}
-                  {indicacoes.length > 0 && (
-                    <section>
-                      <h2>Conexões sugeridas</h2>
-                      {indicacoes.map((i) => (
-                        <article className="pilot-card" key={i.profile_id}>
-                          <h3>{pessoa(i.profile_id)}</h3>
-                          <p>{i.motivo}</p>
-                          <span className="eyebrow">
-                            Evidências usadas na indicação
-                          </span>
-                          {i.evidencias.map((ev) => (
-                            <blockquote key={ev}>{ev}</blockquote>
-                          ))}
-                          <button
-                            type="button"
-                            onClick={() => setDestino(i.profile_id)}
-                          >
-                            {destino === i.profile_id
-                              ? "Pessoa selecionada ✓"
-                              : "Escolher esta pessoa"}
-                          </button>
-                        </article>
-                      ))}
-                    </section>
-                  )}
+                </section>
+                <form
+                  className="pilot-card pilot-convite"
+                  onSubmit={convidar}
+                  aria-busy={busy}
+                >
+                  <span className="eyebrow">Convite</span>
+                  <h2>Combine a sua Faísca</h2>
                   <label htmlFor="destino-real">
                     Com quem você quer conversar?
                   </label>
@@ -594,9 +690,17 @@ export function Piloto() {
                       enviar, a pessoa decide na própria conta.
                     </p>
                   )}
+                  {pedido.trim().length < 5 && (
+                    <p className="input-hint">
+                      Escreva o seu pedido no início da página para enviar o
+                      convite.
+                    </p>
+                  )}
                   <button
                     className="pilot-button"
-                    disabled={busy || !destino || !online}
+                    disabled={
+                      busy || !destino || !online || pedido.trim().length < 5
+                    }
                   >
                     Enviar convite
                   </button>
@@ -611,6 +715,25 @@ export function Piloto() {
                     key={f.id}
                     onClick={() => setEncontro(f.id)}
                   >
+                    <Avatar
+                      id={
+                        f.solicitante_id === perfil.id
+                          ? f.convidada_id
+                          : f.solicitante_id
+                      }
+                      nome={pessoa(
+                        f.solicitante_id === perfil.id
+                          ? f.convidada_id
+                          : f.solicitante_id,
+                      )}
+                      foto={
+                        d.fotos[
+                          f.solicitante_id === perfil.id
+                            ? f.convidada_id
+                            : f.solicitante_id
+                        ]
+                      }
+                    />
                     <strong>
                       {pessoa(
                         f.solicitante_id === perfil.id
@@ -637,17 +760,13 @@ export function Piloto() {
                   {d.pessoas
                     .filter((p) => p.id !== perfil.id)
                     .map((p) => (
-                      <article className="pilot-card" key={p.id}>
-                        {d.fotos[p.id] && (
-                          <Image
-                            width={96}
-                            height={96}
-                            unoptimized
-                            className="pilot-avatar"
-                            src={d.fotos[p.id]!}
-                            alt={`Foto de ${p.nome}`}
-                          />
-                        )}
+                      <article className="pilot-card pilot-pessoa" key={p.id}>
+                        <Avatar
+                          id={p.id}
+                          nome={p.nome}
+                          foto={d.fotos[p.id]}
+                          tamanho={64}
+                        />
                         <h2>{p.nome}</h2>
                         <p>
                           {p.cargo} · {p.regional}
