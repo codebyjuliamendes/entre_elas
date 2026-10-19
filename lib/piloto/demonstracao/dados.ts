@@ -417,7 +417,7 @@ export function criarDemonstracao(agora = new Date()): EstadoDemonstracao {
       },
       publicacao_autorizada_por: [RENATA],
       stream_channel_id: "demonstracao",
-      daily_room_url: "https://demonstracao.entreelas.app/sala",
+      daily_room_url: null,
     }),
     faisca(105, {
       solicitante_id: ANA,
@@ -448,7 +448,7 @@ export function criarDemonstracao(agora = new Date()): EstadoDemonstracao {
       },
       publicacao_autorizada_por: [ANA, JULIANA],
       stream_channel_id: "demonstracao",
-      daily_room_url: "https://demonstracao.entreelas.app/sala",
+      daily_room_url: null,
     }),
     faisca(106, {
       solicitante_id: ANA,

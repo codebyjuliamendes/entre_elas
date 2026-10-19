@@ -345,7 +345,7 @@ export function Piloto({
             </button>
             {demonstracao ? (
               <a className="pilot-demo-cta" href="/entrar?modo=cadastrar">
-                Criar minha conta
+                Criar <span>minha </span>conta
               </a>
             ) : (
               <button
@@ -926,9 +926,13 @@ export function Piloto({
                     alt="Minha foto de perfil"
                   />
                 )}
-                <label htmlFor="foto-piloto">Trocar foto</label>
+                {/* Rótulo em português no lugar do botão nativo do navegador. */}
+                <label htmlFor="foto-piloto" className="pilot-foto-botao">
+                  {d.fotos[perfil.id] ? "Trocar foto" : "Adicionar foto"}
+                </label>
                 <input
                   id="foto-piloto"
+                  className="sr-only"
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
                   disabled={busy}

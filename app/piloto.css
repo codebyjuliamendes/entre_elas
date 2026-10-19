@@ -1051,3 +1051,53 @@ body:has(.pilot-app) {
 .aviso button {
   margin-left: 4px;
 }
+
+/* Revisão no celular: textos de apoio legíveis, botão de foto em português
+   e topo em uma linha só. */
+.pilot-app .input-hint {
+  font-size: 13px;
+  line-height: 1.55;
+}
+.pilot-app label.pilot-foto-botao {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 8px 8px 8px 0;
+  padding: 0 20px;
+  border: 1.5px solid var(--brand-rosa);
+  border-radius: 999px;
+  background: #fff5f9;
+  color: var(--brand-azul);
+  font-weight: 700;
+  cursor: pointer;
+}
+.pilot-app label.pilot-foto-botao:hover,
+.pilot-app label.pilot-foto-botao:has(+ input:focus-visible) {
+  background: #ffe6f1;
+  outline: 2px solid var(--brand-rosa);
+  outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .pilot-app .pilot-topo header {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 14px 0 4px;
+    margin-bottom: 8px;
+  }
+  .pilot-app .pilot-topo .pilot-brand {
+    flex: none;
+  }
+  .pilot-topo .marca-nome {
+    font-size: 23px;
+  }
+  .pilot-app .pilot-topo .pilot-conta {
+    gap: 4px;
+  }
+  .pilot-app .pilot-topo .pilot-demo-cta {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+  .pilot-app .pilot-topo .pilot-demo-cta span {
+    display: none;
+  }
+}
