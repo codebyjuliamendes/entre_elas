@@ -3,7 +3,11 @@ import { resposta, corpo } from "@/lib/api";
 import { ACCESS, REFRESH, clienteAuth } from "@/lib/auth/piloto";
 export async function POST(request: Request) {
   return resposta(async () => {
-    await corpo(request);
+    try {
+      await corpo(request);
+    } catch {
+      // Tolera requisições sem corpo no encerramento de sessão
+    }
     const jar = await cookies();
     const access = jar.get(ACCESS)?.value,
       refresh = jar.get(REFRESH)?.value;
