@@ -9,6 +9,7 @@ import { fotoLocalSchema } from "@/lib/demo/foto";
 import { ErroDominio } from "@/lib/domain/erros";
 import { lerMensagens, enviarMensagem } from "@/lib/integrations/stream";
 import { avaliacaoFaiscaInput } from "./metricas";
+import { faiscasPorMes } from "@/lib/domain/disponibilidade";
 import { tabelaAusente } from "./indicadores";
 export const perfilPilotoSchema = profileInput.omit({ foto_url: true }).extend({
   nome: z.string().trim().min(2).max(100),
@@ -169,4 +170,16 @@ export async function avaliarFaisca(pid: string, entrada: unknown) {
     throw new ErroDominio("Avaliação ainda não habilitada neste ambiente.", 503);
   verificarErro(error);
   return { ok: true };
+}
+
+export async function definirDisponibilidade(pid: string, entrada: unknown) {
+  const limite = faiscasPorMes.parse(entrada);
+  const { error } = await getDb()
+    .from("piloto_contas")
+    .update({ faiscas_por_mes: limite })
+    .eq("profile_id", pid);
+  if (error?.code === "42703" || error?.code === "PGRST204")
+    throw new ErroDominio("Disponibilidade ainda não habilitada neste ambiente.", 503);
+  verificarErro(error);
+  return { ok: true, faiscas_por_mes: limite };
 }

@@ -34,8 +34,10 @@ A troca é localizada: as regras de domínio ficam em `lib/domain`, a IA passa p
 
 ## Evolução do produto
 
-1. **Começar pelo pedido:** a primeira tela pergunta "com o que você precisa de ajuda agora?", e o perfil se completa aos poucos com sugestões que a pessoa confirma.
-2. **Lado de quem oferece:** opção "abro Faíscas" com tema e limite mensal de convites, para não sobrecarregar as mais procuradas.
+Já no piloto: o cadastro começa pelo pedido, e cada participante define quantas Faíscas topa receber por mês ("Abro Faíscas"). Próximos passos:
+
+1. **Perfil progressivo:** sugestões de saberes a partir das trocas, que a pessoa confirma, no lugar de um formulário inicial.
+2. **Temas de oferta:** além do limite mensal, escolher sobre quais temas quer receber convites.
 3. **Formatos para campo:** Faísca por áudio, assíncrona e presencial na mesma base, com avisos pelo Teams.
 4. **Rodas:** quando vários pedidos se repetem, a IA sugere uma conversa em grupo.
 5. **Portfólio de saberes:** saberes confirmados por trocas, com as evidências, que a própria pessoa pode exportar para o seu PDI.

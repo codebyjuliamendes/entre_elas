@@ -43,6 +43,8 @@ export async function POST(request: Request, ctx: RotaAcao) {
         return a.mensagensPiloto(u.id, input.faisca_id, input.texto);
       case "reconhecer":
         return a.reconhecerSaberes(u.id, input.faisca_id);
+      case "disponibilidade":
+        return a.definirDisponibilidade(u.id, input.faiscas_por_mes);
       case "avaliar":
         return a.avaliarFaisca(u.id, input);
       case "indicadores":

@@ -41,3 +41,8 @@ Uma Faísca não é uma consulta unilateral. Quem pede orientação também ofer
 O MVP é uma hipótese que precisa ser confrontada com a experiência das participantes. O produto deve evoluir a partir das dúvidas, das conexões que aconteceram e das oportunidades que não foram atendidas.
 
 **Na prática:** combinar sinais de uso com relatos qualitativos e distinguir resultados observados de benefícios ainda esperados.
+
+## Decisões registradas
+
+- **Entrada pelo pedido (19/10/2026):** o cadastro do piloto começa perguntando com o que a pessoa precisa de ajuda. O pedido já aparece pronto na busca e sugere o primeiro objetivo do perfil, que ela pode editar. Quem prefere só conhecer a rede pode pular.
+- **Abro Faíscas (19/10/2026):** cada participante define quantos convites topa receber a cada 30 dias (padrão 4; 0 pausa). Convites recusados ou cancelados não ocupam vaga. O banco recusa convites acima do limite, e a curadoria deixa de indicar quem está sem vagas, distribuindo a demanda e protegendo as pessoas mais procuradas.

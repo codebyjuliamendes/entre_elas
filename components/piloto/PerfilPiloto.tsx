@@ -17,12 +17,15 @@ export function PerfilPiloto({
   atualizar,
   concluir = false,
   indexacao,
+  objetivoInicial = "",
 }: {
   perfil: Profile;
   ia: boolean;
   atualizar: () => Promise<void>;
   concluir?: boolean;
   indexacao: EstadoIndexacao;
+  /** Pedido feito na primeira tela; vira o primeiro objetivo se não houver outro. */
+  objetivoInicial?: string;
 }) {
   const [form, setForm] = useState(
       Object.fromEntries(
@@ -35,7 +38,11 @@ export function PerfilPiloto({
       ) as Record<(typeof campos)[number][0], string>,
     ),
     [saberes, setSaberes] = useState(perfil.interesses.join(", ")),
-    [objetivos, setObjetivos] = useState(perfil.objetivos.join("\n")),
+    [objetivos, setObjetivos] = useState(
+      perfil.objetivos.length
+        ? perfil.objetivos.join("\n")
+        : objetivoInicial.trim().replace(/\s+/g, " ").slice(0, 160),
+    ),
     [relato, setRelato] = useState(""),
     [busy, setBusy] = useState(false),
     [sugerido, setSugerido] = useState(false);

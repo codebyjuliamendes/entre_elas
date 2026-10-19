@@ -25,7 +25,7 @@ O custo aparece de várias formas:
 ## A solução: a Faísca
 
 ```
-pedido em linguagem do dia a dia
+pedido em linguagem do dia a dia (é a primeira pergunta do cadastro)
    → a IA indica até 3 colegas e mostra a evidência de cada indicação
    → convite para 20 minutos de conversa (chat e vídeo)
    → cada uma registra o que aprendeu
@@ -39,6 +39,7 @@ O que a torna diferente de uma rede social interna:
 2. **Toda indicação se explica**: a participante vê o trecho do perfil ou da troca que levou à sugestão. A IA não decide por ninguém, e sempre existe a alternativa de escolher manualmente.
 3. **O resultado é um mapa de saberes confirmado por trocas reais**, não uma lista de competências autodeclaradas.
 4. **Consentimento em cada etapa**: o uso de IA é opcional e explicado, e uma dica só é publicada quando as duas autorizam.
+5. **Protege quem ajuda**: cada pessoa define quantas Faíscas topa receber por mês ("Abro Faíscas"). Quando as vagas acabam, a curadoria indica outras pessoas, e a demanda se distribui pela rede.
 
 <img src="docs/img/rede-desktop.png" alt="Diretório da rede com pessoas, saberes e evidências" width="100%">
 

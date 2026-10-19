@@ -7,6 +7,7 @@ import { listarEventos } from "@/lib/domain/evento";
 import { avaliarIndexacao } from "@/lib/domain/perfil-indexacao";
 import { lider } from "./config";
 import { tabelaAusente } from "./indicadores";
+import { calcularDisponibilidade } from "@/lib/domain/disponibilidade";
 import { z } from "zod";
 export async function dadosPiloto(profileId: string, email: string) {
   const db = getDb();
@@ -22,14 +23,14 @@ export async function dadosPiloto(profileId: string, email: string) {
     favoritos,
     saberes,
     avaliacoes,
+    recebidos,
   ] = await Promise.all([
     listarFaiscas(profileId),
     listarComunidades(profileId),
     listarPosts(profileId),
     listarEventos(profileId),
-    db
-      .from("piloto_contas")
-      .select("profile_id,onboarding,ia_consentimento,foto"),
+    // "*" mantém o app funcionando antes da migração de disponibilidade.
+    db.from("piloto_contas").select("*"),
     db.from("profiles").select("*"),
     db
       .from("community_members")
@@ -45,7 +46,13 @@ export async function dadosPiloto(profileId: string, email: string) {
       .from("piloto_avaliacoes")
       .select("faisca_id")
       .eq("profile_id", profileId),
+    db
+      .from("faiscas")
+      .select("convidada_id")
+      .in("status", ["pendente", "aceita", "realizada"])
+      .gt("created_at", new Date(Date.now() - 30 * 86400000).toISOString()),
   ]);
+  verificarErro(recebidos.error);
   if (!tabelaAusente(avaliacoes.error)) verificarErro(avaliacoes.error);
   for (const r of [contas, perfis, membros, inscricoes, favoritos, saberes])
     verificarErro(r.error);
@@ -85,6 +92,16 @@ export async function dadosPiloto(profileId: string, email: string) {
     avaliadas: avaliacoes.error
       ? []
       : avaliacoes.data!.map((a) => a.faisca_id),
+    disponibilidade: Object.fromEntries(
+      contas.data!.map((c) => [
+        c.profile_id,
+        calcularDisponibilidade(
+          c.faiscas_por_mes ?? 4,
+          recebidos.data!.filter((f) => f.convidada_id === c.profile_id)
+            .length,
+        ),
+      ]),
+    ),
     lider: lider(email),
   };
 }
