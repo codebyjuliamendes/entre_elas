@@ -28,7 +28,9 @@ async function entrar(page: Page, email: string, nome: string) {
   await preencherPerfil(page, nome);
 }
 async function preencherPerfil(page: Page, nome: string) {
-  await page.getByRole("button", { name: "Entendi, vamos continuar" }).click();
+  await page
+    .getByRole("button", { name: "Prefiro só conhecer a rede" })
+    .click();
   await page
     .getByRole("button", { name: "Montar meu perfil", exact: true })
     .click();

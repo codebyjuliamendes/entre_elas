@@ -43,7 +43,7 @@ O PWA funciona no celular e indica quando a conexão cai. O próximo passo é of
 Login com a conta Microsoft da empresa, chat e vídeo pelo Teams, IA corporativa e banco gerenciado. A arquitetura já separa domínio, IA e integrações, então trocar provedores não muda as regras do produto.
 
 **"Quem oferece ajuda não vai ficar sobrecarregada?"**
-Cada pessoa decide se aceita um convite. A evolução prevista inclui limite mensal de convites e rodas em grupo quando vários pedidos se repetem.
+Não. Com o "Abro Faíscas", cada pessoa define quantos convites topa receber por mês ou pausa. Quando as vagas acabam, a curadoria passa a indicar outras pessoas, e a demanda se distribui pela rede. A evolução prevista inclui rodas em grupo quando vários pedidos se repetem.
 
 **"Quais são os resultados?"**
 Mostrar o slide com os números reais do painel e uma ou duas falas de participantes do piloto.

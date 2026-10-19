@@ -13,6 +13,8 @@ import { Marca } from "@/components/Marca";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
 import { PainelLideranca } from "./PainelLideranca";
+import { AbroFaiscas } from "./AbroFaiscas";
+import { descreverDisponibilidade } from "@/lib/domain/disponibilidade";
 import { Ajuda } from "./Ajuda";
 import { Atencao } from "./Atencao";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
@@ -217,7 +219,7 @@ export function Piloto() {
         <h1>
           {
             [
-              "Uma Faísca começa com uma pergunta",
+              "Com o que você precisa de ajuda agora?",
               "Uma troca entre duas pessoas",
               "Seu perfil em um minuto",
             ][passo]
@@ -226,12 +228,20 @@ export function Piloto() {
         {passo === 0 ? (
           <>
             <p>
-              Conte o que quer aprender. A curadoria pode encontrar alguém da
-              banca com experiências ligadas ao seu desafio. Você também pode
-              escolher uma pessoa diretamente.
+              Comece pelo seu desafio, com as suas palavras. Depois de um
+              perfil rápido, procuramos quem já passou por algo parecido. Você
+              também pode escolher uma pessoa diretamente.
             </p>
+            <label htmlFor="pedido-inicial">O que você quer aprender?</label>
+            <textarea
+              id="pedido-inicial"
+              maxLength={1500}
+              value={pedido}
+              placeholder="Ex.: vou apresentar um projeto à diretoria pela primeira vez e quero saber como organizar a conversa."
+              onChange={(e) => editarPedido(e.target.value)}
+            />
             <button className="pilot-button" onClick={() => setPasso(1)}>
-              Entendi, vamos continuar
+              {pedido.trim() ? "Continuar" : "Prefiro só conhecer a rede"}
             </button>
           </>
         ) : passo === 1 ? (
@@ -256,6 +266,7 @@ export function Piloto() {
               ia={d.conta.ia_consentimento}
               concluir={true}
               atualizar={carregar}
+              objetivoInicial={pedido}
             />
           </>
         )}
@@ -491,8 +502,18 @@ export function Piloto() {
                     {d.pessoas
                       .filter((p) => p.id !== perfil.id)
                       .map((p) => (
-                        <option key={p.id} value={p.id}>
+                        <option
+                          key={p.id}
+                          value={p.id}
+                          disabled={
+                            d.disponibilidade[p.id]?.estado !== "aberta" &&
+                            p.id !== destino
+                          }
+                        >
                           {p.nome} · {p.area}
+                          {d.disponibilidade[p.id] &&
+                            d.disponibilidade[p.id].estado !== "aberta" &&
+                            ` · ${descreverDisponibilidade(d.disponibilidade[p.id])}`}
                         </option>
                       ))}
                   </select>
@@ -624,7 +645,16 @@ export function Piloto() {
                           {p.interesses.join(", ") || "Perfil em construção"}
                         </p>
                         <p>Quer aprender: {p.objetivos.join(", ")}</p>
+                        {d.disponibilidade[p.id] && (
+                          <p className="input-hint">
+                            {descreverDisponibilidade(d.disponibilidade[p.id])}
+                          </p>
+                        )}
                         <button
+                          disabled={
+                            !!d.disponibilidade[p.id] &&
+                            d.disponibilidade[p.id].estado !== "aberta"
+                          }
                           onClick={() => {
                             setDestino(p.id);
                             setTab("faiscas");
@@ -691,6 +721,12 @@ export function Piloto() {
             {tab === "perfil" && (
               <>
                 <h1>Seu perfil</h1>
+                {d.disponibilidade[perfil.id] && (
+                  <AbroFaiscas
+                    atual={d.disponibilidade[perfil.id]}
+                    atualizar={carregar}
+                  />
+                )}
                 {d.fotos[perfil.id] && (
                   <Image
                     width={96}

@@ -483,6 +483,7 @@ export type Database = {
           consentimento_em: string | null
           consentimento_versao: string | null
           created_at: string
+          faiscas_por_mes: number
           foto: string | null
           ia_consentimento: boolean
           onboarding: boolean
@@ -493,6 +494,7 @@ export type Database = {
           consentimento_em?: string | null
           consentimento_versao?: string | null
           created_at?: string
+          faiscas_por_mes?: number
           foto?: string | null
           ia_consentimento?: boolean
           onboarding?: boolean
@@ -503,6 +505,7 @@ export type Database = {
           consentimento_em?: string | null
           consentimento_versao?: string | null
           created_at?: string
+          faiscas_por_mes?: number
           foto?: string | null
           ia_consentimento?: boolean
           onboarding?: boolean
