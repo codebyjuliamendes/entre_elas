@@ -30,9 +30,9 @@ Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cron�
 
 **2. Problema: contexto.** "No setor elétrico, as mulheres são cerca de 20% da força de trabalho e só 5,5% chegam à alta liderança. E uma em cada cinco é a única mulher no ambiente de trabalho. O conhecimento delas existe. Ele só não circula."
 
-**3. Problema: a Ana.** "Pensem na Ana. Técnica de campo no interior, passa o dia na rua, só tem o celular. Ela quer apresentar um projeto à diretoria e não sabe a quem perguntar. Em algum lugar da Equatorial existe uma mulher que já viveu isso. A Ana só não sabe quem é. Para a empresa, isso significa conhecimento que se perde e talentos que não chegam à liderança por falta de rede, não de competência."
+**3. Problema: a Ana.** "Pensem na Ana. Técnica de campo no interior, passa o dia na rua, só tem o celular. Ela quer apresentar um projeto à diretoria e não sabe a quem perguntar. Em algum lugar da Equatorial existe uma mulher que já viveu isso. A Ana só não sabe quem é. E o networking costuma acontecer depois do expediente, justamente quando muitas mulheres, como mães atípicas e quem cuida de um familiar, não podem. Para a empresa, isso significa talentos que não chegam à liderança por falta de rede, não de competência."
 
-**4. Solução.** "O Entre Elas é um app em que uma IA descobre o que cada mulher sabe e conecta quem quer aprender com quem já viveu aquilo, em conversas de 20 minutos. O diferencial: a IA explica cada indicação com a evidência real. O Teams conecta quem já se conhece. O Entre Elas descobre quem você ainda não conhece, e mostra por quê."
+**4. Solução.** "O Entre Elas é um app em que uma IA descobre o que cada mulher sabe e conecta quem quer aprender com quem já viveu aquilo, em conversas de 20 minutos, dentro do expediente. O diferencial: a IA explica cada indicação com a evidência real. O Teams conecta quem já se conhece. O Entre Elas descobre quem você ainda não conhece, e mostra por quê."
 
 **5. Como funciona.** "São quatro passos. A Ana pede. A IA conecta com quem já passou por isso. As duas conversam com uma pauta pronta. E o que aprenderam vira uma dica para toda a rede, só se as duas autorizarem."
 
@@ -50,7 +50,7 @@ Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cron�
 
 **12. Time.** "Somos Kayla, do design, Júlia, de dados e IA, e Melissa, da programação."
 
-**13. Próximos passos.** "Os próximos passos têm prazo. Em 30 dias, um piloto em uma regional, com login corporativo e uma IA contratada pela Equatorial. Em 3 meses, todas as regionais, com avisos pelo Teams e rodas de conversa. Em 6 meses, a trilha Rumo à liderança integrada ao PDI e a meta de 500 Faíscas. Para começar, precisamos de uma regional parceira."
+**13. Próximos passos.** "Os próximos passos têm prazo. Em 30 dias, um piloto em uma regional, com Faíscas dentro do expediente. Em 3 meses, todas as regionais, com avisos pelo Teams e rodas de conversa. Em 6 meses, a trilha Rumo à liderança integrada ao PDI e a meta de 500 Faíscas. Para começar, pedimos uma regional parceira e que a Faísca conte como hora de desenvolvimento: assim participa também quem não tem tempo fora do trabalho."
 
 **14. Fechamento.** "Na Equatorial, o conhecimento está nas pessoas. A gente descobre onde ele está e acende a Faísca. Obrigada!"
 
@@ -67,6 +67,9 @@ Veja a seção de custo abaixo. Resposta curta: cerca de R$ 2 por pessoa ativa p
 
 **"Quantas pessoas já usaram?"**
 Responder com os números do painel de liderança no dia. Se ainda forem poucos, dizer: "estamos no piloto; o que importa agora é provar o ciclo completo, e ele já funciona de ponta a ponta."
+
+**"Quem não tem tempo vai usar?"**
+É para elas que a Faísca foi pensada: 20 minutos, no expediente, pelo celular. O convite recomenda horários de trabalho e o painel mostra quantas Faíscas aconteceram nesse horário. Ninguém precisa contar que é cuidadora; quem quiser encontra a comunidade "Cuidar e Trabalhar".
 
 **"E se ninguém aceitar os convites?"**
 Cada pessoa define quantos convites topa receber por mês ("Abro Faíscas"). A IA não indica quem está sem vagas e favorece outras regionais, então a demanda se espalha.
