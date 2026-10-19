@@ -1,61 +1,101 @@
 # Roteiro do pitch: 5 minutos, 15 slides
 
 Deck: modelo da mentoria no Canva ("Entre Elas — Pitch Hackathon Equatorial (modelo da mentoria)").
-A fala de cada slide também está nas notas do apresentador no Canva.
 
-Sugestão de divisão: **Júlia** abre, conta o problema e fecha com os próximos passos; **Melissa** mostra o app; **Kayla** apresenta valor, impacto, o time e a adesão.
-Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cronômetro.
+**A ideia que a banca precisa levar para casa:** a Faísca é networking que cabe em 20 minutos do expediente. É pensada para quem nunca teve tempo de fazer networking, e a IA mostra a quem perguntar e por quê.
 
-| # | Slide | Tempo | Quem |
+**Estrutura:** gancho → dor com rosto (a Ana) → solução em uma frase → prova (vídeo) → valor para a Equatorial → como garantir a adesão → pedido → volta à Ana.
+
+O texto falado soma cerca de 600 palavras, umas 4:20 em ritmo calmo. Sobram 40 segundos de folga para pausas e para o vídeo.
+
+| # | Slide | Até | Quem |
 |---|---|---|---|
-| 1 | Capa | 0:10 | Júlia |
-| 2 | Problema: contexto | 0:30 | Júlia |
-| 3 | Problema: a Ana | 0:30 | Júlia |
-| 4 | Solução | 0:30 | Melissa |
-| 5 | Como funciona | 0:25 | Melissa |
-| 6 | O app funcionando (vídeo) | 0:25 | Melissa |
-| 7 | Da conversa ao painel (vídeo) | 0:20 | Melissa |
-| 8 | Aprendizagem | 0:20 | Kayla |
-| 9 | Benefícios | 0:15 | Kayla |
-| 10 | Impacto | 0:20 | Kayla |
-| 11 | Estágio atual | 0:15 | Kayla |
-| 12 | Time | 0:10 | Kayla |
-| 13 | Adesão: o apoio da Equatorial | 0:20 | Kayla |
-| 14 | Próximos passos | 0:15 | Júlia |
-| 15 | Fechamento | 0:15 | Júlia |
-| | **Total** | **5:00** | |
+| 1 | Capa | 0:15 | Júlia |
+| 2 | Problema: contexto | 0:40 | Júlia |
+| 3 | Problema: a Ana | 1:15 | Júlia |
+| 4 | Solução | 1:40 | Melissa |
+| 5 | Como funciona | 2:00 | Melissa |
+| 6 | O app funcionando (vídeo) | 2:25 | Melissa |
+| 7 | Da conversa ao painel (vídeo) | 2:45 | Melissa |
+| 8 | Aprendizagem | 3:00 | Kayla |
+| 9 | Benefícios | 3:15 | Kayla |
+| 10 | Impacto | 3:35 | Kayla |
+| 11 | Estágio atual | 3:50 | Kayla |
+| 12 | Time | 4:00 | Kayla |
+| 13 | Adesão | 4:20 | Kayla |
+| 14 | Próximos passos | 4:40 | Júlia |
+| 15 | Fechamento | 4:55 | Júlia |
+
+A coluna "Até" é o relógio acumulado. Se no ensaio vocês passarem de 2:50 no slide 7, cortem a frase opcional do slide 8.
 
 ## Falas
 
-**1. Capa.** "Somos o Entre Elas. Toda roda começa com uma Faísca, e em cinco minutos vamos mostrar como uma conversa de vinte minutos muda a carreira de uma mulher na Equatorial."
+**1. Capa · Júlia.** (Espere o silêncio. Olhe para a banca, não para a tela.)
+"Vinte minutos. É o tempo de um intervalo de almoço. E pode ser o tempo que muda a carreira de uma mulher na Equatorial. Nós somos o Entre Elas."
 
-**2. Problema: contexto.** "No setor elétrico, as mulheres são cerca de 20% da força de trabalho e só 5,5% chegam à alta liderança. E uma em cada cinco é a única mulher no ambiente de trabalho. O conhecimento delas existe. Ele só não circula."
+**2. Problema: contexto · Júlia.**
+"No setor elétrico, as mulheres são cerca de 20% da força de trabalho. Na alta liderança, só 5,5%. E uma em cada cinco é a única mulher da equipe. O talento existe. O que falta é rede."
 
-**3. Problema: a Ana.** "Pensem na Ana. Técnica de campo no interior, passa o dia na rua, só tem o celular. Ela quer apresentar um projeto à diretoria e não sabe a quem perguntar. Em algum lugar da Equatorial existe uma mulher que já viveu isso. A Ana só não sabe quem é. E o networking costuma acontecer depois do expediente, justamente quando muitas mulheres, como mães atípicas e quem cuida de um familiar, não podem. Para a empresa, isso significa talentos que não chegam à liderança por falta de rede, não de competência."
+**3. Problema: a Ana · Júlia.**
+"Esta é a Ana. Técnica de campo no interior do Pará. Passa o dia na rua e só tem o celular. Ela vai apresentar um projeto à diretoria pela primeira vez e não sabe a quem perguntar. Em algum lugar da Equatorial existe uma mulher que já fez exatamente isso. A Ana só não sabe quem é.
+E quando acontece o networking? Depois do expediente. Justamente quando a Ana, as mães atípicas e as mulheres que cuidam de alguém em casa não podem estar lá. Na apresentação do desafio, vocês falaram dessas mulheres. Foi para elas que a gente construiu."
+(Passe a palavra olhando para a Melissa.)
 
-**4. Solução.** "O Entre Elas é um app em que uma IA descobre o que cada mulher sabe e conecta quem quer aprender com quem já viveu aquilo, em conversas de 20 minutos, dentro do expediente. O diferencial: a IA explica cada indicação com a evidência real. O Teams conecta quem já se conhece. O Entre Elas descobre quem você ainda não conhece, e mostra por quê."
+**4. Solução · Melissa.**
+"O Entre Elas é um app em que uma IA descobre o que cada mulher sabe e conecta quem quer aprender com quem já viveu aquilo. A conexão é uma conversa de 20 minutos, dentro do expediente, que a gente chama de Faísca. O diferencial é que a IA não só indica: ela explica o porquê, com a experiência real da colega. O Teams conecta quem já se conhece. O Entre Elas encontra quem você ainda não conhece."
 
-**5. Como funciona.** "São quatro passos. A Ana pede. A IA conecta com quem já passou por isso. As duas conversam com uma pauta pronta. E o que aprenderam vira uma dica para toda a rede, só se as duas autorizarem."
+**5. Como funciona · Melissa.**
+"São quatro passos. A Ana pede. A IA conecta. As duas conversam com uma pauta pronta. E o que aprenderam vira uma dica para toda a rede, mas só se as duas autorizarem."
 
-**6. O app funcionando.** (Deixe o vídeo rodar.) "Isto é o app real. A Ana escreve o pedido, a IA traz colegas de outras regionais e mostra o motivo de cada indicação. Um clique e o convite está feito. No computador ou no celular de quem está em campo."
+**6. O app funcionando · Melissa.** (O vídeo roda. Fale por cima, devagar.)
+"Isto é o app real. A Ana escreve o pedido do jeito dela. A IA traz colegas de outras regionais e mostra o motivo de cada indicação. Um toque, e o convite está feito."
 
-**7. Da conversa ao painel.** "Do lado dela: convite aceito, pauta pronta e avaliação em um toque. Do lado da Equatorial: um painel com conexões entre regionais, saberes que só uma pessoa tem e os temas que ninguém da rede oferece ainda."
+**7. Da conversa ao painel · Melissa.**
+"A colega aceita, a pauta chega pronta e, depois da conversa, a avaliação leva um toque. Do lado da Equatorial, o painel mostra conexões entre regionais, saberes que só uma pessoa tem e quantas Faíscas aconteceram no horário de trabalho."
+(Passe a palavra para a Kayla.)
 
-**8. Aprendizagem.** "A aprendizagem acontece em cinco etapas: refletir sobre o desafio, conversar, registrar, compartilhar e ser reconhecida. É aprendizagem entre pares, no ritmo do trabalho, com retorno imediato pelo quiz."
+**8. Aprendizagem · Kayla.**
+"Cada Faísca é um ciclo de aprendizagem: refletir, conversar, registrar, compartilhar e ser reconhecida."
+(Opcional, se houver tempo: "É aprendizagem entre pares, no ritmo do trabalho.")
 
-**9. Benefícios.** "Para as colaboradoras: ajuda rápida de quem já viveu o problema e visibilidade para o que sabem. Para a Equatorial: conhecimento mapeado e um caminho contínuo para formar lideranças femininas."
+**9. Benefícios · Kayla.**
+"Para a colaboradora, ajuda em dias, não em meses, e visibilidade para o que ela sabe. Para a Equatorial, um mapa do conhecimento que hoje está espalhado, por cerca de dois reais por pessoa por mês."
 
-**10. Impacto.** "Nossa meta para os primeiros seis meses: 500 Faíscas, 30% delas entre regionais diferentes e 50 saberes que só uma pessoa tinha, agora compartilhados. Sair de mulheres isoladas para uma rede em que cada uma sabe a quem recorrer."
+**10. Impacto · Kayla.**
+"Nossa meta para os primeiros seis meses: 500 Faíscas, 30% delas entre regionais diferentes, e 50 saberes que só uma pessoa tinha, agora compartilhados."
 
-**11. Estágio atual.** "O MVP já funciona: login, IA real, chat e vídeo, com consentimento. E qualquer pessoa pode testar agora, sem cadastro, na demonstração."
+**11. Estágio atual · Kayla.**
+"E isso não é protótipo de tela. O app já funciona, com login, IA, chat, vídeo e consentimento. Qualquer pessoa aqui pode testar agora, sem cadastro."
 
-**12. Time.** "Somos Kayla, do design, Júlia, de dados e IA, e Melissa, da programação."
+**12. Time · Kayla.**
+"Somos três: eu, Kayla, no design; a Júlia, em dados e IA; e a Melissa, na programação."
 
-**13. Adesão.** "Adesão não depende só de um app bom. Depende do apoio da empresa em quatro frentes. Tempo: a Faísca conta como hora de desenvolvimento, dentro do expediente. Exemplo: as líderes abrem as primeiras Faíscas. Proximidade: uma embaixadora por regional apresenta o app nas reuniões e no DDS. E reconhecimento: o que cada uma compartilha aparece no PDI. Sem isso, é mais um app. Com isso, vira cultura."
+**13. Adesão · Kayla.**
+"Mas um app bom não basta. Adesão vem do apoio da empresa: tempo, com a Faísca contando como hora de desenvolvimento; exemplo, com líderes abrindo as primeiras Faíscas; proximidade, com uma embaixadora por regional; e reconhecimento no PDI. Com isso, deixa de ser mais um app e vira cultura."
+(Passe a palavra para a Júlia.)
 
-**14. Próximos passos.** "Em 30 dias, um piloto em uma regional, com Faíscas no expediente. Em 3 meses, todas as regionais, com avisos pelo Teams e rodas de conversa. Em 6 meses, a trilha Rumo à liderança no PDI e 500 Faíscas. Para começar, pedimos uma regional, uma líder patrocinadora e 20 minutos por semana."
+**14. Próximos passos · Júlia.**
+"Em 30 dias, um piloto em uma regional. Em três meses, todas as regionais, com avisos pelo Teams. Em seis meses, a trilha Rumo à Liderança integrada ao PDI. Para começar, pedimos três coisas: uma regional parceira, uma líder patrocinadora e vinte minutos por semana."
 
-**15. Fechamento.** "Na Equatorial, o conhecimento está nas pessoas. A gente descobre onde ele está e acende a Faísca. Obrigada!"
+**15. Fechamento · Júlia.** (Fale devagar. Esta é a frase que fica.)
+"Lembram da Ana? Ela não precisa mais adivinhar a quem perguntar. Ela tem vinte minutos, uma colega em outro estado e uma Faísca. Na Equatorial, o conhecimento está nas pessoas. A gente só acende a Faísca. Obrigada."
+
+## Por que este roteiro vence
+
+- **Abre e fecha com a mesma imagem.** Os 20 minutos e a Ana aparecem no começo e voltam no fim, e a banca lembra de histórias que fecham o círculo.
+- **Devolve à banca o que ela pediu.** Citar as mulheres que "não têm tempo para networking" mostra que o time ouviu o desafio.
+- **Mostra, não só conta.** O vídeo prova que o app existe, e "qualquer pessoa pode testar agora" convida a banca a conferir.
+- **Responde às perguntas antes que façam.** Custo (R$ 2), adesão (slide 13) e privacidade (só com autorização das duas) já aparecem na fala.
+- **Termina com um pedido concreto e barato.** Uma regional, uma líder e vinte minutos por semana: é fácil dizer sim.
+
+## Como apresentar
+
+- **Ensaiem com cronômetro pelo menos três vezes juntas**, com a troca de slides de verdade. A meta é terminar entre 4:40 e 4:55.
+- **Decorem a primeira e a última frase de cada parte.** O meio pode variar; o começo e o fim, não.
+- **Pausa de dois segundos** depois de "Vinte minutos." e depois de "O que falta é rede." O silêncio prende a atenção.
+- **Vídeos:** confiram antes que rodam sem som e começam sozinhos. Se falharem, sigam falando sobre a imagem do slide, sem pedir desculpas.
+- **Passagem de palavra:** quem termina olha para quem começa. Nada de "agora a Melissa vai falar".
+- **Na hora das perguntas**, quem responde é quem domina o tema: Júlia para IA e dados, Melissa para tecnologia e custo, Kayla para experiência e adesão. As respostas curtas estão logo abaixo.
 
 ## Perguntas difíceis da banca
 
