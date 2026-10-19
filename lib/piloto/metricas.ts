@@ -20,6 +20,8 @@ export const indicadoresPilotoSchema = z.object({
   pares_distintos: contagem,
   entre_regionais: percentual,
   entre_areas: percentual,
+  // Faíscas com horário marcado dentro do expediente de referência.
+  no_expediente: percentual,
   saberes_reconhecidos: contagem,
   dicas_publicadas: contagem,
   inscricoes: contagem,
@@ -46,6 +48,7 @@ export type FaiscaMetrica = {
   solicitante_id: string;
   convidada_id: string;
   status: string;
+  horario?: string | null;
 };
 export type PerfilMetrica = {
   id: string;
@@ -127,6 +130,19 @@ export function mapaDeSaberes(perfis: PerfilMetrica[]) {
       .slice(0, 6),
   };
 }
+// Expediente de referência: segunda a sexta, das 8h às 18h no horário de Brasília.
+// A Faísca foi pensada para caber no trabalho, inclusive de quem cuida de alguém em casa.
+export function noExpediente(iso: string) {
+  const partes = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Sao_Paulo",
+    weekday: "short",
+    hour: "numeric",
+    hourCycle: "h23",
+  }).formatToParts(new Date(iso));
+  const dia = partes.find((p) => p.type === "weekday")?.value;
+  const hora = Number(partes.find((p) => p.type === "hour")?.value);
+  return dia !== "Sat" && dia !== "Sun" && hora >= 8 && hora < 18;
+}
 const pct = (parte: number, total: number) =>
   total ? Math.round((1000 * parte) / total) / 10 : null;
 export function consolidarIndicadores(entrada: {
@@ -152,6 +168,7 @@ export function consolidarIndicadores(entrada: {
       const b = perfis.get(f.convidada_id)?.[campo];
       return !!a && !!b && normalizar(a) !== normalizar(b);
     }).length;
+  const marcadas = conexoes.filter((f) => f.horario);
   const encontros = new Set(realizadas.map((f) => f.id));
   const doEncontro = (ids: (string | null)[]) =>
     ids.filter((i) => i && encontros.has(i)).length;
@@ -173,6 +190,10 @@ export function consolidarIndicadores(entrada: {
     ).size,
     entre_regionais: pct(diferentes("regional"), conexoes.length),
     entre_areas: pct(diferentes("area"), conexoes.length),
+    no_expediente: pct(
+      marcadas.filter((f) => noExpediente(f.horario!)).length,
+      marcadas.length,
+    ),
     saberes_reconhecidos: doEncontro(entrada.saberes_fonte_ids),
     dicas_publicadas: doEncontro(entrada.dicas_origem_ids),
     inscricoes: entrada.inscricoes,
@@ -202,6 +223,7 @@ export function resumoParaApresentacao(i: IndicadoresPiloto) {
     `${i.convites} convites de Faísca · ${i.aceitas} aceitos (taxa de aceite ${fmt(i.taxa_aceite)}) · ${i.realizadas} realizadas`,
     `${i.pessoas_conectadas} pessoas conectadas em ${i.pares_distintos} pares diferentes`,
     `${fmt(i.entre_regionais)} das conexões entre regionais diferentes · ${fmt(i.entre_areas)} entre áreas diferentes`,
+    `${fmt(i.no_expediente)} das Faíscas marcadas no horário de trabalho`,
     `${i.dicas_publicadas} dicas publicadas com autorização das duas · ${i.saberes_reconhecidos} saberes reconhecidos`,
   ];
   if (i.mapa.objetivos)

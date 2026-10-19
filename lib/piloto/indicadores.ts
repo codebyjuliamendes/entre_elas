@@ -37,7 +37,7 @@ export async function indicadoresPiloto(email: string) {
       .in("id", ids),
     db
       .from("faiscas")
-      .select("id,solicitante_id,convidada_id,status")
+      .select("id,solicitante_id,convidada_id,status,horario")
       .in("solicitante_id", ids)
       .in("convidada_id", ids)
       .gte("created_at", inicio),

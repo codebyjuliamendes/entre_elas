@@ -39,6 +39,10 @@ const TEMAS: [RegExp, string[]][] = [
     /carreira|crescer|pdi|desenvolv|promoc|mentor/,
     ["Plano de desenvolvimento", "Mentoria", "Feedback"],
   ],
+  [
+    /cuid|mae|filh|maternid|idos|concili|rotina/,
+    ["Conciliar trabalho e cuidado", "Escalas de plantão"],
+  ],
   [/negoci|fornecedor|contrat/, ["Negociação", "Negociação com fornecedores"]],
   [/orcament|custo|obra|financ/, ["Orçamento de obras", "Orçamento"]],
   [
