@@ -4,6 +4,7 @@
  * diretamente contra a implantação em produção (ou ambiente configurado).
  */
 
+import type { DadosPiloto } from "@/lib/piloto/dados";
 const BASE_URL = process.env.QA_BASE_URL || "https://entre-elas-omega.vercel.app";
 
 interface TestResult {
@@ -80,7 +81,7 @@ async function request(
   endpoint: string,
   options: {
     method?: string;
-    body?: any;
+    body?: unknown;
     jar?: CookieJar;
     headers?: Record<string, string>;
     redirect?: RequestRedirect;
@@ -197,7 +198,7 @@ async function main() {
     const data = await json(res);
     assert(
       (data.erro && data.erro.includes("6 caracteres")) ||
-      (Array.isArray(data.detalhes) && data.detalhes.some((d: any) => d.mensagem.includes("6 caracteres"))),
+      (Array.isArray(data.detalhes) && data.detalhes.some((d: { mensagem: string }) => d.mensagem.includes("6 caracteres"))),
       `Validação não alertou sobre os 6 caracteres: ${JSON.stringify(data)}`
     );
   });
@@ -229,12 +230,10 @@ async function main() {
     assert(jarLeticia.get("entre_elas_access"), "Cookie de sessão 'entre_elas_access' não foi emitido");
   });
 
-  let dadosLeticia: any = null;
-
   await runTest("Dados do Piloto", "Consulta /api/piloto retorna estado completo do perfil", async () => {
     const res = await request("/api/piloto", { jar: jarLeticia });
     assert(res.status === 200, `Esperado 200, recebido ${res.status}`);
-    dadosLeticia = await json(res);
+    const dadosLeticia: DadosPiloto = await json(res);
 
     assert(dadosLeticia.conta, "Propriedade conta ausente");
     assert(dadosLeticia.perfil, "Propriedade perfil ausente");
@@ -281,7 +280,7 @@ async function main() {
   const emailParceira = `qa.avaliadora.${Date.now()}@entreelas.com.br`;
   const senhaParceira = "AvaliadoraQa2026!";
   const jarParceira = new CookieJar();
-  let dadosParceira: any = null;
+  let dadosParceira: DadosPiloto | null = null;
 
   await runTest("Cadastro Usuária 2", `Criação instantânea da conta da parceira (${emailParceira})`, async () => {
     const res = await request("/api/auth/entrar", {
@@ -339,6 +338,7 @@ async function main() {
   const horario2 = new Date(Date.now() + 172800000).toISOString();
 
   await runTest("Convite de Faísca", "Letícia envia convite de conversa para Camila", async () => {
+    assert(dadosParceira, "Dados da parceira não foram carregados");
     const res = await request("/api/faiscas", {
       body: {
         convidada_id: dadosParceira.perfil.id,
@@ -359,7 +359,7 @@ async function main() {
   await runTest("Notificação Parceira", "Camila acessa o piloto e visualiza o convite pendente", async () => {
     const res = await request("/api/piloto", { jar: jarParceira });
     const dados = await json(res);
-    const convite = dados.faiscas.find((f: any) => f.id === faiscaCriadaId);
+    const convite = dados.faiscas.find((f: { id: string }) => f.id === faiscaCriadaId);
     assert(convite, "O convite não apareceu na lista de faíscas da parceira");
     assert(convite.status === "pendente", `Status esperado 'pendente', recebido '${convite.status}'`);
   });
