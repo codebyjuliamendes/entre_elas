@@ -41,7 +41,7 @@ export function Encontro({
   useEffect(() => {
     let ativo = true;
     async function ler() {
-      if (!f.stream_channel_id || !["aceita", "realizada"].includes(f.status))
+      if (!["aceita", "realizada"].includes(f.status))
         return;
       try {
         const msgs = await api<typeof mensagens>("/api/piloto/mensagens", {
@@ -241,8 +241,8 @@ export function Encontro({
           <section className="pilot-card">
             <h2>Chat da Faísca</h2>
             {chatErro && <p role="status">{chatErro}</p>}
-            {!f.stream_channel_id ? (
-              <p>O canal ainda não foi preparado. Tente novamente acima.</p>
+            {!["aceita", "realizada"].includes(f.status) ? (
+              <p>O chat estará disponível após o aceite da Faísca.</p>
             ) : (
               <>
                 <div className="pilot-messages" aria-live="polite">

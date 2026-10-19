@@ -118,29 +118,16 @@ export async function mensagensPiloto(
   texto?: unknown,
 ) {
   const f = await obterFaisca(entrada, pid);
-  if (!f.stream_channel_id || !["aceita", "realizada"].includes(f.status))
+  if (!["aceita", "realizada"].includes(f.status))
     throw new ErroDominio("Chat disponível depois do aceite.", 409);
+  const canalId = f.stream_channel_id || `faisca-${f.id}`;
   if (texto !== undefined)
     await enviarMensagem(
-      f.stream_channel_id,
+      canalId,
       pid,
       z.string().trim().min(1).max(2000).parse(texto),
     );
-  const mensagens = await lerMensagens(f.stream_channel_id, pid);
-  if (mensagens.length) {
-    const { error } = await getDb()
-      .from("piloto_mensagens")
-      .upsert(
-        mensagens.map((m) => ({
-          id: m.id,
-          faisca_id: f.id,
-          autora_id: m.autora_id,
-          created_at: new Date(m.created_at).toISOString(),
-        })),
-      );
-    verificarErro(error);
-  }
-  return mensagens;
+  return lerMensagens(canalId, pid);
 }
 
 export async function reconhecerSaberes(pid: string, entrada: unknown) {

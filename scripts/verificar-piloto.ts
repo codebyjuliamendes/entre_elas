@@ -50,8 +50,6 @@ async function main() {
     "APP_URL",
     "GEMINI_API_KEY",
     "GROQ_API_KEY",
-    "STREAM_API_KEY",
-    "STREAM_API_SECRET",
     "DAILY_API_KEY",
   ];
   for (const nome of requeridas)

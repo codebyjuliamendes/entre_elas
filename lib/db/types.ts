@@ -527,18 +527,21 @@ export type Database = {
           created_at: string
           faisca_id: string
           id: string
+          texto: string
         }
         Insert: {
           autora_id: string
           created_at: string
           faisca_id: string
           id: string
+          texto?: string
         }
         Update: {
           autora_id?: string
           created_at?: string
           faisca_id?: string
           id?: string
+          texto?: string
         }
         Relationships: [
           {

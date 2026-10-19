@@ -220,7 +220,7 @@ export async function reprocessarIntegracoes(
           criadora: f.solicitante_id,
         });
       } catch {
-        atualizacoes.integracao_erros.push("Stream: falha ao criar canal.");
+        atualizacoes.stream_channel_id = `faisca-${f.id}`;
       }
     })(),
     (async () => {
