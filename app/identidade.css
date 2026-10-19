@@ -625,3 +625,17 @@ select {
     color: var(--brand-rosa-claro);
   }
 }
+/* Contexto do projeto: hackathon do Grupo Equatorial, com a logo oficial em branco. */
+.login-parceira {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid #ffffff26;
+  font-size: 12px;
+  color: var(--brand-rosa-claro);
+}
+.login-parceira img {
+  width: 140px;
+  height: auto;
+}
