@@ -1,10 +1,19 @@
 import { readFile } from "node:fs/promises";
 import { test, expect, type Page } from "@playwright/test";
-async function linkEntrada(page: Page, email: string) {
+async function linkEntrada(page: Page, email: string, cadastrar = false) {
   await page.goto("/entrar");
+  if (cadastrar)
+    await page
+      .getByRole("button", { name: "Criar conta", exact: true })
+      .click();
   await page.getByLabel("Seu e-mail", { exact: true }).fill(email);
   await page
-    .getByRole("button", { name: "Receber link de entrada", exact: true })
+    .getByRole("button", {
+      name: cadastrar
+        ? "Receber link para criar conta"
+        : "Receber link de entrada",
+      exact: true,
+    })
     .click();
   await expect(page.getByRole("status")).toContainText("Link enviado");
   const link = await (
@@ -15,7 +24,10 @@ async function linkEntrada(page: Page, email: string) {
   await page.goto(link.url);
 }
 async function entrar(page: Page, email: string, nome: string) {
-  await linkEntrada(page, email);
+  await linkEntrada(page, email, true);
+  await preencherPerfil(page, nome);
+}
+async function preencherPerfil(page: Page, nome: string) {
   await page.getByRole("button", { name: "Entendi, vamos continuar" }).click();
   await page
     .getByRole("button", { name: "Montar meu perfil", exact: true })
@@ -198,8 +210,16 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
   await page.getByRole("button", { name: "Saberes", exact: true }).click();
   await expect(
     page.getByRole("heading", {
+      name: "Saberes para levar adiante",
+      exact: true,
+      level: 1,
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
       name: "Como escolher indicadores para uma decisão?",
       exact: true,
+      level: 2,
     }),
   ).toBeVisible();
   expect(
@@ -370,6 +390,9 @@ test("relato persiste, fica privado e a liderança acompanha a resolução", asy
   const contexto = await browser.newContext();
   const lider = await contexto.newPage();
   await linkEntrada(lider, "primeira@banca.test");
+  const contaLider = await (await lider.request.get("/api/piloto")).json();
+  if (!contaLider.conta.onboarding)
+    await preencherPerfil(lider, "Liderança de Teste");
   await lider.getByRole("button", { name: "Ajuda", exact: true }).click();
   const acompanhamento = lider.getByRole("region", {
     name: "Acompanhamento dos relatos",
@@ -388,6 +411,42 @@ test("relato persiste, fica privado e a liderança acompanha a resolução", asy
     relatos.getByRole("heading", { name: /Curadoria e IA · Resolvido/ }),
   ).toBeVisible();
   await contexto.close();
+});
+
+test("entrar não cria uma conta nova e cadastro é uma escolha explícita", async ({
+  page,
+}) => {
+  await page.goto("/entrar");
+  await expect(
+    page.getByRole("button", { name: "Já tenho conta", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page
+    .getByLabel("Seu e-mail", { exact: true })
+    .fill("nao-cadastrada@banca.test");
+  await page
+    .getByRole("button", { name: "Receber link de entrada", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toContainText("escolha Criar conta");
+  const antes = await (
+    await page.request.get(
+      "http://127.0.0.1:54322/test-link?email=nao-cadastrada%40banca.test",
+    )
+  ).json();
+  expect(antes.url).toBeNull();
+  await page.getByRole("button", { name: "Criar conta", exact: true }).click();
+  await expect(page.getByLabel("Seu e-mail", { exact: true })).toHaveValue(
+    "nao-cadastrada@banca.test",
+  );
+  await page
+    .getByRole("button", { name: "Receber link para criar conta", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toContainText("Link enviado");
+  const depois = await (
+    await page.request.get(
+      "http://127.0.0.1:54322/test-link?email=nao-cadastrada%40banca.test",
+    )
+  ).json();
+  expect(depois.url).toContain("/auth/callback?code=");
 });
 
 test.afterAll(async () => {

@@ -18,7 +18,7 @@ const server=createServer(async(req,res)=>{try{
  if(url.pathname==='/test-cleanup'){await limpar();res.end('{}');return;}
  if(url.pathname==='/test-link'){const link=[...links].find(([,v])=>v.email===url.searchParams.get('email'));res.end(JSON.stringify({url:link?'http://127.0.0.1:3400/auth/callback?code='+link[0]:null}));return;}
  const chunks=[];for await(const c of req)chunks.push(c);const body=chunks.length?JSON.parse(Buffer.concat(chunks).toString()):{};
- if(url.pathname==='/auth/v1/otp'){if(!usuarios.has(body.email))usuarios.set(body.email,{id:randomUUID(),email:body.email,email_confirmed_at:new Date().toISOString(),aud:'authenticated',role:'authenticated',app_metadata:{},user_metadata:{}});const code=randomUUID();links.set(code,{email:body.email,challenge:body.code_challenge});res.end('{}');return;}
+ if(url.pathname==='/auth/v1/otp'){if(!usuarios.has(body.email)&&body.create_user===false){res.statusCode=400;res.end('{"message":"Cadastro não autorizado nesta operação"}');return;}if(!usuarios.has(body.email))usuarios.set(body.email,{id:randomUUID(),email:body.email,email_confirmed_at:new Date().toISOString(),aud:'authenticated',role:'authenticated',app_metadata:{},user_metadata:{}});const code=randomUUID();links.set(code,{email:body.email,challenge:body.code_challenge});res.end('{}');return;}
  if(url.pathname==='/auth/v1/token'){
   let user;
   if(url.searchParams.get('grant_type')==='pkce'){const link=links.get(body.auth_code);const challenge=createHash('sha256').update(body.code_verifier ?? '').digest('base64url');if(link?.challenge===challenge){user=usuarios.get(link.email);links.delete(body.auth_code);}}

@@ -291,3 +291,17 @@ externos descritos no guia de ativação. Execução da pipeline remota não foi
   houve envio, atualização dos templates hospedados ou validação SMTP.
 - PWA recebe ícones 192/512, cor do navegador azul e nova versão do cache público.
   As restrições de cache de APIs e páginas autenticadas foram preservadas.
+
+## Entrada e criação de conta explícitas — 2026-10-17
+
+- Build/TypeScript, lint e 115 testes unitários passaram. Cinco cenários do piloto
+  passaram com Auth simulado e banco real local, incluindo retorno à conta já
+  existente e cadastro aberto pela opção dedicada.
+- A fixture respeita create_user=false: e-mail desconhecido em Entrar não cria
+  identidade nem link; ao alternar para Criar conta, o e-mail digitado é mantido
+  e o provedor simulado emite o link. O teste não comprova entrega SMTP real.
+- O teste da biblioteca aguarda o título da seção antes de verificar a dica;
+  o título da Faísca e o da dica podem coincidir durante a navegação. A preparação
+  da liderança também permite executar seu cenário após limpeza de outra fixture.
+- Prévias locais de login desktop/mobile atualizadas em .local/identidade/;
+  nenhuma nova migration, variável ou política de cadastro do Supabase foi alterada.

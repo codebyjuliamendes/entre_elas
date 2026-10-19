@@ -7,6 +7,7 @@ export function Login() {
   const router = useRouter(),
     params = useSearchParams();
   const retorno = normalizarRetorno(params.get("retorno"));
+  const [modo, setModo] = useState<"entrar" | "cadastrar">("entrar");
   const [email, setEmail] = useState(""),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false);
@@ -28,7 +29,7 @@ export function Login() {
       const r = await fetch("/api/auth/link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, retorno }),
+        body: JSON.stringify({ email, retorno, modo }),
       });
       const data = await r.json();
       setStatus(
@@ -65,11 +66,37 @@ export function Login() {
       </section>
       <section className="login-content" aria-labelledby="login-titulo">
         <span className="eyebrow">Seu espaço começa aqui</span>
-        <h2 id="login-titulo">Entre na sua rede.</h2>
+        <div className="login-modos" role="group" aria-label="Tipo de acesso">
+          <button
+            type="button"
+            aria-pressed={modo === "entrar"}
+            disabled={busy}
+            onClick={() => {
+              setModo("entrar");
+              setStatus("");
+            }}
+          >
+            Já tenho conta
+          </button>
+          <button
+            type="button"
+            aria-pressed={modo === "cadastrar"}
+            disabled={busy}
+            onClick={() => {
+              setModo("cadastrar");
+              setStatus("");
+            }}
+          >
+            Criar conta
+          </button>
+        </div>
+        <h2 id="login-titulo">
+          {modo === "entrar" ? "Entrar na minha conta." : "Crie sua conta."}
+        </h2>
         <p>
-          Digite seu e-mail para criar sua conta ou entrar. Você receberá um
-          link de acesso, sem precisar de senha. Suas trocas ficarão salvas com
-          segurança no servidor.
+          {modo === "entrar"
+            ? "Use o e-mail da sua conta. Enviaremos um link pessoal para você voltar às suas trocas, sem precisar de senha."
+            : "É sua primeira vez? Cadastre seu e-mail e confirme o link que enviaremos. Depois, você prepara seu perfil para começar as trocas."}
         </p>
         <form onSubmit={entrar}>
           <label className="form-label" htmlFor="email">
@@ -85,7 +112,11 @@ export function Login() {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button className="pilot-button" disabled={busy}>
-            {busy ? "Enviando…" : "Receber link de entrada"}
+            {busy
+              ? "Enviando…"
+              : modo === "entrar"
+                ? "Receber link de entrada"
+                : "Receber link para criar conta"}
           </button>
         </form>
         {params.get("erro") && (

@@ -68,3 +68,5 @@ Em produção, agende o worker em um serviço apropriado. Messages de chat nunca
 A busca pública exclui todo conteúdo privado, mesmo para quem é membro, para
 que não contribua para indicações públicas. Saberes derivados de trocas exigem
 confirmação da autora. Evidências extraídas devem ser trechos literais.
+
+`POST /api/auth/link` recebe `email`, `retorno` opcional e `modo` (`entrar` ou `cadastrar`). O padrão é `entrar`, com criação de usuária desativada no Auth; somente `cadastrar` usa `shouldCreateUser=true`. Ambos enviam link mágico, preservando PKCE e os limites de envio.

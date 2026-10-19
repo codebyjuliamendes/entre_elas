@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { normalizarRetorno, COOKIE_RETORNO } from "@/lib/piloto/retorno";
 import { variavel } from "@/lib/config";
 import { cookies } from "next/headers";
@@ -11,6 +12,10 @@ export async function POST(request: Request) {
   return resposta(async () => {
     const entrada = await corpo(request);
     const email = exigirEmail(entrada.email);
+    const modo = z
+      .enum(["entrar", "cadastrar"])
+      .default("entrar")
+      .parse(entrada.modo);
     const chave = "login:" + createHash("sha256").update(email).digest("hex");
     const janela = new Date(
       Math.floor(Date.now() / 3600000) * 3600000,
@@ -77,12 +82,12 @@ export async function POST(request: Request) {
       email,
       options: {
         emailRedirectTo: new URL("/auth/callback", origemApp()).href,
-        shouldCreateUser: true,
+        shouldCreateUser: modo === "cadastrar",
       },
     });
     if (erro)
       throw new ErroDominio(
-        "Não foi possível enviar o link. Tente novamente mais tarde.",
+        "Não foi possível enviar o link. Se este é seu primeiro acesso, escolha Criar conta. Se já tem conta, confira o e-mail ou tente novamente mais tarde.",
         503,
       );
     return { ok: true };

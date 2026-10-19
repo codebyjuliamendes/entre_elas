@@ -361,3 +361,23 @@ body {
     gap: 10px;
   }
 }
+.login-modos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  margin: 20px 0 28px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff0f7;
+}
+.login-modos > button {
+  background: transparent;
+  border-color: transparent;
+  font-weight: 600;
+  min-height: 44px;
+}
+.login-modos > button[aria-pressed="true"] {
+  background: var(--brand-azul);
+  color: white;
+}
