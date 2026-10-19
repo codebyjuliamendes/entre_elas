@@ -358,8 +358,8 @@ export function Encontro({
                   </button>
                 </form>
                 <p className="input-hint">
-                  Mensagens ficam no Stream. Não são usadas para reconhecer
-                  saberes.
+                  Só vocês duas veem estas mensagens. Elas não são usadas para
+                  reconhecer saberes.
                 </p>
               </>
             )}
