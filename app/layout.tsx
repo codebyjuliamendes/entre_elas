@@ -39,7 +39,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           position="top-center"
           closeButton
           toastOptions={{
-            style: { fontFamily: "Arial, Helvetica, sans-serif", fontSize: 12 },
+            style: { fontFamily: "inherit", fontSize: 14, fontWeight: 600 },
           }}
         />
       </body>

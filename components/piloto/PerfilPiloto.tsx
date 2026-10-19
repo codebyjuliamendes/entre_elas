@@ -131,7 +131,7 @@ export function PerfilPiloto({
         </>
       )}
       {sugerido && (
-        <p role="status">
+        <p role="status" className="aviso aviso-atencao">
           Este é um rascunho da IA. Revise os campos e confirme somente o que
           representa você.
         </p>
@@ -201,7 +201,10 @@ export function PerfilPiloto({
       )}
       <section className="pilot-card" aria-label="Seu perfil na busca com IA">
         <h3>Seu perfil na busca com IA</h3>
-        <p role="status">
+        <p
+          role="status"
+          className={`aviso ${indexacao.estado === "pronto" ? "aviso-ok" : "aviso-atencao"}`}
+        >
           {
             {
               sem_consentimento:

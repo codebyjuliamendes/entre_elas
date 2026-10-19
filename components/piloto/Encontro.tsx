@@ -207,7 +207,7 @@ export function Encontro({
               {f.horarios_propostos.every(
                 (h) => Date.parse(h) <= Date.parse(d.agora),
               ) && (
-                <p role="status">
+                <p role="alert" className="aviso aviso-erro">
                   Os horários propostos já passaram. Peça à outra pessoa um novo
                   convite com horários futuros.
                 </p>
@@ -248,7 +248,7 @@ export function Encontro({
               </p>
             )}
             {f.integracao_erros.length > 0 && (
-              <p role="status">
+              <p role="alert" className="aviso aviso-erro">
                 {f.integracao_erros.join(" ")} Seus dados estão salvos. Você
                 pode tentar preparar os serviços novamente.
               </p>
@@ -303,7 +303,11 @@ export function Encontro({
         <>
           <section className="pilot-card">
             <h2>Chat da Faísca</h2>
-            {chatErro && <p role="status">{chatErro}</p>}
+            {chatErro && (
+              <p role="alert" className="aviso aviso-erro">
+                {chatErro}
+              </p>
+            )}
             {!["aceita", "realizada"].includes(f.status) ? (
               <p>O chat estará disponível após o aceite da Faísca.</p>
             ) : (
@@ -441,7 +445,7 @@ export function Encontro({
         <section className="pilot-card" aria-labelledby="avaliar-faisca">
           <h2 id="avaliar-faisca">Como foi esta Faísca para você?</h2>
           {d.avaliadas.includes(f.id) ? (
-            <p role="status">
+            <p role="status" className="aviso aviso-ok">
               Obrigada! Sua avaliação entra apenas nos números agregados do
               piloto.
             </p>
@@ -521,7 +525,7 @@ export function Encontro({
             {f.resumo.rascunho_dica.corpo}
           </p>
           {publicada ? (
-            <p role="status">
+            <p role="status" className="aviso aviso-ok">
               Esta dica já foi publicada com autorização das duas.
             </p>
           ) : (
@@ -658,7 +662,7 @@ export function Encontro({
       )}
       {["cancelada", "realizada"].includes(f.status) && f.daily_room_url && (
         <section className="pilot-card">
-          <p role="status">
+          <p role="alert" className="aviso aviso-erro">
             O encerramento da sala ainda não foi confirmado pelo provedor. Tente
             novamente.
           </p>

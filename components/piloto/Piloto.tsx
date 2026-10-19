@@ -12,6 +12,7 @@ import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
 import { Marca, SimboloFaisca } from "@/components/Marca";
 import { motion } from "framer-motion";
+import { CircleHelp } from "lucide-react";
 import { Avatar } from "./Visual";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
@@ -126,7 +127,12 @@ export function Piloto({
     return (
       <main className="pilot-login">
         <h1>Seu espaço Entre Elas</h1>
-        <p role="status">{erro || "Buscando seus dados no servidor…"}</p>
+        <p
+          role={erro ? "alert" : "status"}
+          className={erro ? "aviso aviso-erro" : undefined}
+        >
+          {erro || "Buscando seus dados no servidor…"}
+        </p>
         {erro && (
           <button className="pilot-button" onClick={() => void carregar()}>
             Tentar novamente
@@ -306,23 +312,55 @@ export function Piloto({
               ? "Demonstração · dados fictícios, nada é salvo"
               : "Piloto · dados salvos no servidor"}
           </span>
-          {demonstracao ? (
-            <a className="pilot-demo-cta" href="/entrar?modo=cadastrar">
-              Criar minha conta
-            </a>
-          ) : (
+          {/* Conta e ajuda ficam no topo, separadas das abas de conteúdo. */}
+          <div className="pilot-conta">
             <button
-              disabled={busy}
-              onClick={() =>
-                void executar(async () => {
-                  await api("/api/auth/sair", {});
-                  router.replace("/entrar");
-                })
-              }
+              type="button"
+              className="pilot-conta-item"
+              aria-current={tab === "ajuda" ? "page" : undefined}
+              onClick={() => {
+                setTab("ajuda");
+                setEncontro(null);
+              }}
             >
-              Sair
+              <CircleHelp size={18} aria-hidden="true" />
+              <span>Ajuda</span>
             </button>
-          )}
+            <button
+              type="button"
+              className="pilot-conta-item"
+              aria-current={tab === "perfil" ? "page" : undefined}
+              onClick={() => {
+                setTab("perfil");
+                setEncontro(null);
+              }}
+            >
+              <Avatar
+                id={perfil.id}
+                nome={perfil.nome}
+                foto={d.fotos[perfil.id]}
+                tamanho={28}
+              />
+              <span>Meu perfil</span>
+            </button>
+            {demonstracao ? (
+              <a className="pilot-demo-cta" href="/entrar?modo=cadastrar">
+                Criar minha conta
+              </a>
+            ) : (
+              <button
+                disabled={busy}
+                onClick={() =>
+                  void executar(async () => {
+                    await api("/api/auth/sair", {});
+                    router.replace("/entrar");
+                  })
+                }
+              >
+                Sair
+              </button>
+            )}
+          </div>
         </header>
         <nav aria-label="Navegação do piloto">
           {[
@@ -331,8 +369,6 @@ export function Piloto({
             ["comunidades", "Comunidades"],
             ["saberes", "Saberes"],
             ["agenda", "Agenda"],
-            ["perfil", "Meu perfil"],
-            ["ajuda", "Ajuda"],
             ...(d.lider ? [["lideranca", "Liderança"]] : []),
           ].map(([key, label]) => (
             <button
@@ -356,14 +392,14 @@ export function Piloto({
       </div>
       <main>
         {!online && (
-          <p role="status" className="pilot-card">
+          <p role="alert" className="pilot-card aviso aviso-erro">
             Você está sem conexão. O que já foi salvo continua no servidor.
             Mantenha esta página aberta para preservar o que ainda está
             escrevendo; reconecte para salvar.
           </p>
         )}
         {encontro && !ativo && (
-          <p role="status" className="pilot-card">
+          <p role="alert" className="pilot-card aviso aviso-erro">
             Esta Faísca não está disponível para sua conta.{" "}
             <button onClick={() => setEncontro(null)}>
               Voltar para suas Faíscas
@@ -371,7 +407,7 @@ export function Piloto({
           </p>
         )}
         {erro && (
-          <p role="alert" className="pilot-card">
+          <p role="alert" className="pilot-card aviso aviso-erro">
             {erro} Os dados já salvos continuam no servidor.{" "}
             <button onClick={() => void carregar()}>Atualizar</button>
           </p>
@@ -483,7 +519,7 @@ export function Piloto({
                   </p>
                 </section>
                 {buscou && indicacoes.length === 0 && (
-                  <p role="status" className="pilot-card">
+                  <p role="status" className="pilot-card aviso aviso-atencao">
                     Ainda não encontramos uma indicação para este pedido. Tente
                     descrever uma habilidade específica ou escolha uma pessoa
                     abaixo. A rede cresce conforme as participantes completam e
