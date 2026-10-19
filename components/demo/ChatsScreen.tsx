@@ -194,7 +194,7 @@ export function ChatsScreen({ com }: { com?: string }) {
                 className="tag"
                 style={{ marginLeft: 6, padding: "2px 4px", fontSize: 7 }}
               >
-                FAÍSCA
+                Faísca
               </span>
               <p>
                 {ultima?.texto ??

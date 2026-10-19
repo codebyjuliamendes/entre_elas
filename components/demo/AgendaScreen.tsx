@@ -216,10 +216,10 @@ export function AgendaScreen({ hoje }: { hoje: string }) {
                   <div className="event-body">
                     <span className="tag">
                       {e.tipo === "faisca"
-                        ? "FAÍSCA"
+                        ? "Faísca"
                         : e.tipo === "evento"
-                          ? "EVENTO"
-                          : "COMUNIDADE"}
+                          ? "Evento"
+                          : "Comunidade"}
                     </span>
                     <h3>{e.titulo}</h3>
                     <p className="event-meta">
