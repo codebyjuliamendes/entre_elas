@@ -247,9 +247,14 @@ const SEMENTES: Semente[] = [
     "Sustentabilidade",
     "Maceió, AL",
     "Alagoas",
-    ["Diversidade e inclusão", "Comunicação clara", "Projetos sociais"],
+    [
+      "Diversidade e inclusão",
+      "Conciliar trabalho e cuidado",
+      "Comunicação clara",
+    ],
     ["Trabalhar com indicadores"],
     [
+      "Cuida da mãe idosa e combinou com a equipe uma rotina que cabe no cuidado",
       "Organizou o primeiro censo de diversidade da regional Alagoas",
       "Escreve as campanhas internas de segurança com linguagem simples",
     ],
@@ -261,8 +266,11 @@ export function criarDemonstracao(agora = new Date()): EstadoDemonstracao {
   const t = agora.getTime();
   const iso = (horas: number) => new Date(t + horas * 3600000).toISOString();
   // Horários redondos ajudam a leitura: "amanhã às 10h", não "às 10h37".
+  // Encontros em dias úteis: a Faísca acontece dentro do expediente.
   const hora = (dias: number, h: number) => {
     const d = new Date(t + dias * 86400000);
+    if (d.getDay() === 6) d.setDate(d.getDate() + (dias < 0 ? -1 : 2));
+    if (d.getDay() === 0) d.setDate(d.getDate() + (dias < 0 ? -2 : 1));
     d.setHours(h, 0, 0, 0);
     return d.toISOString();
   };
@@ -484,8 +492,8 @@ export function criarDemonstracao(agora = new Date()): EstadoDemonstracao {
     ],
     [
       205,
-      "Mães na Equatorial",
-      "Rede de apoio para conciliar carreira, plantões e maternidade.",
+      "Cuidar e Trabalhar",
+      "Para mães, mães atípicas e quem cuida de familiares: conciliar carreira, plantões e cuidado.",
     ],
   ].map(([n, nome, descricao]) => ({
     ...base(Number(n)),
@@ -590,6 +598,15 @@ export function criarDemonstracao(agora = new Date()): EstadoDemonstracao {
       "PDI com uma primeira ação",
       "Um plano de desenvolvimento não precisa ter dez metas. Escolha uma competência, uma pessoa para conversar e uma ação para os próximos quinze dias.",
       idDemo(903),
+    ),
+    post(
+      309,
+      -54,
+      idDemo(13),
+      MAES,
+      "discussao",
+      "Networking no intervalo do almoço",
+      "Cuido da minha mãe à noite e nunca conseguia ir aos encontros depois do expediente. Marquei minhas Faíscas às 12h30, de terça e quinta. Vinte minutos, pelo celular, e já conheci colegas de três estados.",
     ),
   ];
   const comentarios: Record<string, Comentario[]> = {
@@ -809,6 +826,7 @@ export function criarDemonstracao(agora = new Date()): EstadoDemonstracao {
     pares_distintos: 22,
     entre_regionais: 79,
     entre_areas: 71,
+    no_expediente: 92,
     saberes_reconhecidos: 31,
     dicas_publicadas: 11,
     inscricoes: 46,

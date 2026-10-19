@@ -25,6 +25,7 @@ import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useNavegacaoPiloto } from "@/lib/piloto/navegacao";
 import { useOnline } from "@/lib/browser/conexao";
 import { api, dataHora, emDemonstracao } from "@/lib/piloto/browser";
+import { noExpediente } from "@/lib/piloto/metricas";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 const sobreIA =
@@ -739,9 +740,19 @@ export function Piloto({
                     </button>
                   )}
                   <p className="input-hint">
-                    Até três opções. A convidada escolhe uma delas para
-                    confirmar o encontro.
+                    Até três opções, de preferência no expediente: a Faísca é
+                    tempo de desenvolvimento. A convidada escolhe uma delas
+                    para confirmar o encontro.
                   </p>
+                  {[horario, ...alternativos].some(
+                    (v) => v && !noExpediente(new Date(v).toISOString()),
+                  ) && (
+                    <p role="status" className="aviso aviso-atencao">
+                      Há horário fora do expediente (segunda a sexta, das 8h às
+                      18h de Brasília). Dentro do trabalho, participa também
+                      quem cuida de alguém em casa.
+                    </p>
+                  )}
                   {destino && (
                     <p className="input-hint">
                       Convite para {pessoa(destino)} · 20 minutos. Depois de

@@ -4,6 +4,7 @@ import {
   mapaDeSaberes,
   consolidarIndicadores,
   resumoParaApresentacao,
+  noExpediente,
 } from "@/lib/piloto/metricas";
 const A = "00000000-0000-4000-8000-0000000000a1",
   B = "00000000-0000-4000-8000-0000000000b2",
@@ -59,10 +60,29 @@ describe("Indicadores do piloto", () => {
     expect(i.entre_regionais).toBe(66.7);
     expect(i.entre_areas).toBe(66.7);
   });
+  it("mede as Faíscas marcadas no expediente, no horário de Brasília", () => {
+    // 13h UTC de terça = 10h em Brasília; 22h UTC = 19h; sábado fica fora.
+    expect(noExpediente("2026-10-20T13:00:00Z")).toBe(true);
+    expect(noExpediente("2026-10-20T22:00:00Z")).toBe(false);
+    expect(noExpediente("2026-10-24T13:00:00Z")).toBe(false);
+    const i = consolidarIndicadores({
+      ...base,
+      faiscas: [
+        { id: "f1", solicitante_id: A, convidada_id: C, status: "realizada", horario: "2026-10-20T13:00:00Z" },
+        { id: "f2", solicitante_id: C, convidada_id: A, status: "aceita", horario: "2026-10-20T22:00:00Z" },
+        { id: "f3", solicitante_id: A, convidada_id: B, status: "aceita", horario: null },
+        { id: "f4", solicitante_id: B, convidada_id: C, status: "pendente", horario: "2026-10-24T13:00:00Z" },
+      ],
+    });
+    // Só conexões com horário entram na conta: 1 de 2.
+    expect(i.no_expediente).toBe(50);
+    expect(resumoParaApresentacao(i)).toContain("50% das Faíscas marcadas no horário de trabalho");
+  });
   it("não inventa percentuais sem dados e sinaliza migração pendente", () => {
     const i = consolidarIndicadores({ ...base, faiscas: [], avaliacoes: null });
     expect(i.taxa_aceite).toBeNull();
     expect(i.entre_regionais).toBeNull();
+    expect(i.no_expediente).toBeNull();
     expect(i.avaliacoes).toBeNull();
     expect(resumoParaApresentacao(i)).toContain("taxa de aceite —");
   });

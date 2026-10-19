@@ -176,6 +176,11 @@ export function PainelLideranca() {
               valor={m.entre_areas}
               nota="Trocas que atravessaram áreas da empresa."
             />
+            <Rosca
+              titulo="Faíscas no horário de trabalho"
+              valor={m.no_expediente}
+              nota="De segunda a sexta, das 8h às 18h (Brasília). Networking que cabe na rotina, inclusive de quem cuida de alguém em casa."
+            />
             <Barras
               titulo="Mapa de lacunas"
               itens={m.mapa.temas_sem_par.map((t) => ({
