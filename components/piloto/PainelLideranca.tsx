@@ -1,7 +1,7 @@
 "use client";
 import { useState, type CSSProperties } from "react";
 import { toast } from "sonner";
-import { api, dataHora } from "@/lib/piloto/browser";
+import { api, dataHora, emDemonstracao } from "@/lib/piloto/browser";
 import {
   resumoParaApresentacao,
   type IndicadoresPiloto,
@@ -103,7 +103,11 @@ export function PainelLideranca() {
     if (!m) return;
     try {
       await navigator.clipboard.writeText(resumoParaApresentacao(m));
-      toast.success("Resumo copiado com os números reais do piloto.");
+      toast.success(
+        emDemonstracao()
+          ? "Resumo copiado com os números de exemplo da demonstração."
+          : "Resumo copiado com os números reais do piloto.",
+      );
     } catch {
       toast.error("Não foi possível copiar. Selecione o texto manualmente.");
     }
@@ -114,13 +118,17 @@ export function PainelLideranca() {
         <div>
           <h1>Painel de liderança</h1>
           <p>
-            Dados agregados e anônimos
+            {emDemonstracao()
+              ? "Números fictícios de exemplo"
+              : "Dados agregados e anônimos"}
             {m?.inicio ? ` · desde ${dataHora(m.inicio)}` : ""}
           </p>
         </div>
         <div className="pilot-actions">
           <button className="pilot-button" disabled={busy} onClick={atualizar}>
-            Atualizar dados reais do piloto
+            {emDemonstracao()
+              ? "Ver números de exemplo"
+              : "Atualizar dados reais do piloto"}
           </button>
           {m && (
             <button disabled={busy} onClick={copiar}>

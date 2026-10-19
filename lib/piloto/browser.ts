@@ -40,11 +40,20 @@ async function renovarSessao() {
   }
   return renovacao;
 }
+type Simulador = (url: string, dados?: unknown) => Promise<unknown>;
+let simulador: Simulador | null = null;
+// Na demonstração pública as chamadas são respondidas no próprio navegador,
+// com dados fictícios; nada chega ao servidor do piloto.
+export function usarSimulador(fn: Simulador | null) {
+  simulador = fn;
+}
+export const emDemonstracao = () => simulador !== null;
 export async function api<T>(
   url: string,
   dados?: unknown,
   renovar = true,
 ): Promise<T> {
+  if (simulador) return (await simulador(url, dados)) as T;
   const r = await requisitar(
     url,
     {

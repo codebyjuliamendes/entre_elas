@@ -6,7 +6,7 @@ const ETAPAS = ["Convite", "Combinada", "Conversa", "Aprendizado", "Dica"];
 import type { Faisca } from "@/lib/schemas/entities";
 import type { DadosPiloto } from "@/lib/piloto/dados";
 import { orientarFaisca } from "@/lib/domain/faisca-orientacao";
-import { api, dataHora } from "@/lib/piloto/browser";
+import { api, dataHora, emDemonstracao } from "@/lib/piloto/browser";
 import { calendarioFaisca } from "@/lib/domain/faisca-calendario";
 import { baixarArquivo } from "@/lib/browser/arquivo";
 import { toast } from "sonner";
@@ -279,7 +279,9 @@ export function Encontro({
                 })
               }
             >
-              Entrar na chamada real
+              {emDemonstracao()
+                ? "Entrar na chamada (simulada)"
+                : "Entrar na chamada real"}
             </button>
           </section>
           {video && (
