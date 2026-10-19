@@ -59,7 +59,7 @@ E quando acontece o networking? Depois do expediente. Justamente quando a Ana, a
 (Opcional, se houver tempo: "É aprendizagem entre pares, no ritmo do trabalho.")
 
 **9. Benefícios.**
-"Para a colaboradora, ajuda em dias, não em meses, e visibilidade para o que ela sabe. Para a Equatorial, um mapa do conhecimento que hoje está espalhado, por cerca de dois reais por pessoa por mês."
+"Para a colaboradora, ajuda em dias, não em meses, e visibilidade para o que ela sabe. Para a Equatorial, um mapa do conhecimento que hoje está espalhado, por menos de um real por pessoa por mês."
 
 **10. Impacto.**
 "Nossa meta para os primeiros seis meses: 500 Faíscas, 30% delas entre regionais diferentes, e 50 saberes que só uma pessoa tinha, agora compartilhados."
@@ -84,7 +84,7 @@ E quando acontece o networking? Depois do expediente. Justamente quando a Ana, a
 - **Abre e fecha com a mesma imagem.** Os 20 minutos e a Ana aparecem no começo e voltam no fim, e a banca lembra de histórias que fecham o círculo.
 - **Devolve à banca o que ela pediu.** Citar as mulheres que "não têm tempo para networking" mostra que o time ouviu o desafio.
 - **Mostra, não só conta.** O vídeo prova que o app existe, e "qualquer pessoa pode testar agora" convida a banca a conferir.
-- **Responde às perguntas antes que façam.** Custo (R$ 2), adesão (slide 13) e privacidade (só com autorização das duas) já aparecem na fala.
+- **Responde às perguntas antes que façam.** Custo (menos de R$ 1), adesão (slide 13) e privacidade (só com autorização das duas) já aparecem na fala.
 - **Termina com um pedido concreto e barato.** Uma regional, uma líder e vinte minutos por semana: é fácil dizer sim.
 
 ## Como apresentar
@@ -107,7 +107,7 @@ No piloto, só com o consentimento de cada pessoa, e existe alternativa manual. 
 Ótimo. A conversa pode acontecer onde for mais confortável. O valor do Entre Elas está antes e depois: descobrir quem sabe o quê, e transformar a troca em dica, quiz e saber reconhecido. É a próxima Faísca que traz a pessoa de volta.
 
 **"Quanto custa rodar?"**
-Veja a seção de custo abaixo. Resposta curta: cerca de R$ 2 por pessoa ativa por mês na rede inteira, e quase zero no piloto.
+Veja a seção de custo abaixo. Resposta curta: menos de R$ 1 por pessoa ativa por mês na rede inteira, e cerca de R$ 250 por mês no piloto. O chat roda no próprio banco (Supabase), sem serviço pago à parte.
 
 **"Quantas pessoas já usaram?"**
 Responder com os números do painel de liderança no dia. Se ainda forem poucos, dizer: "estamos no piloto; o que importa agora é provar o ciclo completo, e ele já funciona de ponta a ponta."
@@ -133,12 +133,12 @@ Estimativa em dólar, com câmbio de referência de R$ 5,50. Preços de tabela c
 | Supabase Pro | banco e login | US$ 25 + processamento | US$ 25 | ~US$ 60 |
 | Gemini 2.5 Flash-Lite | IA | US$ 0,10 por milhão de tokens de entrada, US$ 0,40 de saída | ~US$ 1 | ~US$ 5 a 50 |
 | Daily | vídeo | 10 mil participante-minuto grátis, depois US$ 0,004 | US$ 0 | ~US$ 75 a 120 |
-| Stream | chat | grátis até 1.000 ativos; plano Start US$ 499 até 10 mil | US$ 0 | US$ 499 |
-| **Total por mês** | | | **~US$ 46 (~R$ 250)** | **~US$ 700 a 790 (~R$ 4.000)** |
+| Supabase (mesmo banco) | chat da Faísca | incluso no plano do banco | US$ 0 | US$ 0 |
+| **Total por mês** | | | **~US$ 46 (~R$ 250)** | **~US$ 200 a 290 (~R$ 1.400)** |
 
-**Por pessoa ativa:** cerca de US$ 0,38, ou **R$ 2 por mês**.
+**Por pessoa ativa:** cerca de US$ 0,13, ou **R$ 0,70 por mês**, menos de um real.
 
-**Onde economizar:** o chat é o item mais caro. Na Equatorial, ele pode ir para o Teams (que a empresa já paga) ou para o chat simples do próprio app. Sem o Stream, a rede inteira custa cerca de **US$ 250, ou R$ 1.400 por mês**.
+**Por que é barato:** o chat da Faísca grava as mensagens no próprio banco, sem um serviço de chat pago à parte. O app depende só de dois serviços além da hospedagem: Supabase (banco, login e chat) e Daily (vídeo, opcional). O vídeo também pode ir para o Teams, que a Equatorial já paga, e aí o custo cai para **menos de R$ 1.000 por mês**.
 
 **Conta da IA:** uma Faísca usa cerca de 10 mil tokens de entrada e 2,5 mil de saída, somando busca, pauta, síntese, quiz e saberes. Isso dá menos de um centavo de dólar por Faísca.
 
@@ -146,5 +146,4 @@ Fontes:
 - [Preços da API Gemini](https://ai.google.dev/gemini-api/docs/pricing) e [resumo de preços do Gemini 2.5 Flash-Lite](https://anotherwrapper.com/llm-pricing/gemini-2.5-flash-lite)
 - [Guia de preços do Supabase 2026](https://makerkit.dev/blog/saas/supabase-pricing)
 - [Preços de vídeo da Daily](https://www.daily.co/pricing/video-sdk/)
-- [Preços do Stream Chat](https://frontdeskreview.com/software/chat-api/stream-chat/) e [comparação do próprio Stream](https://getstream.io/blog/what-i-learned-researching-chat-api-pricing/)
 - [Plano Pro da Vercel](https://vercel.com/docs/accounts/plans/pro)
