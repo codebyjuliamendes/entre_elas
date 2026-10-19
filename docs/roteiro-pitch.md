@@ -1,9 +1,9 @@
-# Roteiro do pitch: 5 minutos, 14 slides
+# Roteiro do pitch: 5 minutos, 15 slides
 
 Deck: modelo da mentoria no Canva ("Entre Elas — Pitch Hackathon Equatorial (modelo da mentoria)").
 A fala de cada slide também está nas notas do apresentador no Canva.
 
-Sugestão de divisão: **Júlia** abre, conta o problema e fecha com os próximos passos; **Melissa** mostra o app; **Kayla** apresenta valor, impacto e o time.
+Sugestão de divisão: **Júlia** abre, conta o problema e fecha com os próximos passos; **Melissa** mostra o app; **Kayla** apresenta valor, impacto, o time e a adesão.
 Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cronômetro.
 
 | # | Slide | Tempo | Quem |
@@ -15,13 +15,14 @@ Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cron�
 | 5 | Como funciona | 0:25 | Melissa |
 | 6 | O app funcionando (vídeo) | 0:25 | Melissa |
 | 7 | Da conversa ao painel (vídeo) | 0:20 | Melissa |
-| 8 | Aprendizagem | 0:25 | Kayla |
-| 9 | Benefícios | 0:20 | Kayla |
-| 10 | Impacto | 0:25 | Kayla |
+| 8 | Aprendizagem | 0:20 | Kayla |
+| 9 | Benefícios | 0:15 | Kayla |
+| 10 | Impacto | 0:20 | Kayla |
 | 11 | Estágio atual | 0:15 | Kayla |
 | 12 | Time | 0:10 | Kayla |
-| 13 | Próximos passos | 0:20 | Júlia |
-| 14 | Fechamento | 0:15 | Júlia |
+| 13 | Adesão: o apoio da Equatorial | 0:20 | Kayla |
+| 14 | Próximos passos | 0:15 | Júlia |
+| 15 | Fechamento | 0:15 | Júlia |
 | | **Total** | **5:00** | |
 
 ## Falas
@@ -50,9 +51,11 @@ Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cron�
 
 **12. Time.** "Somos Kayla, do design, Júlia, de dados e IA, e Melissa, da programação."
 
-**13. Próximos passos.** "Os próximos passos têm prazo. Em 30 dias, um piloto em uma regional, com Faíscas dentro do expediente. Em 3 meses, todas as regionais, com avisos pelo Teams e rodas de conversa. Em 6 meses, a trilha Rumo à liderança integrada ao PDI e a meta de 500 Faíscas. Para começar, pedimos uma regional parceira e que a Faísca conte como hora de desenvolvimento: assim participa também quem não tem tempo fora do trabalho."
+**13. Adesão.** "Adesão não depende só de um app bom. Depende do apoio da empresa em quatro frentes. Tempo: a Faísca conta como hora de desenvolvimento, dentro do expediente. Exemplo: as líderes abrem as primeiras Faíscas. Proximidade: uma embaixadora por regional apresenta o app nas reuniões e no DDS. E reconhecimento: o que cada uma compartilha aparece no PDI. Sem isso, é mais um app. Com isso, vira cultura."
 
-**14. Fechamento.** "Na Equatorial, o conhecimento está nas pessoas. A gente descobre onde ele está e acende a Faísca. Obrigada!"
+**14. Próximos passos.** "Em 30 dias, um piloto em uma regional, com Faíscas no expediente. Em 3 meses, todas as regionais, com avisos pelo Teams e rodas de conversa. Em 6 meses, a trilha Rumo à liderança no PDI e 500 Faíscas. Para começar, pedimos uma regional, uma líder patrocinadora e 20 minutos por semana."
+
+**15. Fechamento.** "Na Equatorial, o conhecimento está nas pessoas. A gente descobre onde ele está e acende a Faísca. Obrigada!"
 
 ## Perguntas difíceis da banca
 
@@ -70,6 +73,9 @@ Responder com os números do painel de liderança no dia. Se ainda forem poucos,
 
 **"Quem não tem tempo vai usar?"**
 É para elas que a Faísca foi pensada: 20 minutos, no expediente, pelo celular. O convite recomenda horários de trabalho e o painel mostra quantas Faíscas aconteceram nesse horário. Ninguém precisa contar que é cuidadora; quem quiser encontra a comunidade "Cuidar e Trabalhar".
+
+**"Como medir a adesão?"**
+O painel da liderança já mostra participantes, perfis completos, taxa de aceite, Faíscas realizadas e Faíscas no horário de trabalho. Se a liderança ainda não puder liberar o tempo, começamos pelo mínimo: 20 minutos por semana, e o piloto mede o resultado para justificar a política.
 
 **"E se ninguém aceitar os convites?"**
 Cada pessoa define quantos convites topa receber por mês ("Abro Faíscas"). A IA não indica quem está sem vagas e favorece outras regionais, então a demanda se espalha.
