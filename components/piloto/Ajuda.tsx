@@ -142,7 +142,7 @@ export function Ajuda({
         <h2>{lider ? "Relatos para acompanhar" : "Seus relatos"}</h2>
         {carregando && <p role="status">Consultando relatos salvos…</p>}
         {erro && (
-          <p role="alert">
+          <p role="alert" className="aviso aviso-erro">
             {erro}{" "}
             <button onClick={() => void carregar()}>Tentar novamente</button>
           </p>

@@ -39,7 +39,7 @@ body:has(.pilot-app) {
   color: var(--brand-rosa-claro);
   font-size: 13px;
 }
-.pilot-app .pilot-topo header > button {
+.pilot-app .pilot-topo .pilot-conta > button:not(.pilot-conta-item) {
   background: transparent;
   color: white;
   border: 1px solid #ffffff40;
@@ -837,7 +837,7 @@ body:has(.pilot-app) {
   padding: 6px 14px;
   background: transparent;
 }
-.pilot-app .pilot-topo header > .pilot-demo-cta {
+.pilot-app .pilot-topo .pilot-demo-cta {
   padding: 8px 16px;
   border-radius: 999px;
   background: var(--brand-coral);
@@ -846,7 +846,7 @@ body:has(.pilot-app) {
   text-decoration: none;
   white-space: nowrap;
 }
-.pilot-app .pilot-topo header > .pilot-demo-cta:hover {
+.pilot-app .pilot-topo .pilot-demo-cta:hover {
   background: var(--brand-rosa);
 }
 @media (max-width: 640px) {
@@ -862,7 +862,8 @@ body:has(.pilot-app) {
   .demo-roteiro button {
     flex: none;
   }
-  .pilot-app .pilot-topo header:has(.pilot-demo-cta) > span {
+  .pilot-app .pilot-topo header > span,
+  .pilot-app .pilot-topo .pilot-conta-item > span:not(.pilot-avatar-mini) {
     display: none;
   }
 }
@@ -910,4 +911,143 @@ body:has(.pilot-app) {
 .login-demo-botao small {
   color: var(--muted);
   font-size: 13px;
+}
+
+/* Login: retorno do formulário. Erro em vermelho, para não passar despercebido. */
+.pilot-login p.login-aviso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.pilot-login p.login-aviso-erro {
+  border-color: #d92d20;
+  background: #fef3f2;
+  color: #b42318;
+}
+.login-aviso-erro::before {
+  content: "!";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #d92d20;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pilot-login p.login-aviso-ok {
+  border-color: #12b76a;
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+/* Topo: ajuda, perfil e saída à direita, separados das abas de conteúdo. */
+.pilot-conta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+.pilot-app .pilot-topo button.pilot-conta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 14px 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--brand-rosa-claro);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pilot-app .pilot-topo button.pilot-conta-item:first-child {
+  padding-left: 12px;
+}
+.pilot-app .pilot-topo button.pilot-conta-item:hover {
+  border-color: #ffffff40;
+  color: white;
+}
+.pilot-app .pilot-topo button.pilot-conta-item[aria-current="page"] {
+  border-color: var(--brand-rosa);
+  background: #ffffff14;
+  color: white;
+}
+.pilot-conta-item .pilot-avatar-mini {
+  border: 2px solid var(--brand-rosa);
+}
+@media (max-width: 640px) {
+  .pilot-app .pilot-topo button.pilot-conta-item {
+    padding: 4px;
+  }
+  .pilot-app .pilot-topo button.pilot-conta-item:first-child {
+    padding: 4px 9px;
+  }
+}
+
+/* Retorno ao usuário sempre com cor: vermelho é erro, verde é tudo certo,
+   amarelo pede atenção sem impedir o próximo passo. */
+.aviso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border: 1.5px solid;
+  border-radius: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.aviso::before {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pilot-app .aviso.aviso-erro,
+.pilot-login .aviso.aviso-erro {
+  border-color: #d92d20;
+  background: #fef3f2;
+  color: #b42318;
+}
+.aviso-erro::before {
+  content: "!";
+  background: #d92d20;
+}
+.pilot-app .aviso.aviso-ok {
+  border-color: #12b76a;
+  background: #ecfdf3;
+  color: #027a48;
+}
+.aviso-ok::before {
+  content: "✓";
+  background: #12b76a;
+}
+.pilot-app .aviso.aviso-atencao {
+  border-color: #f79009;
+  background: #fffaeb;
+  color: #93370d;
+}
+.aviso-atencao::before {
+  content: "i";
+  background: #f79009;
+}
+.aviso button {
+  margin-left: 4px;
 }
