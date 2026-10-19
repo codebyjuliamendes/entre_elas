@@ -1,5 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { SimboloFaisca } from "@/components/Marca";
+import { Avatar, Centelhas } from "./Visual";
+const ETAPAS = ["Convite", "Combinada", "Conversa", "Aprendizado", "Dica"];
 import type { Faisca } from "@/lib/schemas/entities";
 import type { DadosPiloto } from "@/lib/piloto/dados";
 import { orientarFaisca } from "@/lib/domain/faisca-orientacao";
@@ -38,13 +41,33 @@ export function Encontro({
     usuaria_id: pid,
     publicada,
   });
+  // Etapa visual da Faísca, derivada do estado já registrado no servidor.
+  const etapa = publicada
+    ? 4
+    : f.status === "realizada"
+      ? 3
+      : f.status === "aceita"
+        ? Object.keys(f.anotacoes).length
+          ? 2
+          : 1
+        : 0;
+  const [celebrar, setCelebrar] = useState(0);
+  const anterior = useRef({ status: f.status, publicada });
+  useEffect(() => {
+    const antes = anterior.current;
+    if (
+      (antes.status === "pendente" && f.status === "aceita") ||
+      (!antes.publicada && publicada)
+    )
+      setCelebrar((n) => n + 1);
+    anterior.current = { status: f.status, publicada };
+  }, [f.status, publicada]);
   const nome = (id: string) =>
     d.pessoas.find((p) => p.id === id)?.nome ?? "Participante";
   useEffect(() => {
     let ativo = true;
     async function ler() {
-      if (!["aceita", "realizada"].includes(f.status))
-        return;
+      if (!["aceita", "realizada"].includes(f.status)) return;
       try {
         const msgs = await api<typeof mensagens>("/api/piloto/mensagens", {
           faisca_id: f.id,
@@ -86,13 +109,49 @@ export function Encontro({
   return (
     <>
       <button onClick={voltar}>← Suas Faíscas</button>
-      <h1>{f.tema}</h1>
-      <p>
-        {nome(f.solicitante_id)} e {nome(f.convidada_id)} · {f.status}
-      </p>
-      <p>
-        {f.horario ? dataHora(f.horario) : "Escolha um dos horários propostos"}
-      </p>
+      <header className="encontro-topo">
+        <Centelhas disparo={celebrar} />
+        <div className="encontro-par" aria-hidden="true">
+          <Avatar
+            id={f.solicitante_id}
+            nome={nome(f.solicitante_id)}
+            foto={d.fotos[f.solicitante_id]}
+            tamanho={72}
+          />
+          <SimboloFaisca degrade size={64} />
+          <Avatar
+            id={f.convidada_id}
+            nome={nome(f.convidada_id)}
+            foto={d.fotos[f.convidada_id]}
+            tamanho={72}
+          />
+        </div>
+        <h1>{f.tema}</h1>
+        <p>
+          {nome(f.solicitante_id)} e {nome(f.convidada_id)} ·{" "}
+          {f.horario
+            ? dataHora(f.horario)
+            : "Escolha um dos horários propostos"}
+        </p>
+        {["recusada", "cancelada"].includes(f.status) ? (
+          <p className="encontro-encerrada">Esta Faísca foi {f.status}.</p>
+        ) : (
+          <ol className="encontro-etapas" aria-label="Etapas da Faísca">
+            {ETAPAS.map((e, i) => (
+              <li
+                key={e}
+                data-estado={
+                  i < etapa ? "feita" : i === etapa ? "atual" : undefined
+                }
+                aria-current={i === etapa ? "step" : undefined}
+              >
+                <span>{i + 1}</span>
+                {e}
+              </li>
+            ))}
+          </ol>
+        )}
+      </header>
       <section className="pilot-card" aria-label="Próximo passo da Faísca">
         <span className="eyebrow">Seu próximo passo</span>
         <h2>{orientacao.titulo}</h2>
