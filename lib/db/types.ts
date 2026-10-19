@@ -432,6 +432,51 @@ export type Database = {
           },
         ]
       }
+      piloto_avaliacoes: {
+        Row: {
+          created_at: string
+          faisca_id: string
+          id: string
+          profile_id: string
+          updated_at: string
+          utilidade: number
+          voltaria: boolean
+        }
+        Insert: {
+          created_at?: string
+          faisca_id: string
+          id?: string
+          profile_id: string
+          updated_at?: string
+          utilidade: number
+          voltaria: boolean
+        }
+        Update: {
+          created_at?: string
+          faisca_id?: string
+          id?: string
+          profile_id?: string
+          updated_at?: string
+          utilidade?: number
+          voltaria?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "piloto_avaliacoes_faisca_id_fkey"
+            columns: ["faisca_id"]
+            isOneToOne: false
+            referencedRelation: "faiscas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "piloto_avaliacoes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       piloto_contas: {
         Row: {
           auth_user_id: string

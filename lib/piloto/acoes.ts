@@ -8,6 +8,8 @@ import { gerar, embed } from "@/lib/ai/provider";
 import { fotoLocalSchema } from "@/lib/demo/foto";
 import { ErroDominio } from "@/lib/domain/erros";
 import { lerMensagens, enviarMensagem } from "@/lib/integrations/stream";
+import { avaliacaoFaiscaInput } from "./metricas";
+import { tabelaAusente } from "./indicadores";
 export const perfilPilotoSchema = profileInput.omit({ foto_url: true }).extend({
   nome: z.string().trim().min(2).max(100),
   cargo: z.string().trim().min(2).max(100),
@@ -148,5 +150,23 @@ export async function reconhecerSaberes(pid: string, entrada: unknown) {
       fonte_id: f.id,
       contexto: f.resumo,
     });
+  return { ok: true };
+}
+
+// Cada participante avalia a própria experiência; reenviar substitui a resposta anterior.
+export async function avaliarFaisca(pid: string, entrada: unknown) {
+  const dados = avaliacaoFaiscaInput.parse(entrada);
+  const f = await obterFaisca(dados.faisca_id, pid);
+  if (f.status !== "realizada")
+    throw new ErroDominio("A avaliação fica disponível depois da Faísca.", 409);
+  const { error } = await getDb()
+    .from("piloto_avaliacoes")
+    .upsert(
+      { ...dados, profile_id: pid },
+      { onConflict: "faisca_id,profile_id" },
+    );
+  if (tabelaAusente(error))
+    throw new ErroDominio("Avaliação ainda não habilitada neste ambiente.", 503);
+  verificarErro(error);
   return { ok: true };
 }

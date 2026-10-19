@@ -28,7 +28,9 @@ export function Encontro({
     [manual, setManual] = useState(""),
     [editando, setEditando] = useState(false),
     [revisao, setRevisao] = useState(""),
-    [chatErro, setChatErro] = useState("");
+    [chatErro, setChatErro] = useState(""),
+    [utilidade, setUtilidade] = useState(0),
+    [voltaria, setVoltaria] = useState<boolean | null>(null);
   const pid = d.perfil.id;
   const publicada = d.posts.some((p) => p.origem_faisca_id === f.id);
   const orientacao = orientarFaisca({
@@ -372,6 +374,83 @@ export function Encontro({
             A IA só recebe as anotações se as duas participantes autorizaram seu
             uso no perfil. Concluir não publica a dica.
           </p>
+        </section>
+      )}
+      {f.status === "realizada" && (
+        <section className="pilot-card" aria-labelledby="avaliar-faisca">
+          <h2 id="avaliar-faisca">Como foi esta Faísca para você?</h2>
+          {d.avaliadas.includes(f.id) ? (
+            <p role="status">
+              Obrigada! Sua avaliação entra apenas nos números agregados do
+              piloto.
+            </p>
+          ) : (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!utilidade || voltaria === null) return;
+                void acao(
+                  () =>
+                    api("/api/piloto/avaliar", {
+                      faisca_id: f.id,
+                      utilidade,
+                      voltaria,
+                    }),
+                  "Avaliação registrada. Obrigada!",
+                );
+              }}
+            >
+              <p id="utilidade-rotulo">
+                Quanto a conversa foi útil? (1 = pouco, 5 = muito)
+              </p>
+              <div
+                className="pilot-escolhas"
+                role="group"
+                aria-labelledby="utilidade-rotulo"
+              >
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    aria-pressed={utilidade === n}
+                    onClick={() => setUtilidade(n)}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <p id="voltaria-rotulo">Você faria outra Faísca?</p>
+              <div
+                className="pilot-escolhas"
+                role="group"
+                aria-labelledby="voltaria-rotulo"
+              >
+                {[
+                  [true, "Sim"],
+                  [false, "Ainda não"],
+                ].map(([valor, rotulo]) => (
+                  <button
+                    key={String(rotulo)}
+                    type="button"
+                    aria-pressed={voltaria === valor}
+                    onClick={() => setVoltaria(valor as boolean)}
+                  >
+                    {rotulo}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="pilot-button"
+                disabled={busy || !utilidade || voltaria === null}
+              >
+                Enviar avaliação
+              </button>
+              <p className="input-hint">
+                Opcional e sem texto livre. A outra participante não vê sua
+                resposta.
+              </p>
+            </form>
+          )}
         </section>
       )}
       {f.status === "realizada" && f.resumo && (

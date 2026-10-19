@@ -533,3 +533,30 @@ body {
     border-radius: 14px;
   }
 }
+/* Escolhas curtas (avaliação da Faísca) no mesmo padrão dos modos de acesso. */
+.pilot-escolhas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 16px;
+}
+.pilot-app .pilot-escolhas > button {
+  min-width: 48px;
+  min-height: 44px;
+  font-weight: 600;
+}
+.pilot-app .pilot-escolhas > button[aria-pressed="true"] {
+  background: var(--brand-azul);
+  color: white;
+}
+.pilot-metrica strong {
+  display: block;
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--brand-azul);
+}
+.pilot-metrica h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}

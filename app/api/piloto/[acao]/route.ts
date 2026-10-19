@@ -43,6 +43,8 @@ export async function POST(request: Request, ctx: RotaAcao) {
         return a.mensagensPiloto(u.id, input.faisca_id, input.texto);
       case "reconhecer":
         return a.reconhecerSaberes(u.id, input.faisca_id);
+      case "avaliar":
+        return a.avaliarFaisca(u.id, input);
       case "indicadores":
         return indicadoresPiloto((await identidadePiloto()).email);
       default:
