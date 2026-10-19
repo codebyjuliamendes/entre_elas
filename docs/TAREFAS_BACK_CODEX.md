@@ -10,8 +10,8 @@ Antes de começar, crie as contas e chaves: Supabase, Google AI Studio (Gemini),
 ## Tarefa 1 — Fundação do projeto
 
 > Leia o AGENTS.md. Crie o projeto Next.js (App Router, TypeScript estrito) com a estrutura de
-> pastas da seção 4, Zod, Vitest, ESLint e o cliente Supabase do lado do servidor. Crie
-> `.env.example` com as variáveis da seção 8, `docs/decisoes.md` vazio e uma rota `GET /api/health`
+> pastas da seção 4, Zod, Vitest, ESLint e o cliente Supabase do lado do servidor. Configure
+> as variáveis em ambiente seguro, `docs/decisoes.md` vazio e uma rota `GET /api/health`
 > que confirma a conexão com o Supabase. Não crie nenhuma página além de `app/dev/` vazia.
 
 **Pronto quando:** build, lint e testes passam; `/api/health` responde `ok`.

@@ -14,9 +14,10 @@ Os tipos em `lib/db/types.ts` são gerados do banco local após as migrations.
 O comando `npm run db:types` gera os tipos do Postgres local.
 Para um projeto hospedado: `supabase gen types typescript --project-id SEU_REF > lib/db/types.ts`.
 
-1. `npm ci` (Node >=22; na nuvem, cache em /tmp e NODE_USE_ENV_PROXY=1).
-2. Copie `.env.example` para `.env.local`, configure valores seguros e gere
-   DEMO_COOKIE_SECRET com 32 bytes aleatórios. O arquivo está ignorado pelo Git.
+1. Instale as dependências com Node >=22 (`npm ci`; na nuvem, cache em /tmp e NODE_USE_ENV_PROXY=1).
+2. Configure as variáveis necessárias no ambiente seguro. Para desenvolvimento local,
+   mantenha-as em `.env.local`, arquivo ignorado pelo Git, e gere DEMO_COOKIE_SECRET
+   com 32 bytes aleatórios.
 3. `npm run seed` (idempotente: 12 perfis, 4 comunidades, 15 posts, 15 comentários, 5 eventos).
 4. `npm run processar-saberes`: embeddings dos perfis e extrações da fila, com
    pausa de 4,5 segundos entre chamadas. A primeira execução pode levar vários minutos.

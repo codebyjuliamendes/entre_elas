@@ -160,8 +160,8 @@ DAILY_API_KEY=
 DEMO_MODE=true
 ```
 
-Mantenha um `.env.example` sempre atualizado. Nunca faça commit de chaves.
-A chave `SUPABASE_SERVICE_ROLE_KEY` só pode ser usada no servidor.
+Configure variáveis em ambientes seguros e nunca faça commit de chaves ou arquivos
+de ambiente. A chave `SUPABASE_SERVICE_ROLE_KEY` só pode ser usada no servidor.
 
 ## 9. Página de debug
 
@@ -174,8 +174,8 @@ funções do domínio e da IA. Ela só aparece quando `DEMO_MODE=true` e não de
 - Funções de domínio puras sempre que possível; acesso a banco e APIs fica nas camadas `db/` e `integrations/`.
 - Erros tipados (`ErroDominio`, `ErroIntegracao`, `ErroIA`) com mensagens em português.
 - Datas sempre em UTC no banco.
-- Cada tarefa entrega: código, testes do domínio, atualização do `.env.example` (se preciso)
-  e uma linha em `docs/decisoes.md` quando houver escolha não óbvia.
+- Cada tarefa entrega código, testes do domínio e uma linha em `docs/decisoes.md`
+  quando houver escolha não óbvia.
 
 ## 11. Definição de pronto
 
