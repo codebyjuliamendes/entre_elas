@@ -911,3 +911,40 @@ body:has(.pilot-app) {
   color: var(--muted);
   font-size: 13px;
 }
+
+/* Login: retorno do formulário. Erro em vermelho, para não passar despercebido. */
+.pilot-login p.login-aviso {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.pilot-login p.login-aviso-erro {
+  border-color: #d92d20;
+  background: #fef3f2;
+  color: #b42318;
+}
+.login-aviso-erro::before {
+  content: "!";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #d92d20;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pilot-login p.login-aviso-ok {
+  border-color: #12b76a;
+  background: #ecfdf3;
+  color: #027a48;
+}

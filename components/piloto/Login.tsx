@@ -13,7 +13,7 @@ export function Login() {
   );
   const [email, setEmail] = useState(""),
     [senha, setSenha] = useState(""),
-    [status, setStatus] = useState(""),
+    [status, setStatus] = useState({ texto: "", erro: false }),
     [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export function Login() {
   async function autenticar(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
-    setStatus("");
+    setStatus({ texto: "", erro: false });
     try {
       const r = await fetch("/api/auth/entrar", {
         method: "POST",
@@ -40,13 +40,13 @@ export function Login() {
       });
       const data = await r.json();
       if (r.ok) {
-        setStatus("Acesso liberado! Entrando…");
+        setStatus({ texto: "Acesso liberado! Entrando…", erro: false });
         router.replace(data.redirecionar || retorno || "/piloto");
       } else {
-        setStatus(data.erro);
+        setStatus({ texto: data.erro, erro: true });
       }
     } catch {
-      setStatus("Sem conexão. Tente novamente.");
+      setStatus({ texto: "Sem conexão. Tente novamente.", erro: true });
     } finally {
       setBusy(false);
     }
@@ -54,11 +54,14 @@ export function Login() {
 
   async function pedirLinkPorEmail() {
     if (!email) {
-      setStatus("Informe seu e-mail acima para receber o link.");
+      setStatus({
+        texto: "Informe seu e-mail acima para receber o link.",
+        erro: true,
+      });
       return;
     }
     setBusy(true);
-    setStatus("");
+    setStatus({ texto: "", erro: false });
     try {
       const r = await fetch("/api/auth/link", {
         method: "POST",
@@ -66,13 +69,14 @@ export function Login() {
         body: JSON.stringify({ email, retorno, modo }),
       });
       const data = await r.json();
-      setStatus(
-        r.ok
+      setStatus({
+        texto: r.ok
           ? "Link enviado. Abra seu e-mail neste mesmo navegador e dispositivo. Verifique também o spam."
           : data.erro,
-      );
+        erro: !r.ok,
+      });
     } catch {
-      setStatus("Sem conexão. Tente novamente.");
+      setStatus({ texto: "Sem conexão. Tente novamente.", erro: true });
     } finally {
       setBusy(false);
     }
@@ -108,7 +112,7 @@ export function Login() {
             disabled={busy}
             onClick={() => {
               setModo("entrar");
-              setStatus("");
+              setStatus({ texto: "", erro: false });
             }}
           >
             Já tenho conta
@@ -119,7 +123,7 @@ export function Login() {
             disabled={busy}
             onClick={() => {
               setModo("cadastrar");
-              setStatus("");
+              setStatus({ texto: "", erro: false });
             }}
           >
             Criar conta
@@ -181,6 +185,24 @@ export function Login() {
           </button>
         </form>
 
+        {params.get("erro") && (
+          <p role="alert" className="login-aviso login-aviso-erro">
+            Link inválido ou expirado. Entre com sua senha ou solicite outro
+            link.
+          </p>
+        )}
+        {/* Erros em destaque vermelho; confirmações em verde. */}
+        <p
+          role={status.erro ? "alert" : "status"}
+          className={
+            status.texto
+              ? `login-aviso ${status.erro ? "login-aviso-erro" : "login-aviso-ok"}`
+              : undefined
+          }
+        >
+          {status.texto}
+        </p>
+
         <div style={{ marginTop: "1rem", textAlign: "center" }}>
           <button
             type="button"
@@ -215,13 +237,6 @@ export function Login() {
           </span>
         </a>
 
-        {params.get("erro") && (
-          <p role="alert">
-            Link inválido ou expirado. Entre com sua senha ou solicite outro
-            link.
-          </p>
-        )}
-        <p role="status">{status}</p>
         <p className="input-hint">
           A IA é opcional. Antes de usá-la, você verá os provedores envolvidos e
           poderá autorizar o envio dos seus textos. Não informe dados sensíveis,
