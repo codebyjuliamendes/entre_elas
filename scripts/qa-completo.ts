@@ -297,6 +297,13 @@ async function main() {
     const r1 = await request("/api/piloto", { jar: jarParceira });
     dadosParceira = await json(r1);
 
+    // Consentir com IA para permitir indexação e busca semântica
+    const rConsent = await request("/api/piloto/consentimento", {
+      body: { autorizado: true },
+      jar: jarParceira,
+    });
+    assert(rConsent.status === 200, `Esperado 200 ao consentir IA, recebido ${rConsent.status}`);
+
     // Salvar perfil completo compatível com perfilPilotoSchema
     const r2 = await request("/api/piloto/perfil", {
       body: {
@@ -424,6 +431,7 @@ async function main() {
   });
 
   await runTest("Conclusão e Anotações", "Participantes registram anotações e concluem a conversa", async () => {
+    // 1. Letícia registra anotações
     const r1 = await request("/api/faiscas/anotar", {
       body: {
         faisca_id: faiscaCriadaId,
@@ -431,8 +439,19 @@ async function main() {
       },
       jar: jarLeticia,
     });
-    assert(r1.status === 200, `Esperado 200 ao registrar anotações, recebido ${r1.status}`);
+    assert(r1.status === 200, `Esperado 200 ao registrar anotações de Letícia, recebido ${r1.status}`);
 
+    // 2. Camila registra anotações (regra do sistema: ambas precisam registrar para poder concluir)
+    const rCamila = await request("/api/faiscas/anotar", {
+      body: {
+        faisca_id: faiscaCriadaId,
+        texto: "Troca enriquecedora com Letícia. Discutimos arquitetura de automação ponta a ponta.",
+      },
+      jar: jarParceira,
+    });
+    assert(rCamila.status === 200, `Esperado 200 ao registrar anotações de Camila, recebido ${rCamila.status}`);
+
+    // 3. Conclusão manual da Faísca com geração de aprendizados
     const r2 = await request("/api/faiscas/concluir-manual", {
       body: {
         faisca_id: faiscaCriadaId,
@@ -441,6 +460,8 @@ async function main() {
       jar: jarLeticia,
     });
     assert(r2.status === 200, `Esperado 200 ao concluir faísca, recebido ${r2.status}`);
+    const faiscaConcluida = await json(r2);
+    assert(faiscaConcluida.status === "realizada", `Status esperado 'realizada', recebido '${faiscaConcluida.status}'`);
   });
 
   // ---------------------------------------------------------
