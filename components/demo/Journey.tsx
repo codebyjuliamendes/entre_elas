@@ -1,11 +1,11 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import Link from "next/link";
 import { useState, useEffect, useRef, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   Coffee,
   Lightbulb,
   ArrowUpRight,
@@ -203,7 +203,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
           {loading ? (
             <div className="loading-screen" role="status" aria-live="polite">
               <div className="loading-orbit">
-                <Sparkles size={35} strokeWidth={1.2} />
+                <IconeFaisca size={35} strokeWidth={1.2} />
               </div>
               <span className="eyebrow" style={{ marginBottom: 14 }}>
                 Boas conexões começam aqui
@@ -263,9 +263,6 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                     </span>
                     <h1 className="greeting-line">
                       Bom te ver, <strong>Ana</strong>
-                      <span className="wave" aria-label="Olá">
-                        ✺
-                      </span>
                     </h1>
                     <p>Você tem muito a ensinar. E um mundo para descobrir.</p>
                   </div>
@@ -287,9 +284,9 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                   <section className="hero">
                     <div className="hero-top">
                       <span className="hero-icon">
-                        <Sparkles size={14} />
+                        <IconeFaisca size={14} />
                       </span>
-                      ENCONTRE SUA FAÍSCA
+                      Encontre sua Faísca
                     </div>
                     <h2>
                       O que você quer
@@ -362,7 +359,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                         type="submit"
                         disabled={j.pedido.trim().length < 5}
                       >
-                        <Sparkles size={16} />
+                        <IconeFaisca size={16} />
                         Encontrar minha Faísca
                         <ArrowRight size={16} />
                       </Button>
@@ -390,8 +387,8 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                   </p>
                   <section className="match-card">
                     <span className="pill">
-                      <Sparkles size={12} />
-                      UMA FAÍSCA PARA VOCÊ
+                      <IconeFaisca size={12} />
+                      Uma Faísca para você
                     </span>
                     <div className="match-avatar">
                       <Avatar
@@ -505,7 +502,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                   </div>
                   <div className="section-heading">
                     <h2>Três perguntas, muitas possibilidades</h2>
-                    <Sparkles size={15} color="#b49ac9" />
+                    <IconeFaisca size={15} color="#b49ac9" />
                   </div>
                   <div className="faisca-plan">
                     <strong>Vinte minutos com intenção</strong>
@@ -554,7 +551,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
               {step === 5 && (
                 <>
                   <div className="success-icon lilac" style={{ marginTop: 25 }}>
-                    <Sparkles size={25} />
+                    <IconeFaisca size={25} />
                   </div>
                   <span className="eyebrow">
                     O encontro termina. O saber continua.
@@ -611,7 +608,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                       style={{ marginTop: 22 }}
                       disabled={j.aprendizado.trim().length < 10}
                     >
-                      <Sparkles size={17} />
+                      <IconeFaisca size={17} />
                       Sintetizar com IA
                       <ArrowRight size={16} />
                     </Button>
@@ -657,7 +654,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                     <p className="article-text">{j.resultado.dica}</p>
                     <div className="tags" style={{ marginTop: 17 }}>
                       <span className="tag">
-                        <Sparkles size={10} />
+                        <IconeFaisca size={10} />
                         {j.resultado.saber_reconhecido}
                       </span>
                       <span className="tag">Aprendi com ela</span>
@@ -773,7 +770,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
                         }
                         onClick={publicar}
                       >
-                        <Sparkles size={16} />
+                        <IconeFaisca size={16} />
                         Publicar no perfil de {perfil.nome.split(" ")[0]}
                       </Button>
                     </>
@@ -854,7 +851,7 @@ export function Journey({ retomar = false }: { retomar?: boolean }) {
 function Fonte({ fonte }: { fonte: "ia" | "demonstracao" }) {
   return (
     <p className="source-label">
-      <Sparkles size={10} />
+      <IconeFaisca size={10} />
       {fonte === "ia"
         ? "Conteúdo gerado por IA com perfis fictícios"
         : "Exemplo de apresentação · conteúdo simulado"}

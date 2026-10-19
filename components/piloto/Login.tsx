@@ -84,12 +84,12 @@ export function Login() {
       >
         <Marca />
         <div className="login-story-copy">
-          <span className="eyebrow">SABER QUE CONECTA</span>
+          <span className="eyebrow">Saber que conecta</span>
           <h1>Uma conversa pode abrir caminhos.</h1>
           <p>O que você viveu pode ser a Faísca que outra pessoa precisa.</p>
         </div>
         <div className="login-flare">
-          <SimboloFaisca size={280} />
+          <SimboloFaisca size={280} degrade />
         </div>
         <p className="login-story-footer">
           Experiências que se encontram.
@@ -177,7 +177,7 @@ export function Login() {
             style={{
               background: "none",
               border: "none",
-              color: "#a32fa6",
+              color: "#a330a5",
               textDecoration: "underline",
               fontSize: "0.85rem",
               cursor: "pointer",

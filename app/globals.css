@@ -1,24 +1,26 @@
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 @theme {
-  --color-primary: #a32fa6;
-  --font-sans: Arial, Helvetica, sans-serif;
+  --color-primary: #a330a5;
+  --font-sans: "Figtree Variable", system-ui, sans-serif;
 }
 :root {
-  --brand-rosa-claro: #ffd4e8;
-  --brand-coral: #ff514b;
-  --brand-rosa: #ef59a4;
-  --brand-roxo: #a32fa6;
-  --brand-azul: #100c4d;
-  --brand-gradient: linear-gradient(110deg, #ff514b, #a32fa6);
-  --ink: #100c4d;
+  --brand-rosa-claro: #ffd5eb;
+  --brand-coral: #fc544c;
+  --brand-rosa: #f25fa8;
+  --brand-roxo: #a330a5;
+  --brand-azul: #0f094c;
+  --brand-gradient: linear-gradient(110deg, #fc544c, #93278f);
+  --font-titulo: "Fraunces Variable", Georgia, serif;
+  --font-texto: "Figtree Variable", system-ui, sans-serif;
+  --ink: #0f094c;
   --muted: #68627a;
-  --purple: #a32fa6;
+  --purple: #a330a5;
   --purple-dark: #76217b;
   --lilac: #ffe8f3;
   --line: #f0d6e5;
   --paper: #fff;
-  --canvas: #fff8fb;
+  --canvas: #fffafc;
   --mint: #e7f3ec;
   --peach: #fff0e5;
 }
@@ -27,9 +29,9 @@ html {
 }
 body {
   margin: 0;
-  background: #fff8fb;
+  background: var(--canvas);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-texto);
   -webkit-font-smoothing: antialiased;
 }
 .app-frame *,
@@ -1593,7 +1595,7 @@ body {
 }
 .profile-cover {
   height: 135px;
-  background: linear-gradient(120deg, #e2d4f4, #f2e9fb);
+  background: #fff0f7;
   border-radius: 22px;
   position: relative;
   overflow: hidden;
@@ -1684,7 +1686,7 @@ body {
   line-height: 1.5;
 }
 .recognized-card {
-  background: linear-gradient(120deg, #f2e9fb, #f9f5fd);
+  background: #fff7fb;
   border: 1px solid #e7d8f2;
   border-radius: 17px;
   padding: 19px;
@@ -1738,7 +1740,7 @@ body {
   padding: 28px 24px;
   z-index: 100;
   box-shadow: 0 25px 80px #3c1f4844;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-texto);
   color: var(--ink);
   max-height: 85dvh;
   overflow: auto;

@@ -1,4 +1,5 @@
-/* Identidade reconstruída a partir do kit raster fornecido pela designer. */
+/* Identidade a partir dos vetores oficiais da designer: cores chapadas, sem degradês
+   de fundo; o degradê coral → roxo fica reservado ao próprio símbolo da Faísca. */
 body {
   background: var(--canvas);
 }
@@ -74,7 +75,7 @@ body {
   color: white;
   font-weight: 700;
   min-height: 48px;
-  box-shadow: 0 5px 14px #a32fa618;
+  box-shadow: 0 5px 14px #a330a518;
 }
 .pilot-app .pilot-button:hover:not(:disabled),
 .pilot-welcome .pilot-button:hover:not(:disabled),
@@ -82,7 +83,7 @@ body {
   background: var(--purple-dark);
 }
 .pilot-card {
-  box-shadow: 0 4px 20px #100c4d03;
+  box-shadow: 0 4px 20px #0f094c03;
 }
 .pilot-app details > summary {
   cursor: pointer;
@@ -100,7 +101,7 @@ body {
   color: #76217b;
 }
 .pilot-attention {
-  background: linear-gradient(120deg, #ffe8f3, #fff2f0);
+  background: #fff0f7;
   border-color: #f1c9df;
 }
 .pilot-attention-item {
@@ -131,7 +132,7 @@ body {
   border-radius: 32px;
   background: white;
   overflow: hidden;
-  box-shadow: 0 24px 90px #100c4d0b;
+  box-shadow: 0 24px 90px #0f094c0b;
 }
 .login-story {
   display: flex;
@@ -143,13 +144,6 @@ body {
   gap: 28px;
   background: var(--brand-azul);
   color: var(--brand-rosa-claro);
-}
-.login-story::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 48% -90% -90% -30%;
-  background: radial-gradient(ellipse, #a32fa66e, transparent 65%);
 }
 .login-story .marca {
   color: var(--brand-rosa-claro);
@@ -184,15 +178,10 @@ body {
   width: 260px;
   height: 230px;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--brand-gradient);
-  color: var(--brand-rosa-claro);
-  transform: rotate(-9deg);
 }
 .login-flare > svg {
-  width: 250px;
-  height: 230px;
-  transform: rotate(9deg);
+  width: 260px;
+  height: 214px;
 }
 .login-story-footer {
   margin-top: auto;
@@ -250,7 +239,7 @@ body {
 }
 /* A apresentação usa a mesma identidade; seus rótulos de simulação permanecem. */
 .hero {
-  background: linear-gradient(125deg, #100c4d, #76217b 90%);
+  background: var(--brand-azul);
 }
 .hero h2 em,
 .hero-top,
@@ -258,7 +247,7 @@ body {
   color: var(--brand-rosa-claro);
 }
 .hero:after {
-  background: #ef59a418;
+  display: none;
 }
 .hero-textarea::placeholder {
   color: #ffe6f2;
@@ -268,13 +257,11 @@ body {
 }
 @media (min-width: 1100px) {
   body {
-    background:
-      radial-gradient(ellipse at 80% 0%, #ffe8f3, transparent 65%),
-      var(--canvas);
+    background: var(--canvas);
   }
   .workspace-sidebar {
-    background: linear-gradient(160deg, #100c4d, #35104f 85%, #76217b);
-    border-color: #100c4d;
+    background: var(--brand-azul);
+    border-color: #0f094c;
   }
   .sidebar-brand .marca {
     color: var(--brand-rosa-claro);
@@ -422,7 +409,7 @@ body {
 }
 .pilot-app .pilot-attention {
   border: 0;
-  background: linear-gradient(125deg, #fff0f7, #fff5f1);
+  background: #fff0f7;
 }
 .pilot-app .pilot-attention-item {
   border: 0;
@@ -447,11 +434,11 @@ body {
 .pilot-welcome {
   border: 0;
   border-radius: 22px;
-  box-shadow: 0 16px 48px #100c4d08;
+  box-shadow: 0 16px 48px #0f094c08;
 }
 .pilot-login.brand-login {
   border: 0;
-  box-shadow: 0 16px 56px #100c4d0a;
+  box-shadow: 0 16px 56px #0f094c0a;
 }
 .login-modos {
   border: 0;
@@ -559,4 +546,82 @@ body {
   font-size: 14px;
   font-weight: 600;
   margin: 0 0 8px;
+}
+
+/* Tipografia: títulos editoriais (Fraunces) e texto humanista (Figtree), no lugar da
+   fonte do sistema. Rótulos curtos em caixa normal, sem o espaçamento de "selo". */
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-texto);
+}
+:is(h1, h2, .hero h2, .login-story h1, .login-content h2, .greeting h1) {
+  font-family: var(--font-titulo);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  font-optical-sizing: auto;
+}
+.marca-nome {
+  font-family: var(--font-texto);
+}
+.eyebrow,
+.login-story .eyebrow,
+.login-content > .eyebrow {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+/* Cartão principal da jornada: azul chapado, chamada em coral e textos legíveis. */
+.hero-top {
+  color: var(--brand-rosa-claro);
+  font-size: 13px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.hero-icon {
+  background: transparent;
+  color: var(--brand-coral);
+}
+.hero h2 {
+  font-size: clamp(30px, 3.2vw, 40px);
+}
+.hero-cta {
+  background: var(--brand-coral);
+  color: white !important;
+  font-size: 15px !important;
+  font-weight: 700;
+}
+.hero-cta:hover:not(:disabled) {
+  background: #e8463f;
+}
+.hero-cta .icone-faisca {
+  color: white;
+}
+.hero-foot {
+  font-size: 12px;
+  color: var(--brand-rosa-claro);
+}
+.hero:before {
+  display: none;
+}
+.hero-cta:disabled {
+  opacity: 1;
+  background: #ffffff1a;
+  color: var(--brand-rosa-claro) !important;
+}
+.hero-cta:disabled .icone-faisca {
+  color: var(--brand-rosa-claro);
+}
+:is(h1, h2, .hero h2, .login-story h1, .login-content h2, .greeting h1) {
+  font-weight: 500;
+}
+@media (min-width: 1100px) {
+  .sidebar-intro .eyebrow {
+    font-size: 13px;
+    letter-spacing: 0;
+    color: var(--brand-rosa-claro);
+  }
 }

@@ -29,7 +29,7 @@ export function Navigation() {
         <Marca />
       </Link>
       <div className="sidebar-intro">
-        <span className="eyebrow">NOSSO ESPAÇO</span>
+        <span className="eyebrow">Nosso espaço</span>
         <p>
           Conexões que fazem
           <br />o saber ir mais longe.

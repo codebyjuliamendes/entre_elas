@@ -1,6 +1,7 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import { useState, type FormEvent } from "react";
-import { ArrowLeft, Search, Send, Sparkles, MessageCircle } from "lucide-react";
+import { ArrowLeft, Search, Send, MessageCircle } from "lucide-react";
 import { useDemo, atualizarDemo } from "@/lib/demo/store";
 import { perfisDemo, type PerfilDemo } from "@/lib/demo/catalogo";
 import { Avatar } from "@/components/Avatar";
@@ -70,7 +71,7 @@ export function ChatsScreen({ com }: { com?: string }) {
             <strong>{contato.nome}</strong>
             <small>Conversa simulada · Faísca</small>
           </div>
-          <Sparkles size={17} color="#b49bc8" style={{ marginLeft: "auto" }} />
+          <IconeFaisca size={17} color="#b49bc8" style={{ marginLeft: "auto" }} />
         </div>
         <div
           className="chat-messages"
@@ -109,7 +110,7 @@ export function ChatsScreen({ com }: { com?: string }) {
               setTexto("O que te ajudou quando você viveu esse desafio?")
             }
           >
-            <Sparkles size={11} />
+            <IconeFaisca size={11} />
             Uma pergunta para começar
           </button>
         </div>
@@ -174,7 +175,7 @@ export function ChatsScreen({ com }: { com?: string }) {
       <div className="section-heading">
         <h2>Sua rede, mais perto</h2>
         <span className="pill">
-          <Sparkles size={10} />
+          <IconeFaisca size={10} />
           Faíscas
         </span>
       </div>

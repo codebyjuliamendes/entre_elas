@@ -1,5 +1,6 @@
 "use client";
-import { ArrowUpRight, Bell, Sparkles } from "lucide-react";
+import { IconeFaisca } from "@/components/Marca";
+import { ArrowUpRight, Bell } from "lucide-react";
 import type { DadosPiloto } from "@/lib/piloto/dados";
 import { listarAtencaoFaiscas } from "@/lib/domain/faisca-atencao";
 import { dataHora } from "@/lib/piloto/browser";
@@ -60,7 +61,7 @@ export function Atencao({ dados: d }: { dados: DadosPiloto }) {
       )}
       {!itens.length && (
         <p>
-          <Sparkles size={18} aria-hidden="true" /> Uma boa pergunta pode virar
+          <IconeFaisca size={18} aria-hidden="true" /> Uma boa pergunta pode virar
           conhecimento para toda a rede.
         </p>
       )}

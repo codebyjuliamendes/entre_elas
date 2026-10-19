@@ -1,9 +1,9 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import { useState, type FormEvent } from "react";
 import {
   Search,
   Code2,
-  Sparkles,
   Zap,
   Heart,
   ArrowLeft,
@@ -25,7 +25,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-const icons = { code: Code2, sparkles: Sparkles, zap: Zap, heart: Heart };
+const icons = { code: Code2, sparkles: IconeFaisca, zap: Zap, heart: Heart };
 export function CommunitiesScreen() {
   const state = useDemo();
   const [busca, setBusca] = useState("");

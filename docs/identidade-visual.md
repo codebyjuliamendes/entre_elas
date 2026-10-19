@@ -34,4 +34,14 @@ A escrita segue o mesmo tom: frases próximas e claras, sem tratar a IA como aut
 
 ## Base de referência
 
-O material recebido não incluía arquivo vetorial original, tipografia oficial ou especificações de aplicação. A versão digital foi interpretada a partir da imagem do kit. Por isso, o símbolo e a paleta traduzem a referência recebida para o produto, sem pretender substituir um manual completo de marca.
+O símbolo e as cores do app vêm dos vetores oficiais enviados pela designer (pasta Logos/SVG): rosa-claro `#ffd5eb`, coral `#fc544c`, rosa `#f25fa8`, roxo `#a330a5`, roxo profundo `#93278f` e azul profundo `#0f094c`. O vetor e a paleta ficam em `lib/identidade.ts`, e `scripts/gerar-marca.mjs` regenera os ícones a partir deles.
+
+## Linguagem da interface
+
+- **Tipografia:** títulos em Fraunces, com tom editorial e humano; textos em Figtree, legível em telas pequenas. As duas fontes são servidas pelo próprio app.
+- **Menos caixas:** a estrutura vem do espaço e de linhas finas, não de cartões com borda. Listas de pessoas, comunidades e dicas são abertas, separadas por divisórias.
+- **Cor com intenção:** fundos chapados, sem degradês decorativos. O degradê coral → roxo aparece só no próprio símbolo da Faísca.
+- **Uma ação principal por bloco:** as demais ações são links de texto.
+- **Símbolo próprio:** o ícone da Faísca substitui o brilho genérico usado por produtos de IA.
+
+As regras ficam documentadas em `app/editorial.css`, a última camada de estilos carregada.

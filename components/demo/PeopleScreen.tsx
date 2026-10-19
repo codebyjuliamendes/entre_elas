@@ -1,11 +1,11 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import Link from "next/link";
 import { useState } from "react";
 import {
   Search,
   SlidersHorizontal,
   MapPin,
-  Sparkles,
   ArrowUpRight,
   MessageCircle,
   X,
@@ -96,13 +96,15 @@ export function PeopleScreen() {
         {pessoas.map((p) => (
           <article className="expert-card" key={p.id}>
             <div className={`expert-cover ${p.cor}`}>
-              <Sparkles size={42} strokeWidth={0.8} />
+              <IconeFaisca size={42} strokeWidth={0.8} />
               <span className="pill">{p.area}</span>
             </div>
             <div className="expert-content">
               <Avatar nome={p.nome} src={p.avatar} size={68} />
               <h2>{p.nome}</h2>
-              <p>{p.cargo}</p>
+              <p>
+                {p.cargo} · {p.area}
+              </p>
               <small>
                 <MapPin size={11} />
                 {p.cidade} · {p.regional}

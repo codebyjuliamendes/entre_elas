@@ -1,8 +1,8 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import { useState, useRef, useEffect, type FormEvent } from "react";
 import Link from "next/link";
 import {
-  Sparkles,
   MapPin,
   Pencil,
   CheckCircle2,
@@ -128,7 +128,7 @@ export function ProfileScreen({ slug }: { slug?: string }) {
           </Button>
         ) : (
           <span className="pill">
-            <Sparkles size={11} />
+            <IconeFaisca size={11} />
             Saber que conecta
           </span>
         )}
@@ -222,7 +222,7 @@ export function ProfileScreen({ slug }: { slug?: string }) {
               router.push("/?retomar=nova");
             }}
           >
-            <Sparkles size={16} />
+            <IconeFaisca size={16} />
             Quero uma Faísca com {perfil.nome.split(" ")[0]}
           </Button>
         </div>
@@ -233,7 +233,7 @@ export function ProfileScreen({ slug }: { slug?: string }) {
           <h2>O que quero desenvolver</h2>
           {state.perfil.objetivos.map((o) => (
             <p key={o}>
-              <Sparkles size={13} />
+              <IconeFaisca size={13} />
               {o}
             </p>
           ))}
@@ -252,7 +252,7 @@ export function ProfileScreen({ slug }: { slug?: string }) {
       </div>
       <div className="section-heading">
         <h2 style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <Sparkles size={17} color="#b590cf" />
+          <IconeFaisca size={17} color="#b590cf" />
           Reconhecidos pela rede
         </h2>
       </div>
@@ -264,7 +264,7 @@ export function ProfileScreen({ slug }: { slug?: string }) {
         posts.map((p) => (
           <article className="recognized-card" key={p.id}>
             <h3>
-              <Sparkles size={15} />
+              <IconeFaisca size={15} />
               {p.saber_reconhecido}
             </h3>
             <p>{p.dica}</p>
