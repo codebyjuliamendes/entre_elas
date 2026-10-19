@@ -1,26 +1,27 @@
-# Roteiro do pitch: 5 minutos, 13 slides
+# Roteiro do pitch: 5 minutos, 14 slides
 
 Deck: modelo da mentoria no Canva ("Entre Elas — Pitch Hackathon Equatorial (modelo da mentoria)").
 A fala de cada slide também está nas notas do apresentador no Canva.
 
-Sugestão de divisão: **Júlia** abre e conta o problema, **Melissa** mostra o app, **Kayla** fecha com valor e futuro.
+Sugestão de divisão: **Júlia** abre, conta o problema e fecha com os próximos passos; **Melissa** mostra o app; **Kayla** apresenta valor, impacto e o time.
 Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cronômetro.
 
 | # | Slide | Tempo | Quem |
 |---|---|---|---|
 | 1 | Capa | 0:10 | Júlia |
 | 2 | Problema: contexto | 0:30 | Júlia |
-| 3 | Problema: a Ana | 0:35 | Júlia |
+| 3 | Problema: a Ana | 0:30 | Júlia |
 | 4 | Solução | 0:30 | Melissa |
-| 5 | Como funciona | 0:30 | Melissa |
+| 5 | Como funciona | 0:25 | Melissa |
 | 6 | O app funcionando (vídeo) | 0:25 | Melissa |
 | 7 | Da conversa ao painel (vídeo) | 0:20 | Melissa |
 | 8 | Aprendizagem | 0:25 | Kayla |
 | 9 | Benefícios | 0:20 | Kayla |
 | 10 | Impacto | 0:25 | Kayla |
-| 11 | Estágio atual | 0:25 | Kayla |
+| 11 | Estágio atual | 0:15 | Kayla |
 | 12 | Time | 0:10 | Kayla |
-| 13 | Fechamento | 0:15 | Júlia |
+| 13 | Próximos passos | 0:20 | Júlia |
+| 14 | Fechamento | 0:15 | Júlia |
 | | **Total** | **5:00** | |
 
 ## Falas
@@ -45,11 +46,13 @@ Troquem como preferirem; o que importa é cada uma ensaiar a sua parte com cron�
 
 **10. Impacto.** "Nossa meta para os primeiros seis meses: 500 Faíscas, 30% delas entre regionais diferentes e 50 saberes que só uma pessoa tinha, agora compartilhados. Sair de mulheres isoladas para uma rede em que cada uma sabe a quem recorrer."
 
-**11. Estágio atual.** "O MVP já funciona: login, IA real, chat e vídeo, com consentimento. A privacidade vem por padrão; em produção, a IA seria corporativa, contratada pela Equatorial. Os próximos passos: rodas de conversa, trilhas integradas ao PDI e avisos pelo Teams."
+**11. Estágio atual.** "O MVP já funciona: login, IA real, chat e vídeo, com consentimento. E qualquer pessoa pode testar agora, sem cadastro, na demonstração."
 
 **12. Time.** "Somos Kayla, do design, Júlia, de dados e IA, e Melissa, da programação."
 
-**13. Fechamento.** "Na Equatorial, o conhecimento está nas pessoas. A gente descobre onde ele está e acende a Faísca. Obrigada!"
+**13. Próximos passos.** "Os próximos passos têm prazo. Em 30 dias, um piloto em uma regional, com login corporativo e uma IA contratada pela Equatorial. Em 3 meses, todas as regionais, com avisos pelo Teams e rodas de conversa. Em 6 meses, a trilha Rumo à liderança integrada ao PDI e a meta de 500 Faíscas. Para começar, precisamos de uma regional parceira."
+
+**14. Fechamento.** "Na Equatorial, o conhecimento está nas pessoas. A gente descobre onde ele está e acende a Faísca. Obrigada!"
 
 ## Perguntas difíceis da banca
 
