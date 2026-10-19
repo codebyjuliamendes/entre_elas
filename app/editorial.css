@@ -1,0 +1,465 @@
+/* Camada editorial: menos caixas e bordas, mais espaço, linhas finas e tipografia.
+   Regras gerais:
+   - a estrutura vem do espaçamento e de divisórias de 1px, não de cartões;
+   - cantos discretos (8–12px) e nenhuma sombra decorativa;
+   - um único botão cheio por bloco; ações secundárias são links de texto;
+   - o azul profundo e o símbolo da Faísca são os únicos destaques fortes. */
+:root {
+  --linha: #eadde5;
+  --raio: 10px;
+}
+
+/* Moldura: barra lateral colada à borda e conteúdo sem cartão envolvendo a página. */
+@media (min-width: 1100px) {
+  .workspace-sidebar {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 248px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .app-frame {
+    max-width: 1080px;
+    margin: 0 0 0 296px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .app-header {
+    height: auto;
+    padding: 28px 0 20px;
+    background: transparent;
+    border-bottom: 1px solid var(--linha);
+  }
+  .global-search {
+    background: transparent;
+    border: 0 !important;
+    border-bottom: 1px solid var(--linha) !important;
+    border-radius: 0;
+    padding: 10px 0;
+  }
+  .global-search kbd {
+    border: 0;
+    background: transparent;
+  }
+}
+
+/* Superfícies: cartões viram blocos abertos. */
+.card,
+.community-card,
+.expert-card,
+.knowledge-card,
+.event-card,
+.network-person,
+.home-insights > *,
+.recognized-card {
+  border-radius: 0;
+  box-shadow: none;
+}
+.card {
+  border: 0;
+  border-top: 1px solid var(--linha);
+  padding: 20px 0;
+  background: transparent;
+}
+
+/* Rede: diretório em lista, avatar à esquerda e evidência em destaque tipográfico. */
+.people-grid {
+  display: block;
+  border-top: 1px solid var(--linha);
+}
+.expert-card {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+}
+.expert-cover {
+  display: none;
+}
+.expert-content {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  column-gap: 24px;
+  padding: 28px 0;
+}
+.expert-content > * {
+  grid-column: 2;
+}
+.expert-content > :first-child {
+  grid-column: 1;
+  grid-row: 1 / span 6;
+  margin: 0;
+  border: 0;
+}
+.expert-content h2 {
+  margin: 0;
+  font-size: 24px;
+}
+.expert-content blockquote {
+  margin: 14px 0 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--font-titulo);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 62ch;
+}
+
+/* Etiquetas: texto corrido separado por ponto médio, sem pílulas com borda. */
+.tags {
+  gap: 0;
+}
+.tags .tag {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 13px;
+  color: var(--brand-roxo);
+  font-weight: 600;
+}
+.tags .tag + .tag::before {
+  content: "·";
+  margin: 0 8px;
+  color: var(--muted);
+}
+
+/* Ações secundárias como links de texto. */
+.expert-actions,
+.community-bottom {
+  gap: 24px;
+}
+.expert-actions :is(a, button),
+.community-bottom > button,
+.knowledge-actions :is(a, button) {
+  height: auto;
+  min-height: 0;
+  padding: 6px 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--brand-roxo);
+  font-size: 14px;
+  font-weight: 600;
+}
+.expert-actions :is(a, button):hover,
+.community-bottom > button:hover {
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Comunidades: lista com símbolo pequeno, sem capas pastel. */
+.communities-grid {
+  display: block;
+  border-top: 1px solid var(--linha);
+}
+.community-card {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: 20px;
+  align-items: start;
+  padding: 24px 0;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  background: transparent;
+  overflow: visible;
+}
+.community-cover {
+  height: auto;
+  padding: 0;
+  background: transparent !important;
+}
+.community-cover::before,
+.community-cover::after,
+.community-cover > .tag {
+  display: none;
+}
+.community-cover .icon-tile {
+  position: static;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--raio);
+  background: #fff0f7;
+  color: var(--brand-roxo);
+}
+.community-body {
+  padding: 0;
+}
+.community-body h2 {
+  margin: 0 0 6px;
+  font-size: 24px;
+}
+
+/* Início: listas e destaques sem caixas. */
+.home-insights > * {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  padding: 16px 0;
+}
+.home-insights .icon-tile {
+  display: none;
+}
+.network-person {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  padding: 16px 0;
+}
+.library-promo,
+.network-promo {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-radius: 0;
+  padding: 18px 0;
+}
+.library-promo .icon-tile,
+.network-promo > svg {
+  display: none;
+}
+
+/* Biblioteca e agenda: itens separados por linha. */
+.knowledge-card,
+.event-card {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  padding: 24px 0;
+}
+.tip-box {
+  background: transparent;
+  border-left: 3px solid var(--brand-coral);
+  border-radius: 0;
+  padding: 4px 0 4px 16px;
+}
+
+/* Perfil: sem capa decorativa; metas e saberes como texto organizado. */
+.profile-cover {
+  display: none;
+}
+.profile-goals {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-radius: 0;
+  padding: 24px 0;
+}
+.skill-chips {
+  gap: 8px 20px;
+}
+.skill-chip {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+.recognized-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  padding: 20px 0;
+}
+.profile-photo-controls input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* Abas: sublinhado em vez de cápsula. */
+.tabs-list {
+  background: transparent;
+  border-bottom: 1px solid var(--linha);
+  border-radius: 0;
+  padding: 0;
+  gap: 28px;
+  justify-content: flex-start;
+}
+.tabs-list > * {
+  flex: 0 0 auto;
+  background: transparent !important;
+  border-radius: 0;
+  box-shadow: none !important;
+  padding: 12px 0;
+  border-bottom: 2px solid transparent;
+}
+.tabs-list > [data-state="active"],
+.tabs-list > [aria-selected="true"] {
+  border-bottom-color: var(--brand-azul);
+  color: var(--brand-azul);
+}
+
+/* Campos: base reta com linha inferior forte no foco. */
+.search-field,
+.filter-row select {
+  border-radius: var(--raio);
+}
+
+/* Piloto: mesma linguagem nos cartões do app real. */
+.pilot-card {
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  padding: 24px 0;
+  background: transparent;
+  box-shadow: none;
+}
+.pilot-app .pilot-card {
+  background: transparent;
+  border-radius: 0;
+}
+.pilot-app nav {
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--linha);
+  padding: 0;
+  gap: 24px;
+}
+.pilot-app nav button,
+.pilot-app nav button[aria-current] {
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 12px 0;
+  border-bottom: 2px solid transparent;
+}
+.pilot-app nav button[aria-current] {
+  border-bottom-color: var(--brand-azul);
+  font-weight: 700;
+}
+.pilot-app .pilot-attention,
+.pilot-attention {
+  background: transparent;
+  border: 0;
+  border-left: 3px solid var(--brand-coral);
+  border-radius: 0;
+  padding: 4px 0 4px 20px;
+}
+.pilot-app .pilot-attention-item {
+  background: transparent;
+  border-radius: 0;
+  border-top: 1px solid var(--linha);
+}
+.pilot-login.brand-login {
+  border-radius: 16px;
+  box-shadow: none;
+}
+.pilot-metrica strong {
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: 44px;
+}
+
+/* Botões cheios: cantos discretos e sem sombra. */
+.pilot-button,
+.hero-cta,
+.pilot-app .pilot-button,
+.pilot-login .pilot-button {
+  border-radius: var(--raio);
+  box-shadow: none;
+}
+.hero {
+  border-radius: 16px;
+}
+
+/* Ajustes de especificidade: os botões da base usam a classe .button. */
+.expert-actions .button,
+.community-bottom .button,
+.knowledge-actions .button {
+  flex: 0 0 auto;
+  height: auto;
+  min-height: 0;
+  padding: 6px 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--brand-roxo);
+  font-size: 14px;
+}
+.home-insights > div {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-radius: 0;
+  padding: 16px 0 0;
+  grid-template-columns: 1fr;
+}
+.home-insights .how-icon {
+  display: none;
+}
+.home-insights strong {
+  font-family: var(--font-titulo);
+  font-size: 40px;
+  color: var(--brand-azul);
+}
+.home-insights small {
+  font-size: 13px;
+}
+.button,
+.button-primary {
+  border-radius: var(--raio);
+  box-shadow: none;
+}
+
+/* Comunidades: símbolo alinhado ao título. */
+.community-cover {
+  display: block;
+  align-self: start;
+  grid-row: 1;
+}
+/* Perfil sem capa: avatar no fluxo normal, sem sobreposição. */
+.profile-avatar-row {
+  margin-top: 16px;
+  padding: 0;
+  align-items: center;
+}
+.profile-avatar-row .avatar {
+  border: 0;
+}
+@media (max-width: 760px) {
+  .expert-content {
+    grid-template-columns: 48px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+  .expert-content > :first-child {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  .expert-content h2 {
+    font-size: 21px;
+  }
+  .expert-content blockquote {
+    font-size: 16px;
+  }
+  .community-card {
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 14px;
+  }
+  .community-cover .icon-tile {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Acesso à demonstração isolada (outra implantação, em modo apresentação). */
+.login-demo {
+  display: block;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--linha);
+  color: var(--brand-azul);
+  font-weight: 600;
+  text-decoration: none;
+}
+.login-demo:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}

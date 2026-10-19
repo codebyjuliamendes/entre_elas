@@ -1,10 +1,10 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import Link from "next/link";
 import {
   ArrowUpRight,
   Library,
   UsersRound,
-  Sparkles,
   Coffee,
 } from "lucide-react";
 import { perfisDemo } from "@/lib/demo/catalogo";
@@ -26,7 +26,7 @@ export function HomeNetwork() {
         </div>
         <div>
           <span className="how-icon mint">
-            <Sparkles size={17} />
+            <IconeFaisca size={17} />
           </span>
           <strong>{s.publicacoes.length}</strong>
           <small>Saberes compartilhados</small>

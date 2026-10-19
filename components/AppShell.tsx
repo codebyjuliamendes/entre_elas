@@ -1,10 +1,10 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import Link from "next/link";
 import { Marca } from "./Marca";
 import { useState, type ReactNode } from "react";
 import {
   Bell,
-  Sparkles,
   ArrowUpRight,
   Settings,
   WifiOff,
@@ -105,9 +105,6 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main id="conteudo" className="app-content">
           {children}
         </main>
-        <footer className="demo-footnote">
-          Apresentação interativa · pessoas e dados fictícios
-        </footer>
         <BottomNav />
       </div>
       <div className="desktop-caption" aria-hidden="true">
@@ -134,7 +131,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 onClick={() => setNotificacoes(false)}
               >
                 <span className="icon-tile lilac">
-                  <Sparkles size={20} />
+                  <IconeFaisca size={20} />
                 </span>
                 <span>
                   <strong>
@@ -168,7 +165,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             onClick={() => setNotificacoes(false)}
           >
             <span className="icon-tile lilac">
-              <Sparkles size={20} />
+              <IconeFaisca size={20} />
             </span>
             <span>
               <strong>Reserve um tempo para você</strong>

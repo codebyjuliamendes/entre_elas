@@ -1,11 +1,11 @@
 "use client";
+import { IconeFaisca } from "@/components/Marca";
 import Link from "next/link";
 import { useState } from "react";
 import {
   Bookmark,
   Heart,
   Search,
-  Sparkles,
   ArrowUpRight,
   Share2,
 } from "lucide-react";
@@ -114,7 +114,7 @@ export function KnowledgeScreen() {
             <article className="knowledge-card" key={d.id}>
               <div className="knowledge-top">
                 <span className="pill">
-                  <Sparkles size={11} />
+                  <IconeFaisca size={11} />
                   {d.categoria}
                 </span>
                 <button

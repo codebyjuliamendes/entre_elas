@@ -1,33 +1,45 @@
 import { getDb, verificarErro } from "@/lib/db/client";
 import { lider } from "./config";
 import { ErroDominio } from "@/lib/domain/erros";
+import { consolidarIndicadores } from "./metricas";
+// A tabela de avaliações chega por migração própria; até lá o painel segue sem ela.
+export const tabelaAusente = (error: { code?: string } | null) =>
+  !!error && ["42P01", "PGRST205"].includes(error.code ?? "");
 export async function indicadoresPiloto(email: string) {
   if (!lider(email))
     throw new ErroDominio("Painel restrito à liderança do piloto.", 403);
   const db = getDb();
   const { data: contas, error } = await db
     .from("piloto_contas")
-    .select("profile_id,created_at");
+    .select("profile_id,onboarding,created_at");
   verificarErro(error);
   const ids = contas?.map((c) => c.profile_id) ?? [];
-  if (!ids.length)
-    return {
-      participantes: 0,
-      faiscas: 0,
-      saberes: 0,
-      dicas: 0,
+  const inicio =
+    process.env.PILOT_STARTS_AT ||
+    contas?.map((c) => c.created_at).sort()[0] ||
+    null;
+  if (!ids.length || !inicio)
+    return consolidarIndicadores({
+      inicio,
+      contas: [],
+      perfis: [],
+      faiscas: [],
+      saberes_fonte_ids: [],
+      dicas_origem_ids: [],
       inscricoes: 0,
       mensagens: 0,
-    };
-  const inicio =
-    process.env.PILOT_STARTS_AT || contas!.map((c) => c.created_at).sort()[0];
-  const [fs, ss, ps, es, msgs] = await Promise.all([
+      avaliacoes: [],
+    });
+  const [perfis, fs, ss, ps, es, msgs, avs] = await Promise.all([
+    db
+      .from("profiles")
+      .select("id,area,regional,interesses,objetivos")
+      .in("id", ids),
     db
       .from("faiscas")
-      .select("id")
+      .select("id,solicitante_id,convidada_id,status")
       .in("solicitante_id", ids)
       .in("convidada_id", ids)
-      .eq("status", "realizada")
       .gte("created_at", inicio),
     db
       .from("saberes")
@@ -52,19 +64,22 @@ export async function indicadoresPiloto(email: string) {
       .select("faisca_id")
       .in("autora_id", ids)
       .gte("created_at", inicio),
+    db
+      .from("piloto_avaliacoes")
+      .select("utilidade,voltaria")
+      .in("profile_id", ids),
   ]);
-  for (const r of [fs, ss, ps, es, msgs]) verificarErro(r.error);
-  const encontros = new Set(fs.data!.map((f) => f.id));
-  return {
+  for (const r of [perfis, fs, ss, ps, es, msgs]) verificarErro(r.error);
+  if (!tabelaAusente(avs.error)) verificarErro(avs.error);
+  return consolidarIndicadores({
     inicio,
-    participantes: ids.length,
-    faiscas: encontros.size,
-    saberes: ss.data!.filter((s) => s.fonte_id && encontros.has(s.fonte_id))
-      .length,
-    dicas: ps.data!.filter(
-      (p) => p.origem_faisca_id && encontros.has(p.origem_faisca_id),
-    ).length,
+    contas: contas!,
+    perfis: perfis.data!,
+    faiscas: fs.data!,
+    saberes_fonte_ids: ss.data!.map((s) => s.fonte_id),
+    dicas_origem_ids: ps.data!.map((p) => p.origem_faisca_id),
     inscricoes: es.data!.length,
     mensagens: msgs.data!.length,
-  };
+    avaliacoes: avs.error ? null : avs.data!,
+  });
 }

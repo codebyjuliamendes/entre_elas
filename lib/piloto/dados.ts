@@ -6,6 +6,7 @@ import { listarPosts } from "@/lib/domain/conteudo";
 import { listarEventos } from "@/lib/domain/evento";
 import { avaliarIndexacao } from "@/lib/domain/perfil-indexacao";
 import { lider } from "./config";
+import { tabelaAusente } from "./indicadores";
 import { z } from "zod";
 export async function dadosPiloto(profileId: string, email: string) {
   const db = getDb();
@@ -20,6 +21,7 @@ export async function dadosPiloto(profileId: string, email: string) {
     inscricoes,
     favoritos,
     saberes,
+    avaliacoes,
   ] = await Promise.all([
     listarFaiscas(profileId),
     listarComunidades(profileId),
@@ -39,7 +41,12 @@ export async function dadosPiloto(profileId: string, email: string) {
       .eq("profile_id", profileId),
     db.from("piloto_favoritos").select("post_id").eq("profile_id", profileId),
     db.from("saberes").select("*").eq("profile_id", profileId),
+    db
+      .from("piloto_avaliacoes")
+      .select("faisca_id")
+      .eq("profile_id", profileId),
   ]);
+  if (!tabelaAusente(avaliacoes.error)) verificarErro(avaliacoes.error);
   for (const r of [contas, perfis, membros, inscricoes, favoritos, saberes])
     verificarErro(r.error);
   const pessoas = z
@@ -74,6 +81,10 @@ export async function dadosPiloto(profileId: string, email: string) {
       interesses: pessoas.find((p) => p.id === profileId)!.interesses,
       saberes: saberes.data,
     }),
+    // Faíscas que a participante já avaliou; vazio enquanto a migração não chega.
+    avaliadas: avaliacoes.error
+      ? []
+      : avaliacoes.data!.map((a) => a.faisca_id),
     lider: lider(email),
   };
 }

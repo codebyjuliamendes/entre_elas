@@ -2,9 +2,12 @@ import { coresMarca } from "@/lib/identidade";
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
 import { Toaster } from "sonner";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/figtree";
 import "./globals.css";
 import "./workspace.css";
 import "./identidade.css";
+import "./editorial.css";
 import { PwaRegistration } from "@/components/PwaRegistration";
 export const metadata: Metadata = {
   title: "Entre Elas · Saber que conecta",

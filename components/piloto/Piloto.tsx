@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Marca } from "@/components/Marca";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { Encontro } from "./Encontro";
+import { PainelLideranca } from "./PainelLideranca";
 import { Ajuda } from "./Ajuda";
 import { Atencao } from "./Atencao";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
@@ -53,10 +54,7 @@ export function Piloto() {
     >([]),
     [destino, setDestino] = useState(""),
     [horario, setHorario] = useState(""),
-    [alternativos, setAlternativos] = useState<string[]>([]),
-    [metricas, setMetricas] = useState<Record<string, number | string> | null>(
-      null,
-    );
+    [alternativos, setAlternativos] = useState<string[]>([]);
   const carregar = useCallback(async () => {
     const id = ++atualizacao.current.numero;
     try {
@@ -771,41 +769,7 @@ export function Piloto() {
                 </section>
               </>
             )}
-            {tab === "lideranca" && d.lider && (
-              <>
-                <h1>O que a banca construiu</h1>
-                <button
-                  className="pilot-button"
-                  disabled={busy}
-                  onClick={() =>
-                    void executar(async () =>
-                      setMetricas(await api("/api/piloto/indicadores", {})),
-                    )
-                  }
-                >
-                  Atualizar dados reais do piloto
-                </button>
-                {metricas && (
-                  <div className="pilot-grid">
-                    {Object.entries(metricas).map(([k, v]) => (
-                      <article className="pilot-card" key={k}>
-                        <h2>{k}</h2>
-                        <strong>
-                          {k === "inicio" ? dataHora(String(v)) : v}
-                        </strong>
-                      </article>
-                    ))}
-                  </div>
-                )}
-                <p>
-                  Faíscas realizadas entre contas do piloto; dicas publicadas
-                  dessas trocas; saberes confirmados com origem nessas Faíscas.
-                  Conteúdo do seed e demonstrações são excluídos. Inscrições não
-                  representam presença. Mensagens não são copiadas do Stream
-                  para este painel.
-                </p>
-              </>
-            )}
+            {tab === "lideranca" && d.lider && <PainelLideranca />}
           </>
         )}
       </main>

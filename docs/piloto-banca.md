@@ -65,3 +65,9 @@ Não há metas numéricas de impacto estabelecidas antes da avaliação. Os dado
 ## Como contribuir
 
 Durante o piloto, compartilhe feedback sobre o que ajudou, o que gerou dúvida e o que faltou para a troca acontecer. Comentários específicos — por exemplo, uma sugestão que pareceu pertinente ou uma etapa em que não ficou claro o próximo passo — ajudam a priorizar melhorias.
+
+## Como os sinais são medidos
+
+O painel de liderança, restrito aos e-mails em `PILOT_LEADER_EMAILS`, mostra apenas números agregados das contas do piloto: funil de convites (enviados, aceitos, realizados e taxa de aceite), pessoas e pares conectados, percentual de conexões entre regionais e entre áreas diferentes, dicas publicadas com autorização das duas e saberes reconhecidos.
+
+Depois de cada Faísca realizada, cada participante pode responder a uma avaliação opcional e sem texto livre: utilidade de 1 a 5 e se faria outra Faísca. A outra participante não vê a resposta, e o painel mostra só a média e o percentual. A tabela vem da migração `202610190013_avaliacao_faisca.sql`; enquanto ela não for aplicada, o app funciona normalmente e o painel indica que a avaliação não está habilitada.

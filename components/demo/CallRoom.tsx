@@ -33,7 +33,7 @@ export function CallRoom({
       <div className="call-top">
         <span className="call-live">
           <i />
-          ENCONTRO DEMONSTRATIVO
+          Encontro demonstrativo
         </span>
         <span className="call-timer" aria-label="Tempo restante">
           {tempo}
