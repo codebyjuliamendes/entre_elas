@@ -8,7 +8,9 @@ export function Login() {
   const router = useRouter(),
     params = useSearchParams();
   const retorno = normalizarRetorno(params.get("retorno"));
-  const [modo, setModo] = useState<"entrar" | "cadastrar">("entrar");
+  const [modo, setModo] = useState<"entrar" | "cadastrar">(
+    params.get("modo") === "cadastrar" ? "cadastrar" : "entrar",
+  );
   const [email, setEmail] = useState(""),
     [senha, setSenha] = useState(""),
     [status, setStatus] = useState(""),
@@ -200,6 +202,19 @@ export function Login() {
           </button>
         </div>
 
+        <div className="login-ou" aria-hidden="true">
+          <span>ou</span>
+        </div>
+        <a className="login-demo-botao" href="/demonstracao">
+          <SimboloFaisca size={22} degrade />
+          <span>
+            <strong>Explorar sem cadastro</strong>
+            <small>
+              Veja o app funcionando com uma rede fictícia. Nada é salvo.
+            </small>
+          </span>
+        </a>
+
         {params.get("erro") && (
           <p role="alert">
             Link inválido ou expirado. Entre com sua senha ou solicite outro
@@ -214,7 +229,7 @@ export function Login() {
         </p>
         {process.env.NEXT_PUBLIC_DEMO_URL && (
           <a className="login-demo" href={process.env.NEXT_PUBLIC_DEMO_URL}>
-            Conhecer a demonstração sem cadastro →
+            Ver a jornada guiada da apresentação →
           </a>
         )}
         <p className="login-signature">

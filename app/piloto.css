@@ -782,3 +782,132 @@ body:has(.pilot-app) {
     gap: 10px;
   }
 }
+
+/* Demonstração pública: faixa que deixa claro que tudo é fictício e sugere um roteiro. */
+.demo-faixa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  padding: 12px max(24px, calc((100% - 1120px) / 2));
+  background: linear-gradient(90deg, var(--brand-coral), var(--brand-rosa) 55%, var(--brand-roxo));
+  color: white;
+  font-size: 14px;
+}
+.demo-faixa p {
+  margin: 0;
+  flex: 1 1 320px;
+}
+.demo-roteiro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  order: 3;
+  flex-basis: 100%;
+}
+.demo-faixa button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border: 1px solid #ffffff66;
+  border-radius: 999px;
+  background: #ffffff1f;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.demo-faixa button:hover,
+.demo-faixa button:focus-visible {
+  background: #ffffff40;
+}
+.demo-roteiro button > span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  color: var(--brand-roxo);
+  font-size: 12px;
+}
+.demo-faixa button.demo-ocultar {
+  padding: 6px 14px;
+  background: transparent;
+}
+.pilot-app .pilot-topo header > .pilot-demo-cta {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--brand-coral);
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.pilot-app .pilot-topo header > .pilot-demo-cta:hover {
+  background: var(--brand-rosa);
+}
+@media (max-width: 640px) {
+  .demo-faixa {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  .demo-roteiro {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .demo-roteiro button {
+    flex: none;
+  }
+  .pilot-app .pilot-topo header:has(.pilot-demo-cta) > span {
+    display: none;
+  }
+}
+
+/* Login: atalho para a demonstração sem cadastro. */
+.login-ou {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.login-ou::before,
+.login-ou::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--piloto-borda);
+}
+.login-demo-botao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1.5px solid var(--brand-rosa);
+  border-radius: 16px;
+  background: #fff5f9;
+  color: var(--brand-azul);
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+}
+.login-demo-botao:hover,
+.login-demo-botao:focus-visible {
+  background: #ffe6f2;
+  transform: translateY(-1px);
+}
+.login-demo-botao span {
+  display: grid;
+  gap: 2px;
+}
+.login-demo-botao strong {
+  font-size: 16px;
+}
+.login-demo-botao small {
+  color: var(--muted);
+  font-size: 13px;
+}

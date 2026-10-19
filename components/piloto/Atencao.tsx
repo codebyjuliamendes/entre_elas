@@ -26,7 +26,9 @@ export function Atencao({ dados: d }: { dados: DadosPiloto }) {
           </h2>
         </div>
         <p className="pilot-impact">
-          {concluidas} trocas concluídas · {dicas} dicas compartilhadas por você
+          {concluidas}{" "}
+          {concluidas === 1 ? "troca concluída" : "trocas concluídas"} · {dicas}{" "}
+          {dicas === 1 ? "dica compartilhada" : "dicas compartilhadas"} por você
           e suas conexões
         </p>
       </div>

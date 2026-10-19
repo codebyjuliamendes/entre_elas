@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from "react";
 import type { Profile } from "@/lib/schemas/entities";
 import type { EstadoIndexacao } from "@/lib/domain/perfil-indexacao";
-import { api } from "@/lib/piloto/browser";
+import { api, emDemonstracao } from "@/lib/piloto/browser";
 import { toast } from "sonner";
 const campos = [
   ["nome", "Seu nome"],
@@ -72,7 +72,11 @@ export function PerfilPiloto({
       }
       if (concluir) await api("/api/piloto/onboarding", {});
       await atualizar();
-      toast.success("Perfil salvo no servidor.");
+      toast.success(
+        emDemonstracao()
+          ? "Perfil atualizado nesta demonstração."
+          : "Perfil salvo no servidor.",
+      );
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Não foi possível salvar.");
     } finally {

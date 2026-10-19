@@ -23,7 +23,7 @@ import { Atencao } from "./Atencao";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useNavegacaoPiloto } from "@/lib/piloto/navegacao";
 import { useOnline } from "@/lib/browser/conexao";
-import { api, dataHora } from "@/lib/piloto/browser";
+import { api, dataHora, emDemonstracao } from "@/lib/piloto/browser";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 const sobreIA =
@@ -35,7 +35,12 @@ const ROTULO_STATUS: Record<Faisca["status"], string> = {
   realizada: "Realizada",
   cancelada: "Cancelada",
 };
-export function Piloto() {
+export function Piloto({
+  demonstracao = false,
+}: {
+  /** Demonstração pública: dados fictícios respondidos no navegador. */
+  demonstracao?: boolean;
+} = {}) {
   const router = useRouter();
   const online = useOnline();
   const { tab, encontro, setTab, setEncontro } = useNavegacaoPiloto();
@@ -97,7 +102,11 @@ export function Piloto() {
   useEffect(() => {
     const atualizar = () => void carregar();
     window.addEventListener("online", atualizar);
-    return () => window.removeEventListener("online", atualizar);
+    window.addEventListener("piloto:atualizar", atualizar);
+    return () => {
+      window.removeEventListener("online", atualizar);
+      window.removeEventListener("piloto:atualizar", atualizar);
+    };
   }, [carregar]);
   async function executar(acao: () => Promise<unknown>, mensagem?: string) {
     setBusy(true);
@@ -286,21 +295,34 @@ export function Piloto() {
     <div className="pilot-app">
       <div className="pilot-topo">
         <header>
-          <a href="/piloto" className="pilot-brand">
+          <a
+            href={demonstracao ? "/demonstracao" : "/piloto"}
+            className="pilot-brand"
+          >
             <Marca />
           </a>
-          <span>Piloto · dados salvos no servidor</span>
-          <button
-            disabled={busy}
-            onClick={() =>
-              void executar(async () => {
-                await api("/api/auth/sair", {});
-                router.replace("/entrar");
-              })
-            }
-          >
-            Sair
-          </button>
+          <span>
+            {demonstracao
+              ? "Demonstração · dados fictícios, nada é salvo"
+              : "Piloto · dados salvos no servidor"}
+          </span>
+          {demonstracao ? (
+            <a className="pilot-demo-cta" href="/entrar?modo=cadastrar">
+              Criar minha conta
+            </a>
+          ) : (
+            <button
+              disabled={busy}
+              onClick={() =>
+                void executar(async () => {
+                  await api("/api/auth/sair", {});
+                  router.replace("/entrar");
+                })
+              }
+            >
+              Sair
+            </button>
+          )}
         </header>
         <nav aria-label="Navegação do piloto">
           {[
@@ -883,7 +905,9 @@ export function Piloto() {
                           api("/api/piloto/foto", {
                             foto: await prepararFoto(file),
                           }),
-                        "Foto salva no servidor.",
+                        emDemonstracao()
+                          ? "Foto aplicada nesta demonstração."
+                          : "Foto salva no servidor.",
                       );
                   }}
                 />
@@ -941,8 +965,9 @@ export function Piloto() {
         )}
       </main>
       <footer>
-        Entre Elas · atualizações a cada quinze segundos · sua conta, suas
-        escolhas
+        {demonstracao
+          ? "Entre Elas · demonstração com pessoas e conversas fictícias · recarregue para recomeçar"
+          : "Entre Elas · atualizações a cada quinze segundos · sua conta, suas escolhas"}
       </footer>
     </div>
   );
