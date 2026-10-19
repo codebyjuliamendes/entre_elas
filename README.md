@@ -4,7 +4,7 @@
 
 **Entre Elas** é um MVP criado para o hackathon da Equatorial. A proposta é aproximar mulheres que querem aprender de colegas que podem compartilhar experiências, reconhecendo conhecimentos que muitas vezes ficam invisíveis no dia a dia de uma organização.
 
-[**Acessar o MVP**](https://entre-elas-sigma.vercel.app/)
+[**Acessar o MVP**](https://entre-elas-omega.vercel.app/entrar)
 
 ## O desafio
 
@@ -37,20 +37,6 @@ A IA é uma facilitadora: as pessoas escolhem se querem usá-la, revisam o que s
 - Agenda, comunidades e painel de indicadores da rede.
 - Interface adaptada a celulares e computadores.
 
-## Experimente
-
-O MVP está publicado em [entre-elas-sigma.vercel.app](https://entre-elas-sigma.vercel.app/). O acesso de participantes usa link por e-mail. A entrega do e-mail e a disponibilidade de recursos conectados a serviços externos dependem da configuração do ambiente do piloto.
-
-O produto está em validação como MVP de hackathon. Os testes automatizados locais cobrem os principais fluxos de domínio, mas não substituem a verificação dos serviços externos no ambiente publicado.
-
-## Tecnologias
-
-- Next.js 16, React 19 e TypeScript
-- Supabase para autenticação e dados
-- Gemini para IA e busca semântica, com Groq como alternativa de geração
-- Stream e Daily para chat e vídeo
-- Vitest e Playwright para validação automatizada
-
 ## Princípios do produto
 
 - **Reconhecer saberes:** valorizar experiências práticas e aprendizados compartilhados.
@@ -61,11 +47,10 @@ O produto está em validação como MVP de hackathon. Os testes automatizados lo
 
 ## Documentação do projeto
 
-- [Visão do MVP e roteiro de apresentação](docs/mvp.md)
-- [Operação do piloto](docs/operacao-banca.md)
-- [Ativação e requisitos do piloto](docs/ativar-piloto.md)
+- [Visão do MVP](docs/mvp.md)
+- [Piloto de avaliação](docs/piloto-banca.md)
 - [Identidade visual](docs/identidade-visual.md)
-- [Validação e limites conhecidos](docs/validacao.md)
+- [Princípios do produto](docs/decisoes.md)
 
 ---
 

@@ -1,107 +1,44 @@
-# MVP visual para apresentação
+# Visão do MVP
 
-O MVP mantém Next.js 16 e React 19, por escolha da usuária, com Tailwind,
-Framer Motion, primitivas Radix no padrão shadcn/ui, Lucide e Sonner.
-A interface é mobile-first, com navegação inferior no celular e uma área de trabalho
-com menu lateral e colunas no desktop. Rotas: Início, Rede, Biblioteca de saberes,
-Agenda, Chats, Comunidades, Perfil e Configurações. `/dev` continua independente.
+## Propósito
 
-## Executar e publicar na Vercel
+O Entre Elas aproxima mulheres que querem aprender de colegas que já viveram experiências relacionadas. A proposta parte de uma pergunta simples: **quem na minha rede pode me ajudar com isso?**
 
-1. Node >=22, `npm ci`, defina `APP_MODE=apresentacao` e execute `npm run dev`.
-2. Sem nenhuma chave, o modo de apresentação funciona: pedido, match com
-   evidência do catálogo fictício, convite e aceite simulado, pauta, chamada
-   simulada de vinte minutos, anotação, dica, quiz, autorizações e publicação.
-3. Para produção: `npm run build` e `npm start`. Na Vercel, selecione o projeto
-   Next.js e defina `APP_MODE=apresentacao` explicitamente para a apresentação fictícia.
-   Para testes reais de 18 a 23 de outubro, use o piloto e [a orientação de operação](operacao-banca.md).
-4. Para usar IA de verdade apenas na apresentação, configure PITCH_AI_MODE=live,
-   OPENROUTER_API_KEY e OPENROUTER_MODEL com um modelo disponível na conta.
-   O modelo gratuito sugerido pode mudar ou ter quota indisponível. Qualquer falha,
-   JSON inválido ou prazo acima de 7,5 s ativa o exemplo fictício identificado.
+O MVP foi criado para o hackathon da Equatorial como uma forma prática de reconhecer saberes, criar conexões e transformar conversas em aprendizados que possam circular pela rede.
 
-## Roteiro
+## Para quem
 
-- No Início, clique “Apresentar um projeto” e encontre sua Faísca.
-- Veja a candidata e sua evidência; o catálogo contém oito perfis fictícios, com sugestões locais por especialidade e opção de buscar outra.
-- Convide para café e clique “Simular aceite de Carla”. Nenhum convite externo é enviado.
-- Leia a pauta, entre na chamada e teste microfone/câmera simulados. Nenhum
-  dispositivo é acessado. Encerre o encontro e escreva um aprendizado fictício.
-- Sintetize, responda o quiz e confira os acertos. A dica só pode ser publicada
-  depois de Ana autorizar e de simular explicitamente a autorização de Carla.
-- Abra o perfil de Carla: o saber e a dica reconhecidos aparecem e persistem após reload.
-- Agenda contém o café, filtros por tipo/data e confirmação de eventos fictícios.
-- Chats oferece conversas locais com respostas simuladas; não usa Stream nem IA.
-- Comunidades permite buscar, participar/sair, escrever posts, comentar e curtir, com persistência local.
-- Perfil permite editar a bio e os saberes de Ana, editar objetivos, consultar reconhecimentos e acessar dicas salvas.
+Mulheres que desejam compartilhar conhecimentos, buscar orientação ou conhecer outras pessoas da organização com experiências complementares.
 
-## Persistência e limites
+## Jornada principal
 
-O catálogo inicial é fictício e o progresso fica em localStorage sob
-`entre-elas:apresentacao:v1`. Isso permite executar sem Supabase, simular uma
-apresentação e publicar na Vercel imediatamente. Não há sincronização entre dispositivos.
-Se localStorage estiver indisponível, o fluxo segue em memória até a página fechar.
-Conteúdo simulado tem identificação visível; não é prova de IA ou integração real.
+1. A participante apresenta seus conhecimentos e objetivos.
+2. Ela descreve algo em que gostaria de avançar.
+3. O Entre Elas sugere pessoas e explica a relação entre o pedido e as experiências compartilhadas.
+4. As participantes combinam uma conversa de 20 minutos, chamada **Faísca**.
+5. Cada uma registra o aprendizado que leva do encontro.
+6. As duas decidem se querem transformar parte desse aprendizado em uma dica para a rede.
 
-Este modo não modifica as tabelas reais, não autentica pessoas reais, não cria
-canais/salas reais nem publica dados no Supabase. As APIs reais e as regras de
-consentimento, privacidade, Stream, Daily e Gemini/Groq permanecem disponíveis
-conforme docs/api.md e docs/demo.md, pendentes de credenciais e validação externa.
+## A Faísca
 
-O banco existente já tem pgvector e schema completo. Use suas migrations e
-`supabase/seed/mvp.sql` para um seed mínimo de três perfis. Os vetores seguem em
-768 dimensões para preservar compatibilidade: não execute um schema alternativo
-384 sobre o banco atual nem trunque vetores. O seed não inventa embeddings.
+A Faísca é o centro da experiência. É um encontro breve, com espaço para compartilhar contexto, trocar ideias e terminar com um próximo passo. A pauta ajuda a conversa a começar, mas as participantes conduzem o encontro.
 
-## Verificações
+Depois da conversa, cada participante registra sua própria perspectiva. Uma dica só pode ser compartilhada com a autorização de todas as pessoas envolvidas.
 
-`npm run build`, `npm run lint`, `npm run typecheck`, `npm test`.
-`npm run test:db` verifica os domínios reais com o banco local preparado.
-`npm run test:e2e` gera o build e executa os doze cenários contra um servidor
-de produção na porta 3200. Usa `/usr/bin/chromium` quando disponível ou
-PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH. Em máquinas sem Chromium, instale pelo
-Playwright (`npx playwright install chromium`), mantendo TLS e verificação de artefatos.
+## Papel da inteligência artificial
 
-## Recursos do upgrade
+A IA ajuda a entender pedidos, relacionar experiências e preparar conversas. As recomendações devem fazer sentido para as pessoas e se apoiar no que elas escolheram compartilhar.
 
-- `/rede`: busca sem acentos, filtros por área/regional e conexão direta com uma pessoa.
-- `/saberes`: busca, favoritos, compartilhamento e leitura de dicas; publicações novas incluem quiz.
-- Busca global no cabeçalho, também por Ctrl/Cmd+K no desktop.
-- Agenda em America/Sao_Paulo, navegação entre semanas/anos, exportação ICS,
-  cancelamento de convites aceitos e retomada do rascunho de cada encontro.
-- `/configuracoes`: exportar backup JSON, importar até 10 MB com confirmação e
-  validação, restaurar dados e consultar instruções de instalação.
-- Estado interno v2 com migração da chave v1 existente. Convites e publicações
-  usam IDs estáveis; consentimento exige encontro concluído e ambas as autorizações.
-  Rascunhos anteriores ficam associados ao respectivo encontro.
-- Avisos para modo offline, armazenamento indisponível ou conteúdo corrompido.
-  Um backup inválido não substitui o estado atual; dados corrompidos originais
-  ficam protegidos até uma restauração ou limpeza explícita.
-- Ícones instaláveis, manifest e service worker. O cache contém apenas recursos
-  públicos; APIs e respostas personalizadas não entram no cache. A jornada já
-  carregada pode usar exemplos locais offline; novas navegações podem mostrar
-  a página offline. Isso não equivale a sincronização offline do backend real.
+A IA não decide por ninguém. A participante pode revisar as sugestões, escolher outra pessoa ou seguir por um caminho manual. O uso de IA é opcional.
 
-A migração e os backups são de apresentação: use somente dados fictícios.
-A pipeline em `.github/workflows/qualidade.yml` executa lint, tipos, testes,
-auditoria de produção, navegador e banco local em jobs separados.
+## O que o MVP explora
 
-## Perfil e curadoria da Faísca
+- Perfis voltados a experiências, saberes e objetivos.
+- Descoberta de conexões entre quem quer aprender e quem pode compartilhar.
+- Conversas curtas com intenção e pauta.
+- Registro de aprendizados e reconhecimento de contribuições.
+- Uma rede em que conhecimentos compartilhados podem ajudar outras pessoas.
 
-No seu perfil, “Trocar foto de perfil” aceita JPEG/PNG/WebP até 5 MB; a imagem
-recebe recorte quadrado central e é reduzida para 256 px. Pode ser removida,
-persiste após recarregar e acompanha o backup. Nesta apresentação a foto não
-é enviada a um servidor nem à IA. Edite também bio, saberes e objetivos.
+## Resultado esperado
 
-Na Faísca, “Por que esta Faísca faz sentido?” mostra o foco do pedido, critérios,
-evidência do catálogo e limites da sugestão. Os objetivos contextualizam a
-curadoria; o pedido tem prioridade. Uma pauta orienta os vinte minutos e as
-perguntas se adaptam ao desafio e à experiência da convidada.
-
-Depois da conversa, “De onde veio esta síntese?” mostra um trecho literal das
-anotações. Revise a dica e, se necessário, use “Revisar minhas anotações e gerar
-outra síntese”. Ambas as autorizações são revogadas nessa revisão. Somente a
-nova versão aprovada pelas duas pode ser publicada. O trecho literal é uma
-verificação de apoio, não uma garantia de que o modelo não inventou outros fatos.
-IA real via OpenRouter continua opcional e pendente de validação externa;
-sem chave, a experiência usa heurística/exemplos locais identificados.
+Que uma participante encontre alguém com quem normalmente não conversaria, tenha uma troca útil e saia com um novo aprendizado ou uma ação concreta. O piloto busca observar se esse formato torna mais fácil descobrir e compartilhar conhecimentos dentro da Equatorial.

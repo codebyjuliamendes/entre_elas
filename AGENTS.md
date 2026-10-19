@@ -24,8 +24,7 @@ Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual m
   Implemente apenas regras de **domínio** (ex.: "só a convidada pode aceitar uma Faísca").
 - Toda função pública de domínio recebe e devolve dados validados por **Zod**. Esses schemas são o contrato
   que o front vai consumir, seja qual for o desenho final.
-- Na dúvida entre algo genérico e algo específico de uma tela, escolha o genérico e registre a dúvida
-  em `docs/decisoes.md`.
+- Registre em `docs/decisoes.md` decisões que mudem a proposta ou a experiência do produto.
 
 ## 3. Stack
 
@@ -38,8 +37,6 @@ Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual m
 - Front-end: Tailwind CSS, Framer Motion, componentes no padrão shadcn/ui com primitivas Radix, Lucide e Sonner
 - IA da apresentação: Vercel AI SDK + OpenRouter (Llama); fallback fictício identificado, em até 8 segundos. Gemini/Groq e embeddings existentes continuam na integração real.
 - Validação: Zod · Testes: Vitest + Playwright · Deploy: Vercel
-
-Não instale outras bibliotecas sem justificar em `docs/decisoes.md`.
 
 ## 4. Estrutura de pastas
 
@@ -174,8 +171,7 @@ funções do domínio e da IA. Ela só aparece quando `DEMO_MODE=true` e não de
 - Funções de domínio puras sempre que possível; acesso a banco e APIs fica nas camadas `db/` e `integrations/`.
 - Erros tipados (`ErroDominio`, `ErroIntegracao`, `ErroIA`) com mensagens em português.
 - Datas sempre em UTC no banco.
-- Cada tarefa entrega código, testes do domínio e uma linha em `docs/decisoes.md`
-  quando houver escolha não óbvia.
+- Atualize `docs/decisoes.md` quando uma mudança alterar princípios ou decisões de produto.
 
 ## 11. Definição de pronto
 
