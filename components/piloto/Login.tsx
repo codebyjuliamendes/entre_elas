@@ -3,14 +3,17 @@ import { Marca, SimboloFaisca } from "@/components/Marca";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
 export function Login() {
   const router = useRouter(),
     params = useSearchParams();
   const retorno = normalizarRetorno(params.get("retorno"));
   const [modo, setModo] = useState<"entrar" | "cadastrar">("entrar");
   const [email, setEmail] = useState(""),
+    [senha, setSenha] = useState(""),
     [status, setStatus] = useState(""),
     [busy, setBusy] = useState(false);
+
   useEffect(() => {
     if (params.get("renovar")) {
       void fetch("/api/auth/renovar", {
@@ -22,9 +25,38 @@ export function Login() {
       });
     }
   }, [params, router, retorno]);
-  async function entrar(e: FormEvent) {
+
+  async function autenticar(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
+    setStatus("");
+    try {
+      const r = await fetch("/api/auth/entrar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha, modo, retorno }),
+      });
+      const data = await r.json();
+      if (r.ok) {
+        setStatus("Acesso liberado! Entrando…");
+        router.replace(data.redirecionar || retorno || "/piloto");
+      } else {
+        setStatus(data.erro);
+      }
+    } catch {
+      setStatus("Sem conexão. Tente novamente.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function pedirLinkPorEmail() {
+    if (!email) {
+      setStatus("Informe seu e-mail acima para receber o link.");
+      return;
+    }
+    setBusy(true);
+    setStatus("");
     try {
       const r = await fetch("/api/auth/link", {
         method: "POST",
@@ -34,7 +66,7 @@ export function Login() {
       const data = await r.json();
       setStatus(
         r.ok
-          ? "Link enviado. Abra seu e-mail neste mesmo navegador e dispositivo. Verifique também o spam. O link é pessoal e expira."
+          ? "Link enviado. Abra seu e-mail neste mesmo navegador e dispositivo. Verifique também o spam."
           : data.erro,
       );
     } catch {
@@ -43,6 +75,7 @@ export function Login() {
       setBusy(false);
     }
   }
+
   return (
     <main className="pilot-login brand-login">
       <section
@@ -95,10 +128,10 @@ export function Login() {
         </h2>
         <p>
           {modo === "entrar"
-            ? "Use o e-mail da sua conta. Enviaremos um link pessoal para você voltar às suas trocas, sem precisar de senha."
-            : "É sua primeira vez? Cadastre seu e-mail e confirme o link que enviaremos. Depois, você prepara seu perfil para começar as trocas."}
+            ? "Digite seu e-mail e senha para acessar diretamente suas trocas e mentorias."
+            : "É sua primeira vez? Escolha seu e-mail e crie sua senha para começar imediatamente."}
         </p>
-        <form onSubmit={entrar}>
+        <form onSubmit={autenticar}>
           <label className="form-label" htmlFor="email">
             Seu e-mail
           </label>
@@ -111,17 +144,55 @@ export function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button className="pilot-button" disabled={busy}>
+
+          <label className="form-label" htmlFor="senha" style={{ marginTop: "1rem" }}>
+            Sua senha
+          </label>
+          <input
+            id="senha"
+            type="password"
+            autoComplete={modo === "entrar" ? "current-password" : "new-password"}
+            required
+            minLength={6}
+            maxLength={128}
+            placeholder={modo === "cadastrar" ? "Mínimo 6 caracteres" : ""}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+          />
+
+          <button className="pilot-button" disabled={busy} style={{ marginTop: "1.25rem" }}>
             {busy
-              ? "Enviando…"
+              ? "Aguarde…"
               : modo === "entrar"
-                ? "Receber link de entrada"
-                : "Receber link para criar conta"}
+                ? "Entrar na conta"
+                : "Criar minha conta"}
           </button>
         </form>
+
+        <div style={{ marginTop: "1rem", textAlign: "center" }}>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={pedirLinkPorEmail}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#a32fa6",
+              textDecoration: "underline",
+              fontSize: "0.85rem",
+              cursor: "pointer",
+              padding: "0.5rem"
+            }}
+          >
+            {modo === "entrar"
+              ? "Esqueceu a senha ou prefere link por e-mail?"
+              : "Prefere receber link de confirmação por e-mail?"}
+          </button>
+        </div>
+
         {params.get("erro") && (
           <p role="alert">
-            Link inválido ou expirado. Solicite outro link neste navegador.
+            Link inválido ou expirado. Entre com sua senha ou solicite outro link.
           </p>
         )}
         <p role="status">{status}</p>
