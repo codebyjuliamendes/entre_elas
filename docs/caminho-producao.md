@@ -9,7 +9,7 @@ O piloto foi construído para validar a experiência em poucos dias, com serviç
 | Identidade | E-mail e senha ou link mágico (Supabase Auth), cadastro aberto | Login único com a conta Microsoft corporativa (Entra ID) |
 | IA de texto | Gemini (plano gratuito) com Groq como alternativa automática | Modelo em contrato corporativo (por exemplo, Azure OpenAI ou Vertex AI), sem uso dos dados para treinamento |
 | Embeddings | Gemini, 768 dimensões | Mesmo provedor corporativo; a troca de modelo exige recriar todos os vetores |
-| Chat | Stream Chat; sem as chaves do Stream, mensagens ficam no próprio banco | Microsoft Teams (chat 1:1 da Faísca) |
+| Chat | Mensagens no próprio banco (Supabase); Stream Chat é opcional e fica desligado sem as chaves | Microsoft Teams (chat 1:1 da Faísca) |
 | Vídeo | Daily (salas criadas por API) | Reunião do Teams criada com a Faísca |
 | Banco | Supabase gerenciado (Postgres + pgvector) | Supabase em região brasileira ou Postgres gerenciado na nuvem da empresa |
 | Hospedagem | Vercel | Vercel Enterprise ou nuvem corporativa |
