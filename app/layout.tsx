@@ -8,6 +8,7 @@ import "./globals.css";
 import "./workspace.css";
 import "./identidade.css";
 import "./editorial.css";
+import "./piloto.css";
 import { PwaRegistration } from "@/components/PwaRegistration";
 export const metadata: Metadata = {
   title: "Entre Elas · Saber que conecta",

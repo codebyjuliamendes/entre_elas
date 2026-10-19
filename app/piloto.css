@@ -1,0 +1,398 @@
+/* Piloto (app real): mesmo visual das telas do pitch.
+   Topo azul-marinho com a marca, fundo rosado, cartões brancos suaves,
+   rosa da marca para seleção e números; degradê coral → roxo só em barras. */
+:root {
+  --piloto-fundo: #fff5f9;
+  --piloto-borda: #f3d8e5;
+}
+body:has(.pilot-app) {
+  background: var(--piloto-fundo);
+}
+.pilot-app {
+  max-width: none;
+  padding: 0;
+  background: var(--piloto-fundo);
+  min-height: 100dvh;
+}
+.pilot-topo {
+  background: var(--brand-azul);
+  color: white;
+  padding: 0 max(24px, calc((100% - 1120px) / 2));
+}
+.pilot-app .pilot-topo header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0 6px;
+  border: 0;
+}
+.pilot-topo .marca {
+  color: white;
+}
+.pilot-topo .marca-simbolo {
+  color: var(--brand-rosa);
+}
+.pilot-topo .marca-nome > b {
+  color: var(--brand-rosa);
+}
+.pilot-app .pilot-topo header > span {
+  color: var(--brand-rosa-claro);
+  font-size: 13px;
+}
+.pilot-app .pilot-topo header > button {
+  background: transparent;
+  color: white;
+  border: 1px solid #ffffff40;
+  border-radius: 999px;
+}
+.pilot-app .pilot-topo nav {
+  width: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  gap: 26px;
+}
+.pilot-app .pilot-topo nav button,
+.pilot-app .pilot-topo nav button[aria-current] {
+  flex: none;
+  padding: 14px 0 12px;
+  background: transparent;
+  color: var(--brand-rosa-claro);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+}
+.pilot-app .pilot-topo nav button[aria-current] {
+  color: white;
+  font-weight: 700;
+  border-bottom-color: var(--brand-rosa);
+}
+.pilot-app > main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.pilot-app > footer {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px 32px;
+}
+
+/* Cartões brancos suaves. */
+.pilot-app .pilot-card,
+.pilot-app .pilot-attention {
+  background: white;
+  border: 1px solid var(--piloto-borda);
+  border-radius: 20px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 1px 0 #f0d2e1;
+}
+.pilot-app .pilot-card .pilot-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--piloto-borda);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 16px 0;
+  margin: 0;
+}
+.pilot-app button.pilot-encounter {
+  background: white;
+  border: 1px solid var(--piloto-borda);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin: 10px 0;
+}
+.pilot-app button.pilot-encounter:hover {
+  background: #fffafd;
+  border-color: var(--brand-rosa);
+}
+.pilot-app .pilot-attention-item {
+  border-top: 0;
+  background: #fff7fb;
+  border-radius: 14px;
+}
+
+/* Abro Faíscas: opções em cartões com seleção circular. */
+.abro-faiscas-sub {
+  color: var(--muted);
+}
+.abro-opcoes {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0;
+}
+.pilot-app button.abro-opcao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 0;
+  padding: 16px 18px;
+  text-align: left;
+  background: white;
+  border: 1.5px solid #efd9e4;
+  border-radius: 16px;
+}
+.abro-opcao strong {
+  display: block;
+  font-size: 16px;
+  color: var(--ink);
+}
+.abro-opcao small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.abro-opcao i {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #d9c4cf;
+  border-radius: 50%;
+}
+.pilot-app button.abro-opcao[aria-checked="true"] {
+  background: #fff3f8;
+  border-color: var(--brand-rosa);
+}
+.abro-opcao[aria-checked="true"] strong {
+  color: var(--brand-rosa);
+}
+.abro-opcao[aria-checked="true"] i {
+  border-color: var(--brand-rosa);
+  background: radial-gradient(circle, var(--brand-rosa) 0 42%, transparent 47%);
+}
+.pilot-app button.abro-salvar {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  background: #ffe2ef;
+  color: var(--brand-roxo);
+  font-weight: 700;
+}
+.pilot-app .abro-salvar:disabled {
+  opacity: 0.55;
+}
+
+/* Painel de liderança: indicadores no topo e cartões de gráficos. */
+.painel-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.painel-topo h1 {
+  margin: 0;
+}
+.painel-topo p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+.painel-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0 16px;
+}
+.painel-kpi,
+.painel-grafico {
+  background: white;
+  border: 1px solid var(--piloto-borda);
+  border-radius: 18px;
+  padding: 20px;
+}
+.painel-kpi span {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.painel-kpi strong {
+  display: block;
+  margin: 6px 0 2px;
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 1.15;
+  color: var(--brand-rosa);
+}
+.painel-kpi small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.painel-graficos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.painel-grafico h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+.painel-rosca-linha {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.painel-rosca {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  background: conic-gradient(var(--brand-rosa) var(--valor), #f7e5ee 0);
+}
+.painel-rosca span {
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: white;
+  font-family: var(--font-titulo);
+  font-size: 26px;
+  color: var(--brand-azul);
+}
+.painel-rosca-linha p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.painel-barras {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.painel-barras li {
+  display: grid;
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.painel-barras li > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.painel-barras div {
+  height: 10px;
+  border-radius: 99px;
+  background: #f7e5ee;
+  overflow: hidden;
+}
+.painel-barras i {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--brand-coral), var(--brand-roxo));
+}
+.painel-barras b {
+  text-align: right;
+  color: var(--brand-azul);
+}
+.painel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.painel-chips li {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ffe2ef;
+  color: var(--brand-roxo);
+  font-size: 13px;
+  font-weight: 600;
+}
+.painel-mini {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.painel-mini .painel-kpi {
+  background: #fff7fb;
+  border: 0;
+}
+@media (max-width: 760px) {
+  .painel-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .painel-graficos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .painel-kpi strong {
+    font-size: 32px;
+  }
+  .pilot-app .pilot-topo header > span {
+    display: none;
+  }
+}
+.pilot-app .pilot-topo nav {
+  flex-wrap: nowrap;
+  scrollbar-width: none;
+}
+.pilot-app input[type="file"] {
+  background: white;
+  border: 1px dashed var(--piloto-borda);
+  border-radius: 14px;
+  padding: 12px;
+}
+.pilot-app input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #ffe2ef;
+  color: var(--brand-roxo);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pilot-status {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+  background: #f4eef2;
+  color: var(--muted);
+}
+.pilot-status-pendente {
+  background: #fff1e0;
+  color: #9a5a00;
+}
+.pilot-status-aceita {
+  background: #ffe2ef;
+  color: var(--brand-roxo);
+}
+.pilot-status-realizada {
+  background: #e4f4ea;
+  color: #2f6b45;
+}
+.pilot-topo .marca-nome {
+  font-size: 26px;
+}
+.pilot-topo .marca-simbolo {
+  width: 36px;
+  height: 36px;
+}
+.pilot-topo .marca-nome > span {
+  font-size: inherit;
+}

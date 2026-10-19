@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { toast } from "sonner";
 import { api, dataHora } from "@/lib/piloto/browser";
 import {
@@ -8,7 +8,7 @@ import {
 } from "@/lib/piloto/metricas";
 const pct = (v: number | null) =>
   v === null ? "—" : `${String(v).replace(".", ",")}%`;
-function Card({
+function Kpi({
   titulo,
   valor,
   nota,
@@ -18,9 +18,70 @@ function Card({
   nota?: string;
 }) {
   return (
-    <article className="pilot-card pilot-metrica">
-      <h2>{titulo}</h2>
+    <article className="painel-kpi">
+      <span>{titulo}</span>
       <strong>{valor}</strong>
+      {nota && <small>{nota}</small>}
+    </article>
+  );
+}
+// Rosca em CSS: a fatia colorida é o percentual; vazio quando ainda não há dados.
+function Rosca({
+  titulo,
+  valor,
+  nota,
+}: {
+  titulo: string;
+  valor: number | null;
+  nota: string;
+}) {
+  return (
+    <article className="painel-grafico">
+      <h3>{titulo}</h3>
+      <div className="painel-rosca-linha">
+        <div
+          className="painel-rosca"
+          style={{ "--valor": `${valor ?? 0}%` } as CSSProperties}
+          role="img"
+          aria-label={`${titulo}: ${pct(valor)}`}
+        >
+          <span>{pct(valor)}</span>
+        </div>
+        <p>{nota}</p>
+      </div>
+    </article>
+  );
+}
+function Barras({
+  titulo,
+  itens,
+  vazio,
+  nota,
+}: {
+  titulo: string;
+  itens: { rotulo: string; valor: number }[];
+  vazio: string;
+  nota?: string;
+}) {
+  const maior = Math.max(1, ...itens.map((i) => i.valor));
+  return (
+    <article className="painel-grafico">
+      <h3>{titulo}</h3>
+      {itens.length ? (
+        <ul className="painel-barras">
+          {itens.map((i) => (
+            <li key={i.rotulo}>
+              <span>{i.rotulo}</span>
+              <div>
+                <i style={{ width: `${(100 * i.valor) / maior}%` }} />
+              </div>
+              <b>{i.valor}</b>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="input-hint">{vazio}</p>
+      )}
       {nota && <p className="input-hint">{nota}</p>}
     </article>
   );
@@ -48,135 +109,122 @@ export function PainelLideranca() {
     }
   }
   return (
-    <>
-      <h1>O que a banca construiu</h1>
-      <div className="pilot-actions">
-        <button className="pilot-button" disabled={busy} onClick={atualizar}>
-          Atualizar dados reais do piloto
-        </button>
-        {m && (
-          <button disabled={busy} onClick={copiar}>
-            Copiar resumo para a apresentação
+    <section className="painel">
+      <header className="painel-topo">
+        <div>
+          <h1>Painel de liderança</h1>
+          <p>
+            Dados agregados e anônimos
+            {m?.inicio ? ` · desde ${dataHora(m.inicio)}` : ""}
+          </p>
+        </div>
+        <div className="pilot-actions">
+          <button className="pilot-button" disabled={busy} onClick={atualizar}>
+            Atualizar dados reais do piloto
           </button>
-        )}
-      </div>
+          {m && (
+            <button disabled={busy} onClick={copiar}>
+              Copiar resumo para a apresentação
+            </button>
+          )}
+        </div>
+      </header>
       {m && (
         <>
-          <p>{m.inicio ? `Desde ${dataHora(m.inicio)}` : "Piloto sem contas."}</p>
-          <h2>Funil da Faísca</h2>
-          <div className="pilot-grid">
-            <Card
-              titulo="Participantes"
-              valor={m.participantes}
-              nota={`${m.perfis_completos} com perfil completo`}
+          <div className="painel-kpis">
+            <Kpi
+              titulo="Convites enviados"
+              valor={m.convites}
+              nota={`${m.participantes} participantes`}
             />
-            <Card titulo="Convites enviados" valor={m.convites} />
-            <Card
-              titulo="Convites aceitos"
-              valor={m.aceitas}
-              nota={`Taxa de aceite ${pct(m.taxa_aceite)} entre respondidos`}
+            <Kpi
+              titulo="Taxa de aceite"
+              valor={pct(m.taxa_aceite)}
+              nota={`${m.aceitas} aceitos`}
             />
-            <Card titulo="Faíscas realizadas" valor={m.realizadas} />
-          </div>
-          <h2>Conexões que não aconteceriam sozinhas</h2>
-          <div className="pilot-grid">
-            <Card
-              titulo="Pessoas conectadas"
-              valor={m.pessoas_conectadas}
-              nota={`${m.pares_distintos} pares diferentes`}
+            <Kpi
+              titulo="Faíscas realizadas"
+              valor={m.realizadas}
+              nota={`${m.pessoas_conectadas} pessoas conectadas`}
             />
-            <Card
-              titulo="Entre regionais diferentes"
-              valor={pct(m.entre_regionais)}
-              nota="Das Faíscas aceitas ou realizadas"
-            />
-            <Card
-              titulo="Entre áreas diferentes"
-              valor={pct(m.entre_areas)}
-              nota="Das Faíscas aceitas ou realizadas"
-            />
-          </div>
-          <h2>Conhecimento que circulou</h2>
-          <div className="pilot-grid">
-            <Card
-              titulo="Dicas publicadas"
-              valor={m.dicas_publicadas}
-              nota="Com autorização das duas participantes"
-            />
-            <Card titulo="Saberes reconhecidos" valor={m.saberes_reconhecidos} />
-            <Card
-              titulo="Utilidade média"
-              valor={
-                m.avaliacoes?.utilidade_media
-                  ? `${String(m.avaliacoes.utilidade_media).replace(".", ",")}/5`
-                  : "—"
-              }
+            <Kpi
+              titulo="Fariam outra Faísca"
+              valor={pct(m.avaliacoes?.voltariam ?? null)}
               nota={
-                m.avaliacoes
-                  ? `${m.avaliacoes.respostas} avaliações · ${pct(m.avaliacoes.voltariam)} fariam outra Faísca`
-                  : "Avaliação pós-Faísca ainda não habilitada no banco"
+                m.avaliacoes?.utilidade_media
+                  ? `Utilidade ${String(m.avaliacoes.utilidade_media).replace(".", ",")}/5`
+                  : "Sem avaliações ainda"
               }
             />
           </div>
-          <h2>Mapa de saberes e lacunas</h2>
-          <p>
-            {m.mapa.objetivos_sem_par} de {m.mapa.objetivos} objetivos de
-            aprendizagem ainda não encontram ninguém na rede que ofereça o tema.
-          </p>
-          <div className="pilot-grid">
-            <article className="pilot-card">
-              <h3>O que a rede mais oferece</h3>
-              <ul>
-                {m.mapa.oferta.map((o) => (
-                  <li key={o.saber}>
-                    {o.saber} · {o.pessoas}{" "}
-                    {o.pessoas === 1 ? "pessoa" : "pessoas"}
-                  </li>
-                ))}
-              </ul>
-            </article>
-            <article className="pilot-card">
-              <h3>Temas procurados sem oferta</h3>
-              {m.mapa.temas_sem_par.length ? (
-                <ul>
-                  {m.mapa.temas_sem_par.map((t) => (
-                    <li key={t.tema}>
-                      {t.tema} · {t.pessoas} pessoas
-                    </li>
+          <div className="painel-graficos">
+            <Rosca
+              titulo="Conexões entre regionais"
+              valor={m.entre_regionais}
+              nota={`Das Faíscas aceitas ou realizadas, quantas uniram regionais diferentes. ${m.pares_distintos} pares diferentes.`}
+            />
+            <Rosca
+              titulo="Conexões entre áreas diferentes"
+              valor={m.entre_areas}
+              nota="Trocas que atravessaram áreas da empresa."
+            />
+            <Barras
+              titulo="Mapa de lacunas"
+              itens={m.mapa.temas_sem_par.map((t) => ({
+                rotulo: t.tema,
+                valor: t.pessoas,
+              }))}
+              vazio="Nenhum tema procurado por duas ou mais pessoas está sem oferta."
+              nota={`${m.mapa.objetivos_sem_par} de ${m.mapa.objetivos} objetivos de aprendizagem ainda sem ninguém que ofereça o tema.`}
+            />
+            <article className="painel-grafico">
+              <h3>Saberes concentrados</h3>
+              {m.mapa.concentrados.length ? (
+                <ul className="painel-chips">
+                  {m.mapa.concentrados.map((c) => (
+                    <li key={c}>{c}</li>
                   ))}
                 </ul>
               ) : (
-                <p>Nenhum tema citado por duas ou mais pessoas.</p>
+                <p className="input-hint">
+                  Nenhum saber depende de uma só pessoa.
+                </p>
               )}
               <p className="input-hint">
-                Indica onde vale formar ou convidar quem possa ensinar.
+                Conhecimento que só uma pessoa tem: risco de se perder.
               </p>
             </article>
-            <article className="pilot-card">
-              <h3>Saberes com uma só pessoa</h3>
-              <ul>
-                {m.mapa.concentrados.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
-              <p className="input-hint">
-                Conhecimento concentrado: risco de se perder se ela sair.
-              </p>
+            <Barras
+              titulo="O que a rede mais oferece"
+              itens={m.mapa.oferta.map((o) => ({
+                rotulo: o.saber,
+                valor: o.pessoas,
+              }))}
+              vazio="Ainda não há saberes declarados."
+            />
+            <article className="painel-grafico">
+              <h3>Conhecimento que circulou</h3>
+              <div className="painel-mini">
+                <Kpi
+                  titulo="Dicas publicadas"
+                  valor={m.dicas_publicadas}
+                  nota="Com autorização das duas"
+                />
+                <Kpi
+                  titulo="Saberes reconhecidos"
+                  valor={m.saberes_reconhecidos}
+                />
+              </div>
             </article>
           </div>
           <p className="input-hint">
-            Estimativa por palavras-chave dos perfis completos. Objetivos
-            individuais não são exibidos; temas só aparecem quando citados por
-            duas ou mais pessoas.
-          </p>
-          <p className="input-hint">
-            Somente contas do piloto; conteúdo do seed e demonstrações são
-            excluídos. {m.inscricoes} inscrições em eventos (não representam
-            presença) e {m.mensagens} mensagens contadas sem copiar seu
-            conteúdo. Avaliações aparecem apenas agregadas.
+            Somente contas do piloto; conteúdo de teste e demonstração é
+            excluído. Objetivos individuais não são exibidos; temas só aparecem
+            quando citados por duas ou mais pessoas. {m.inscricoes} inscrições
+            em eventos e {m.mensagens} mensagens contadas sem copiar conteúdo.
           </p>
         </>
       )}
-    </>
+    </section>
   );
 }
