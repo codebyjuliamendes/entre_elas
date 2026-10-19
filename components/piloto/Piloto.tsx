@@ -7,6 +7,7 @@ import {
   type FormEvent,
 } from "react";
 import type { DadosPiloto } from "@/lib/piloto/dados";
+import type { Faisca } from "@/lib/schemas/entities";
 import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
 import { Marca } from "@/components/Marca";
@@ -25,6 +26,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 const sobreIA =
   "Ao autorizar, seus pedidos, objetivos, saberes e anotações de Faíscas poderão ser enviados ao Google Gemini e à Groq para sugestões, resumos e quizzes. O processamento e a retenção seguem as políticas desses provedores; no plano gratuito do Gemini, os dados podem ser usados para melhorar produtos. Não envie dados sensíveis, confidenciais ou de terceiros. Fotos e chat não alimentam o mapa de saberes. Você pode revogar esta autorização; isso impede novos envios, mas não apaga o que já foi processado pelos provedores.";
+const ROTULO_STATUS: Record<Faisca["status"], string> = {
+  pendente: "Aguardando resposta",
+  aceita: "Combinada",
+  recusada: "Recusada",
+  realizada: "Realizada",
+  cancelada: "Cancelada",
+};
 export function Piloto() {
   const router = useRouter();
   const online = useOnline();
@@ -228,9 +236,9 @@ export function Piloto() {
         {passo === 0 ? (
           <>
             <p>
-              Comece pelo seu desafio, com as suas palavras. Depois de um
-              perfil rápido, procuramos quem já passou por algo parecido. Você
-              também pode escolher uma pessoa diretamente.
+              Comece pelo seu desafio, com as suas palavras. Depois de um perfil
+              rápido, procuramos quem já passou por algo parecido. Você também
+              pode escolher uma pessoa diretamente.
             </p>
             <label htmlFor="pedido-inicial">O que você quer aprender?</label>
             <textarea
@@ -274,52 +282,54 @@ export function Piloto() {
     );
   return (
     <div className="pilot-app">
-      <header>
-        <a href="/piloto" className="pilot-brand">
-          <Marca />
-        </a>
-        <span>Piloto · dados salvos no servidor</span>
-        <button
-          disabled={busy}
-          onClick={() =>
-            void executar(async () => {
-              await api("/api/auth/sair", {});
-              router.replace("/entrar");
-            })
-          }
-        >
-          Sair
-        </button>
-      </header>
-      <nav aria-label="Navegação do piloto">
-        {[
-          ["faiscas", "Faíscas"],
-          ["rede", "Pessoas"],
-          ["comunidades", "Comunidades"],
-          ["saberes", "Saberes"],
-          ["agenda", "Agenda"],
-          ["perfil", "Meu perfil"],
-          ["ajuda", "Ajuda"],
-          ...(d.lider ? [["lideranca", "Liderança"]] : []),
-        ].map(([key, label]) => (
+      <div className="pilot-topo">
+        <header>
+          <a href="/piloto" className="pilot-brand">
+            <Marca />
+          </a>
+          <span>Piloto · dados salvos no servidor</span>
           <button
-            key={key}
-            aria-current={tab === key ? "page" : undefined}
-            onClick={() => {
-              setTab(key);
-              setEncontro(null);
-            }}
+            disabled={busy}
+            onClick={() =>
+              void executar(async () => {
+                await api("/api/auth/sair", {});
+                router.replace("/entrar");
+              })
+            }
           >
-            {label}
-            {key === "faiscas" &&
-            d.faiscas.some(
-              (f) => f.status === "pendente" && f.convidada_id === perfil.id,
-            )
-              ? " · novo convite"
-              : ""}
+            Sair
           </button>
-        ))}
-      </nav>
+        </header>
+        <nav aria-label="Navegação do piloto">
+          {[
+            ["faiscas", "Faíscas"],
+            ["rede", "Pessoas"],
+            ["comunidades", "Comunidades"],
+            ["saberes", "Saberes"],
+            ["agenda", "Agenda"],
+            ["perfil", "Meu perfil"],
+            ["ajuda", "Ajuda"],
+            ...(d.lider ? [["lideranca", "Liderança"]] : []),
+          ].map(([key, label]) => (
+            <button
+              key={key}
+              aria-current={tab === key ? "page" : undefined}
+              onClick={() => {
+                setTab(key);
+                setEncontro(null);
+              }}
+            >
+              {label}
+              {key === "faiscas" &&
+              d.faiscas.some(
+                (f) => f.status === "pendente" && f.convidada_id === perfil.id,
+              )
+                ? " · novo convite"
+                : ""}
+            </button>
+          ))}
+        </nav>
+      </div>
       <main>
         {!online && (
           <p role="status" className="pilot-card">
@@ -610,7 +620,9 @@ export function Piloto() {
                     </strong>
                     <span>{f.tema}</span>
                     <span>
-                      {f.status} ·{" "}
+                      <em className={`pilot-status pilot-status-${f.status}`}>
+                        {ROTULO_STATUS[f.status]}
+                      </em>{" "}
                       {dataHora(f.horario ?? f.horarios_propostos[0])}
                     </span>
                   </button>

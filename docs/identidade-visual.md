@@ -45,3 +45,7 @@ O símbolo e as cores do app vêm dos vetores oficiais enviados pela designer (p
 - **Símbolo próprio:** o ícone da Faísca substitui o brilho genérico usado por produtos de IA.
 
 As regras ficam documentadas em `app/editorial.css`, a última camada de estilos carregada.
+
+## App do piloto
+
+O app real segue o visual aprovado nas telas do pitch (`app/piloto.css`): topo azul-marinho com a marca, fundo rosado, conteúdo em cartões brancos suaves, opções selecionáveis com círculo de seleção, rosa da marca para seleção e números, e o degradê coral → roxo apenas nas barras de gráfico. O painel de liderança usa cartões de indicadores no topo e cartões de gráficos (roscas para conexões entre regionais e áreas, barras para lacunas e oferta).
