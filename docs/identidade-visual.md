@@ -1,24 +1,37 @@
 # Identidade visual
 
-A identidade do Entre Elas foi inspirada no kit enviado pela designer: uma Faísca expressiva acompanhada por tons de rosa, coral, roxo e azul profundo.
+## Essência da marca
 
-## Ideia da marca
+Entre Elas representa a energia que surge quando uma experiência encontra uma pergunta. A Faísca é o símbolo desse encontro: uma ideia compartilhada que pode abrir caminhos para quem aprende, para quem ensina e para toda a rede.
 
-O símbolo representa o instante em que uma conversa acende uma ideia. Seus traços em movimento sugerem energia, encontro e a possibilidade de algo novo surgir quando experiências são compartilhadas.
+A identidade visual foi desenvolvida a partir do kit enviado pela designer, composto pelo símbolo em variações de cor e por uma paleta de rosa-claro, coral, rosa, roxo e azul profundo.
+
+## Ideia do símbolo
+
+O traço assimétrico da Faísca sugere movimento e espontaneidade. Ele evita a aparência de um selo formal: as conexões não seguem sempre um roteiro previsível, e cada conversa pode produzir um resultado diferente.
+
+O símbolo funciona como assinatura do produto e como um elemento de reconhecimento nos momentos em que uma conexão começa, uma ideia aparece ou um aprendizado é compartilhado.
 
 ## Personalidade
 
-- **Acolhedora:** convida à troca sem julgamento.
-- **Vibrante:** transmite energia e iniciativa.
-- **Confiante:** reconhece o valor das experiências de cada participante.
-- **Colaborativa:** coloca a conexão entre pessoas no centro.
+- **Acolhedora:** aproxima sem intimidar e dá espaço para diferentes vozes.
+- **Vibrante:** comunica iniciativa, curiosidade e energia coletiva.
+- **Confiante:** valoriza o que cada participante já construiu.
+- **Próxima:** fala de forma direta, humana e respeitosa.
+- **Colaborativa:** evidencia que conhecimento cresce quando circula.
 
-## Uso na experiência
+## Linguagem de cor
 
-O azul profundo dá estabilidade e legibilidade. Rosa, coral e roxo destacam momentos de conexão, ação e descoberta. O símbolo da Faísca aparece como assinatura visual do produto e como lembrança do seu propósito: transformar uma troca em possibilidade.
+O **azul profundo** oferece estabilidade e dá base para a leitura. Os tons de **rosa e coral** trazem calor, presença e movimento. O **roxo** marca momentos de ação e descoberta. O **rosa-claro** cria áreas acolhedoras e destaca o símbolo em fundos escuros.
 
-A interface combina áreas claras e cores marcantes para manter uma leitura confortável em celulares e computadores. O tom geral é próximo, otimista e respeitoso.
+As cores mais intensas devem chamar atenção para uma ação ou um momento importante; áreas neutras e claras ajudam a manter o conteúdo confortável de ler. A composição busca equilíbrio entre energia visual e confiança.
 
-## Referência
+## Aplicação na experiência
 
-O kit recebido continha o símbolo em variações de cor e faixas de paleta, sem arquivos vetoriais ou especificações adicionais. A aplicação digital foi construída a partir dessa referência visual.
+A marca deve funcionar em telas pequenas e grandes, em áreas claras e escuras, sem competir com o conteúdo das participantes. O símbolo pode aparecer sozinho quando o contexto já identifica o produto; em apresentações institucionais, o nome Entre Elas acompanha a marca para deixar a iniciativa imediatamente reconhecível.
+
+A escrita segue o mesmo tom: frases próximas e claras, sem tratar a IA como autoridade e sem transformar a experiência de uma participante em uma classificação. O convite é para descobrir, conversar e compartilhar no próprio ritmo.
+
+## Base de referência
+
+O material recebido não incluía arquivo vetorial original, tipografia oficial ou especificações de aplicação. A versão digital foi interpretada a partir da imagem do kit. Por isso, o símbolo e a paleta traduzem a referência recebida para o produto, sem pretender substituir um manual completo de marca.

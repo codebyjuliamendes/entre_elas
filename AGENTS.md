@@ -24,7 +24,7 @@ Atualização autorizada pela usuária em 15/10/2026: implementar o MVP visual m
   Implemente apenas regras de **domínio** (ex.: "só a convidada pode aceitar uma Faísca").
 - Toda função pública de domínio recebe e devolve dados validados por **Zod**. Esses schemas são o contrato
   que o front vai consumir, seja qual for o desenho final.
-- Registre em `docs/decisoes.md` decisões que mudem a proposta ou a experiência do produto.
+- Registre em `docs/principios.md` decisões que mudem a proposta ou a experiência do produto.
 
 ## 3. Stack
 
@@ -65,7 +65,7 @@ supabase/
 scripts/           # seed, pré-processamento de saberes, avaliação da IA
 tests/
 docs/
-  decisoes.md
+  principios.md
 ```
 
 Server Actions devem ser finas e chamar `lib/domain` no backend real ou os contratos e funções de apresentação em `lib/demo`, via adaptador `lib/ai/pitch.ts`.
@@ -171,7 +171,7 @@ funções do domínio e da IA. Ela só aparece quando `DEMO_MODE=true` e não de
 - Funções de domínio puras sempre que possível; acesso a banco e APIs fica nas camadas `db/` e `integrations/`.
 - Erros tipados (`ErroDominio`, `ErroIntegracao`, `ErroIA`) com mensagens em português.
 - Datas sempre em UTC no banco.
-- Atualize `docs/decisoes.md` quando uma mudança alterar princípios ou decisões de produto.
+- Atualize `docs/principios.md` quando uma mudança alterar princípios ou decisões de produto.
 
 ## 11. Definição de pronto
 

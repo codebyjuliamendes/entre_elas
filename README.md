@@ -12,6 +12,12 @@ Nas organizações, experiências valiosas nem sempre chegam a quem precisa dela
 
 O Entre Elas transforma essa busca em uma rede de troca: cada pessoa compartilha o que sabe, indica o que quer aprender e encontra conexões relevantes para conversar.
 
+## A proposta de valor
+
+- **Para quem busca aprender:** um caminho para encontrar alguém com experiência relacionada e iniciar uma conversa com propósito.
+- **Para quem compartilha:** reconhecimento por conhecimentos construídos em diferentes momentos da trajetória.
+- **Para a comunidade:** aprendizados que, com autorização, podem beneficiar outras pessoas além da conversa original.
+
 ## Como funciona
 
 1. **Monte seu perfil:** conte suas experiências, conhecimentos e objetivos.
@@ -26,6 +32,8 @@ A Faísca é o encontro entre duas pessoas com algo significativo para trocar. A
 
 A IA é uma facilitadora: as pessoas escolhem se querem usá-la, revisam o que será compartilhado e mantêm uma alternativa manual. A publicação de um aprendizado exige autorização de ambas as participantes.
 
+O produto não trata uma recomendação como resposta definitiva. A conexão é um convite para as pessoas avaliarem se a conversa faz sentido para elas.
+
 ## O MVP reúne
 
 - Perfis com foto, conhecimentos e objetivos de aprendizagem.
@@ -36,6 +44,10 @@ A IA é uma facilitadora: as pessoas escolhem se querem usá-la, revisam o que s
 - Registro de aprendizados e publicação consentida de dicas.
 - Agenda, comunidades e painel de indicadores da rede.
 - Interface adaptada a celulares e computadores.
+
+## O que queremos validar
+
+O MVP investiga se uma participante consegue encontrar uma conexão relevante, iniciar uma conversa proveitosa e reconhecer o que aprendeu com a outra pessoa. O piloto observa clareza, confiança, qualidade das trocas e vontade de voltar. São perguntas de avaliação, não resultados presumidos.
 
 ## Princípios do produto
 
@@ -50,7 +62,7 @@ A IA é uma facilitadora: as pessoas escolhem se querem usá-la, revisam o que s
 - [Visão do MVP](docs/mvp.md)
 - [Piloto de avaliação](docs/piloto-banca.md)
 - [Identidade visual](docs/identidade-visual.md)
-- [Princípios do produto](docs/decisoes.md)
+- [Princípios do produto](docs/principios.md)
 
 ---
 
