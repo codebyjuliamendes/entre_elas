@@ -9,3 +9,4 @@ supabase/.branches/
 .local/
 playwright-report/
 test-results/
+.vercel

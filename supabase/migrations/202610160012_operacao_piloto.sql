@@ -1,5 +1,5 @@
 -- Indexação completa ou nenhuma alteração, com proteção contra edição concorrente.
-create function piloto_indexar_perfil(usuaria_id uuid, perfil_lido jsonb, saberes_input jsonb)
+create or replace function piloto_indexar_perfil(usuaria_id uuid, perfil_lido jsonb, saberes_input jsonb)
 returns jsonb language plpgsql set search_path=public as $$
 declare p profiles; item jsonb; esperados text[]; recebidos text[];
 begin
