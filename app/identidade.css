@@ -381,3 +381,155 @@ body {
   background: var(--brand-azul);
   color: white;
 }
+
+/* A interface usa espaço e superfícies leves para organizar o conteúdo. */
+.pilot-app > header {
+  border-bottom: 0;
+}
+.pilot-app nav {
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 999px;
+  background: #f8edf3;
+}
+.pilot-app nav button {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+}
+.pilot-app nav button[aria-current] {
+  background: var(--brand-azul);
+  color: white;
+}
+.pilot-app .pilot-card {
+  border: 0;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: none;
+}
+.pilot-app .pilot-card .pilot-card {
+  margin: 0;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid #f3eaf0;
+  border-radius: 0;
+  background: transparent;
+}
+.pilot-app .pilot-card .pilot-card:last-child {
+  border-bottom: 0;
+}
+.pilot-app .pilot-attention {
+  border: 0;
+  background: linear-gradient(125deg, #fff0f7, #fff5f1);
+}
+.pilot-app .pilot-attention-item {
+  border: 0;
+  border-radius: 16px;
+  background: #ffffffb8;
+  transition: background-color 160ms ease;
+}
+.pilot-app .pilot-attention-item:hover {
+  border-color: transparent;
+  background: white;
+}
+.pilot-app button:not(.pilot-button) {
+  border-color: transparent;
+  background: #f8f1f5;
+}
+.pilot-app nav button:not([aria-current]) {
+  background: transparent;
+}
+.pilot-app nav button[aria-current] {
+  background: var(--brand-azul);
+}
+.pilot-welcome {
+  border: 0;
+  border-radius: 22px;
+  box-shadow: 0 16px 48px #100c4d08;
+}
+.pilot-login.brand-login {
+  border: 0;
+  box-shadow: 0 16px 56px #100c4d0a;
+}
+.login-modos {
+  border: 0;
+  border-radius: 999px;
+  background: #f8edf3;
+}
+.login-modos > button {
+  border: 0;
+  border-radius: 999px;
+}
+.login-content > .login-signature {
+  border-top: 0;
+  padding-top: 0;
+}
+.pilot-app input:not([type="checkbox"]),
+.pilot-app select,
+.pilot-app textarea,
+.pilot-welcome input:not([type="checkbox"]),
+.pilot-welcome textarea,
+.pilot-login input {
+  border-color: #e8dfe5;
+  border-radius: 10px;
+}
+
+/* A apresentação deixa os cartões falarem por contraste e ritmo, não por contorno. */
+.app-frame {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.app-frame .app-header {
+  border-bottom: 0;
+}
+.app-frame :is(
+    .card,
+    .how-item,
+    .home-insights > div,
+    .network-person,
+    .network-card,
+    .library-promo,
+    .network-promo,
+    .expert-card,
+    .knowledge-card,
+    .settings-card,
+    .profile-goals,
+    .curadoria-explanation,
+    .match-card,
+    .learning-card,
+    .article-card,
+    .quiz-card,
+    .consent-card,
+    .recognized-card,
+    .notice-card,
+    .resume-card,
+    .event-card,
+    .community-card,
+    .session-summary,
+    .agenda-question,
+    .calendar-day
+  ) {
+  border-color: transparent !important;
+  box-shadow: none;
+}
+.workspace-sidebar {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+.bottom-nav {
+  border-top: 0;
+  box-shadow: 0 -5px 24px #48326508;
+}
+
+@media (max-width: 600px) {
+  .pilot-app nav {
+    width: 100%;
+    border-radius: 18px;
+  }
+  .pilot-app nav button {
+    border-radius: 14px;
+  }
+}
