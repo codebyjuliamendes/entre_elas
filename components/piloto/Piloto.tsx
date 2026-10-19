@@ -1005,8 +1005,7 @@ export function Piloto({
                     ))}
                   <p className="input-hint">
                     Saberes reconhecidos só ficam públicos após sua confirmação.
-                    As mensagens do chat ficam no Stream e não alimentam esse
-                    mapa.
+                    As mensagens do chat não alimentam esse mapa.
                   </p>
                 </section>
               </>

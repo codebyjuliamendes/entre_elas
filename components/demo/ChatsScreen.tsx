@@ -220,7 +220,7 @@ export function ChatsScreen({ com }: { com?: string }) {
         <MessageCircle size={17} />
         <span>
           Conversas de demonstração, com respostas fictícias. No fluxo real, o
-          chat fica no Stream e não alimenta o mapa de saberes.
+          chat não alimenta o mapa de saberes.
         </span>
       </div>
     </>
