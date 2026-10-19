@@ -85,11 +85,25 @@ export async function POST(request: Request) {
         shouldCreateUser: modo === "cadastrar",
       },
     });
-    if (erro)
+    if (erro) {
+      const code = (erro as { code?: string }).code;
+      if (erro.status === 429 || code === "over_email_send_rate_limit") {
+        throw new ErroDominio(
+          "O link já foi enviado para seu e-mail! Por favor verifique sua caixa de entrada e spam. Aguarde 60 segundos antes de pedir outro.",
+          429,
+        );
+      }
+      if (modo === "entrar") {
+        throw new ErroDominio(
+          "Não encontramos uma conta ativa com este e-mail. Se for seu primeiro acesso, clique na aba 'Criar conta'.",
+          404,
+        );
+      }
       throw new ErroDominio(
-        "Não foi possível enviar o link. Se este é seu primeiro acesso, escolha Criar conta. Se já tem conta, confira o e-mail ou tente novamente mais tarde.",
+        "Não foi possível enviar o link. Se já possui conta, escolha a aba 'Já tenho conta' ou tente novamente mais tarde.",
         503,
       );
+    }
     return { ok: true };
   });
 }
