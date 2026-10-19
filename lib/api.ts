@@ -13,7 +13,7 @@ export async function resposta(acao: () => Promise<unknown>) {
     if (error instanceof z.ZodError)
       return NextResponse.json(
         {
-          erro: "Dados inválidos.",
+          erro: error.issues[0]?.message || "Dados inválidos.",
           detalhes: error.issues.map((i) => ({
             campo: i.path.join("."),
             mensagem: i.message,
