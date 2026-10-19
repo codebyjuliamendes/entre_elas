@@ -463,3 +463,207 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* Etiquetas: texto de categoria, sem cápsula nem caixa alta. */
+.tag {
+  background: transparent;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--brand-roxo);
+}
+
+/* Agenda: dias como texto, data do encontro como número tipográfico. */
+.calendar-day {
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 2px solid transparent !important;
+}
+.calendar-day.active {
+  background: transparent;
+  color: var(--brand-azul);
+  border-bottom-color: var(--brand-azul) !important;
+}
+.calendar-day.active strong {
+  color: var(--brand-azul);
+}
+.event-date {
+  background: transparent !important;
+  border-radius: 0;
+  color: var(--brand-azul);
+}
+.event-date strong {
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--brand-azul);
+}
+.event-date small {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.event-body .button {
+  height: auto;
+  min-height: 0;
+  padding: 6px 0;
+  background: transparent;
+  border: 0;
+  color: var(--brand-roxo);
+  font-size: 14px;
+}
+
+/* Configurações: blocos abertos, sem ícones em caixinhas. */
+.settings-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 24px 0;
+}
+.settings-card > .icon-tile {
+  display: none;
+}
+.privacy-note {
+  background: transparent;
+  border-radius: 0;
+  border-left: 3px solid var(--brand-coral);
+  padding: 4px 0 4px 16px;
+}
+.event-body .button,
+.event-body .button-outline {
+  border: 0 !important;
+}
+
+/* Jornada da Faísca: conteúdo aberto, evidência como citação e sem caixas lilás. */
+.match-card,
+.article-card,
+.quiz-card,
+.consent-card,
+.learning-card {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+.match-card .pill {
+  background: transparent;
+  color: var(--brand-roxo);
+  font-size: 13px;
+  font-weight: 600;
+}
+.evidence {
+  background: transparent;
+  border: 0;
+  border-left: 3px solid var(--brand-coral);
+  border-radius: 0;
+  padding: 2px 0 2px 18px;
+}
+.evidence p {
+  font-family: var(--font-titulo);
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.curadoria-explanation,
+.article-card details,
+.faisca-plan {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-bottom: 1px solid var(--linha);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.session-summary {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.agenda-question {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  border-radius: 0;
+  padding: 16px 0;
+}
+.success-icon {
+  background: transparent;
+  width: auto;
+  height: auto;
+  justify-content: flex-start;
+  color: var(--brand-coral);
+}
+.quiz-option {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--linha);
+  border-radius: 0;
+  padding-left: 0;
+}
+.quiz-option.selected {
+  background: transparent;
+  color: var(--brand-azul);
+  font-weight: 700;
+}
+.quiz-option.selected span:first-child {
+  background: var(--brand-azul);
+  color: white;
+}
+.consent-card {
+  border-top: 1px solid var(--linha);
+}
+
+/* Chamada simulada: azul chapado da marca. */
+.call-room {
+  background: var(--brand-azul);
+  border-radius: 16px;
+}
+.call-person {
+  background: #1d1760;
+}
+
+/* Piloto: coluna de leitura confortável e lista de Faíscas sem caixas. */
+.pilot-app > main {
+  max-width: 880px;
+}
+.pilot-app button.pilot-encounter {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--linha);
+  border-radius: 0;
+  padding: 16px 0;
+  margin: 0;
+}
+.pilot-app button.pilot-encounter:hover {
+  background: transparent;
+}
+.pilot-app button.pilot-encounter strong {
+  font-family: var(--font-titulo);
+  font-weight: 500;
+  font-size: 19px;
+}
+.pilot-welcome {
+  box-shadow: none;
+}
+@media (max-width: 600px) {
+  .pilot-grid:has(> .pilot-metrica) {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+  }
+  .pilot-metrica {
+    padding: 16px 0;
+  }
+  .pilot-metrica strong {
+    font-size: 34px;
+  }
+}
