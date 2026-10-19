@@ -278,11 +278,17 @@ export function criarSimulador(
     "/api/faiscas/cancelar": (c) => {
       const f = faisca(c);
       f.status = "cancelada";
+      // Como no piloto, a sala de vídeo fecha junto com a Faísca.
+      f.daily_room_url = null;
       recalcularDisponibilidade(estado);
       return f;
     },
     "/api/faiscas/reprocessar": (c) => faisca(c),
-    "/api/faiscas/fechar-video": (c) => faisca(c),
+    "/api/faiscas/fechar-video": (c) => {
+      const f = faisca(c);
+      f.daily_room_url = null;
+      return f;
+    },
     "/api/faiscas/video": () => {
       throw new ErroDemonstracao(
         "Na demonstração a videochamada não abre. No piloto, a sala privada abre aqui só para as duas participantes.",
@@ -307,6 +313,7 @@ export function criarSimulador(
           "Registre suas anotações antes de pedir a síntese.",
         );
       f.status = "realizada";
+      f.daily_room_url = null;
       f.resumo = resumir(f);
       return f;
     },
@@ -315,6 +322,7 @@ export function criarSimulador(
       if (f.status !== "aceita")
         throw new ErroDemonstracao("A Faísca precisa estar combinada.");
       f.status = "realizada";
+      f.daily_room_url = null;
       f.resumo = resumir(f, texto(c, "texto", 5));
       return f;
     },
