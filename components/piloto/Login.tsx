@@ -247,6 +247,9 @@ export function Login() {
             Ver a jornada guiada da apresentação →
           </a>
         )}
+        <a className="login-demo" href="/empresas">
+          É de RH ou liderança? Conheça a Tecida para empresas →
+        </a>
         <p className="login-signature">
           Uma Faísca. Vinte minutos. Novas possibilidades.
         </p>
