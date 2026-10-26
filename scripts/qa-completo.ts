@@ -2,10 +2,19 @@
  * QA Completo Automatizado - Tecida
  * Executa testes end-to-end de conformidade, segurança, fluxos de usuário e integrações
  * diretamente contra a implantação em produção (ou ambiente configurado).
+ *
+ * Variáveis de ambiente:
+ * - QA_BASE_URL: endereço alvo (padrão: implantação na Vercel).
+ * - QA_EMAIL: e-mail de uma conta de teste já cadastrada no piloto.
+ * - QA_SENHA: senha dessa conta de teste.
+ * Sem QA_EMAIL e QA_SENHA, o login com conta existente é pulado.
+ * Nunca escreva credenciais reais neste arquivo.
  */
 
 import type { DadosPiloto } from "@/lib/piloto/dados";
 const BASE_URL = process.env.QA_BASE_URL || "https://entre-elas-omega.vercel.app";
+const QA_EMAIL = process.env.QA_EMAIL;
+const QA_SENHA = process.env.QA_SENHA;
 
 interface TestResult {
   suite: string;
@@ -205,7 +214,7 @@ async function main() {
 
   await runTest("Auth & Segurança", "Rejeita senha incorreta no login com erro 401", async () => {
     const res = await request("/api/auth/entrar", {
-      body: { modo: "entrar", email: "valentimleticia812@gmail.com", senha: "SenhaTotalmenteErrada123!" },
+      body: { modo: "entrar", email: QA_EMAIL ?? "qa.inexistente@exemplo.com", senha: "SenhaTotalmenteErrada123!" },
     });
     assert(res.status === 401, `Esperado 401 para credenciais inválidas, recebido ${res.status}`);
     const data = await json(res);
@@ -219,16 +228,23 @@ async function main() {
 
   const jarLeticia = new CookieJar();
 
-  await runTest("Sessão Letícia", "Login com credenciais oficiais (valentimleticia812@gmail.com)", async () => {
-    const res = await request("/api/auth/entrar", {
-      body: { modo: "entrar", email: "valentimleticia812@gmail.com", senha: "EntreElas2026!" },
-      jar: jarLeticia,
+  if (QA_EMAIL && QA_SENHA) {
+    await runTest("Sessão Letícia", "Login com a conta de teste definida em QA_EMAIL", async () => {
+      const res = await request("/api/auth/entrar", {
+        body: { modo: "entrar", email: QA_EMAIL, senha: QA_SENHA },
+        jar: jarLeticia,
+      });
+      assert(res.status === 200, `Esperado 200, recebido ${res.status}`);
+      const data = await json(res);
+      assert(data.ok === true, "data.ok não é true");
+      assert(jarLeticia.get("entre_elas_access"), "Cookie de sessão 'entre_elas_access' não foi emitido");
     });
-    assert(res.status === 200, `Esperado 200, recebido ${res.status}`);
-    const data = await json(res);
-    assert(data.ok === true, "data.ok não é true");
-    assert(jarLeticia.get("entre_elas_access"), "Cookie de sessão 'entre_elas_access' não foi emitido");
-  });
+  } else {
+    console.log(
+      "  ⚠ Login com conta existente pulado: defina QA_EMAIL e QA_SENHA para executá-lo. " +
+        "Os testes que dependem dessa sessão vão falhar com 401."
+    );
+  }
 
   await runTest("Dados do Piloto", "Consulta /api/piloto retorna estado completo do perfil", async () => {
     const res = await request("/api/piloto", { jar: jarLeticia });
