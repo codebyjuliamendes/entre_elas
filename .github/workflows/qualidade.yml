@@ -1,4 +1,4 @@
-name: Qualidade do Entre Elas
+name: Qualidade da Tecida
 on:
   push:
     branches: [main]

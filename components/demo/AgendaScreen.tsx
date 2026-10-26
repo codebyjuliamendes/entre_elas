@@ -301,7 +301,7 @@ export function AgendaScreen({ hoje }: { hoje: string }) {
                   style={{ marginTop: 15 }}
                   onClick={() => {
                     baixarArquivo(
-                      "entre-elas-encontro.ics",
+                      "tecida-encontro.ics",
                       criarIcs({
                         id: detalhe.id,
                         titulo: detalhe.titulo,

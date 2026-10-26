@@ -1,5 +1,5 @@
 import { SettingsScreen } from "@/components/demo/SettingsScreen";
-export const metadata = { title: "Seu espaço · Entre Elas" };
+export const metadata = { title: "Seu espaço · Tecida" };
 export default function Configuracoes() {
   return <SettingsScreen />;
 }

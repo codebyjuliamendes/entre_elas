@@ -10,6 +10,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { toast } from "sonner";
+import { nomesBackupAceitos } from "@/lib/identidade";
 import {
   exportarBackup,
   importarBackup,
@@ -70,7 +71,7 @@ export function SettingsScreen() {
             variant="secondary"
             onClick={() => {
               baixarArquivo(
-                "entre-elas-backup.json",
+                "tecida-backup.json",
                 exportarBackup(),
                 "application/json",
               );
@@ -89,7 +90,7 @@ export function SettingsScreen() {
           </span>
           <h2>Continue de onde parou</h2>
           <p>
-            Importe um backup do Entre Elas. Você poderá confirmar antes de
+            Importe um backup da Tecida. Você poderá confirmar antes de
             substituir os dados atuais. Arquivos de até 10 MB.
           </p>
           <input
@@ -106,12 +107,12 @@ export function SettingsScreen() {
                   throw new Error("O arquivo deve ter até 10 MB.");
                 const texto = await f.text();
                 const dados = JSON.parse(texto);
-                if (dados.aplicativo !== "Entre Elas" || !dados.dados)
-                  throw new Error("Escolha um backup válido do Entre Elas.");
+                if (!(nomesBackupAceitos as readonly unknown[]).includes(dados.aplicativo) || !dados.dados)
+                  throw new Error("Escolha um backup válido da Tecida.");
                 setBackup(texto);
               } catch {
                 toast.error(
-                  "Não conseguimos ler esse backup. Use um arquivo JSON do Entre Elas de até 10 MB.",
+                  "Não conseguimos ler esse backup. Use um arquivo JSON da Tecida de até 10 MB.",
                 );
               } finally {
                 e.target.value = "";
@@ -127,7 +128,7 @@ export function SettingsScreen() {
           <span className="icon-tile peach">
             <Smartphone size={23} />
           </span>
-          <h2>Entre Elas sempre por perto</h2>
+          <h2>A Tecida sempre por perto</h2>
           <p>
             Em um navegador compatível, use “Instalar aplicativo” ou “Adicionar
             à tela de início”. A instalação depende do navegador e de uma

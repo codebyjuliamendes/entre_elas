@@ -1,0 +1,253 @@
+/* Landing page para empresas. Usa os tokens da marca definidos em globals.css. */
+.lp {
+  --lp-texto: #2b2540;
+  --lp-suave: #68627a;
+  --lp-fundo: #fffafc;
+  --lp-cartao: #ffffff;
+  --lp-borda: #f1dbe8;
+  min-height: 100vh;
+  background: var(--lp-fundo);
+  color: var(--lp-texto);
+  font-family: var(--font-texto);
+  padding: 0 16px;
+}
+.lp > * {
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.lp h1,
+.lp h2 {
+  font-family: var(--font-titulo);
+  color: var(--brand-azul);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.lp h2 {
+  font-size: clamp(26px, 4vw, 36px);
+  margin: 0 0 20px;
+}
+.lp h3 {
+  font-size: 17px;
+  margin: 0 0 6px;
+  color: var(--brand-azul);
+}
+.lp p {
+  line-height: 1.6;
+}
+.lp-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+.lp-topo nav {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  font-size: 15px;
+}
+.lp-topo nav a {
+  color: var(--brand-azul);
+  text-decoration: none;
+}
+.lp-entrar {
+  border: 1px solid var(--brand-roxo);
+  border-radius: 999px;
+  padding: 7px 16px;
+}
+.lp-hero {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+  padding: 28px 0 56px;
+}
+.lp-hero h1 {
+  font-size: clamp(36px, 6vw, 60px);
+  margin: 16px 0;
+}
+.lp-hero h1 em {
+  font-style: italic;
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lp-hero p {
+  font-size: 18px;
+  color: var(--lp-suave);
+  max-width: 34em;
+}
+.lp-selo {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-roxo);
+  background: var(--brand-rosa-claro);
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+.lp-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.lp-botao {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: var(--brand-gradient);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+.lp-botao-sec {
+  background: transparent;
+  color: var(--brand-azul);
+  border: 1.5px solid var(--brand-azul);
+}
+.lp-botao:focus-visible,
+.lp-topo a:focus-visible {
+  outline: 3px solid var(--brand-rosa);
+  outline-offset: 3px;
+}
+.lp-celular {
+  margin: 0 auto;
+  width: min(280px, 72vw);
+}
+.lp-celular img {
+  width: 100%;
+  height: auto;
+  border-radius: 28px;
+  border: 6px solid var(--brand-azul);
+  box-shadow: 0 24px 60px #93278f2e;
+}
+.lp-celular figcaption {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--lp-suave);
+}
+.lp-secao {
+  padding: 48px 0;
+  border-top: 1px solid var(--lp-borda);
+}
+.lp-cartoes {
+  display: grid;
+  gap: 16px;
+}
+.lp-cartoes article {
+  background: var(--lp-cartao);
+  border: 1px solid var(--lp-borda);
+  border-radius: 18px;
+  padding: 20px;
+}
+.lp-cartoes p,
+.lp-passos p {
+  margin: 0;
+  color: var(--lp-suave);
+}
+.lp-passos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 20px;
+}
+.lp-passos li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.lp-passo-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: var(--brand-rosa-claro);
+  color: var(--brand-roxo);
+}
+.lp-duas {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+}
+.lp-rotulo {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-roxo);
+  margin-bottom: 10px;
+}
+.lp-lista {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 10px;
+  line-height: 1.5;
+}
+.lp-lista li::marker {
+  color: var(--brand-coral);
+}
+.lp-oferta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--brand-azul);
+  color: #fff;
+  border-radius: 28px;
+  padding: 40px 20px;
+  margin-block: 24px 40px;
+}
+.lp .lp-oferta h2 {
+  color: #fff;
+  margin-top: 12px;
+}
+.lp-oferta p {
+  max-width: 34em;
+  margin: 0 auto;
+  color: var(--brand-rosa-claro);
+}
+.lp-oferta .lp-acoes {
+  justify-content: center;
+}
+.lp-oferta .lp-botao-sec {
+  color: #fff;
+  border-color: #fff;
+}
+.lp-rodape {
+  padding: 8px 0 40px;
+  font-size: 13px;
+  color: var(--lp-suave);
+}
+.lp-rodape p {
+  margin: 4px 0;
+}
+@media (min-width: 820px) {
+  .lp-hero,
+  .lp-duas {
+    grid-template-columns: 1.3fr 1fr;
+  }
+  .lp-invertida {
+    grid-template-columns: 1fr 1.3fr;
+  }
+  .lp-cartoes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .lp-passos {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 40px;
+  }
+}
+@media (max-width: 819px) {
+  .lp-invertida figure {
+    order: 2;
+  }
+}

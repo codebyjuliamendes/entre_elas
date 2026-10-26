@@ -127,7 +127,7 @@ export function Piloto({
   if (!dados)
     return (
       <main className="pilot-login">
-        <h1>Seu espaço Entre Elas</h1>
+        <h1>Seu espaço na Tecida</h1>
         <p
           role={erro ? "alert" : "status"}
           className={erro ? "aviso aviso-erro" : undefined}
@@ -1016,8 +1016,8 @@ export function Piloto({
       </main>
       <footer>
         {demonstracao
-          ? "Entre Elas · demonstração com pessoas e conversas fictícias · recarregue para recomeçar"
-          : "Entre Elas · atualizações a cada quinze segundos · sua conta, suas escolhas"}
+          ? "Tecida · demonstração com pessoas e conversas fictícias · recarregue para recomeçar"
+          : "Tecida · atualizações a cada quinze segundos · sua conta, suas escolhas"}
       </footer>
     </div>
   );

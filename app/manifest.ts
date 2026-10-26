@@ -2,8 +2,8 @@ import { coresMarca } from "@/lib/identidade";
 import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Entre Elas",
-    short_name: "Entre Elas",
+    name: "Tecida",
+    short_name: "Tecida",
     description:
       "Saber que conecta. Uma rede de mulheres que compartilham experiências.",
     start_url: "/",

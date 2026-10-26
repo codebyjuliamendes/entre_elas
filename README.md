@@ -1,19 +1,21 @@
-# Entre Elas
+# Tecida
 
-### O conhecimento das mulheres da Equatorial, visível e em circulação.
+### O conhecimento das mulheres da empresa, visível e em circulação.
 
-Entre Elas conecta quem quer aprender com quem já viveu aquilo, por meio de uma conversa curta e com propósito: a **Faísca**. Cada Faísca deixa um saber reconhecido e, com autorização das duas participantes, uma dica para toda a rede. Assim a empresa passa a enxergar um mapa vivo de quem sabe o quê.
+> Nasceu como **Entre Elas** no Hackathon Equatorial (EQT Lab), onde ficou em 3º lugar no Desafio 5. Agora é um produto próprio da equipe, pensado para empresas médias e grandes.
 
-[**Acessar o piloto**](https://entre-elas-omega.vercel.app/entrar) · [Explorar sem cadastro](https://entre-elas-omega.vercel.app/demonstracao) · [Roteiro da demonstração](docs/roteiro-demo.md) · [Roteiro do pitch](docs/roteiro-pitch.md) · [Caminho para produção](docs/caminho-producao.md)
+A Tecida conecta quem quer aprender com quem já viveu aquilo, por meio de uma conversa curta e com propósito: a **Faísca**. Cada Faísca deixa um saber reconhecido e, com autorização das duas participantes, uma dica para toda a rede. Assim a empresa passa a enxergar um mapa vivo de quem sabe o quê.
+
+[**Acessar o piloto**](https://entre-elas-omega.vercel.app/entrar) · [Explorar sem cadastro](https://entre-elas-omega.vercel.app/demonstracao) · [Roteiro da demonstração](docs/roteiro-demo.md) · [Roteiro do pitch](docs/roteiro-pitch.md) · [Caminho para produção](docs/caminho-producao.md) · [Materiais da startup](docs/startup/README.md)
 
 <p>
-  <img src="docs/img/inicio-desktop.png" alt="Tela inicial do Entre Elas com a pergunta 'O que você quer aprender hoje?'" width="68%">
+  <img src="docs/img/inicio-desktop.png" alt="Tela inicial da Tecida com a pergunta 'O que você quer aprender hoje?'" width="68%">
   <img src="docs/img/inicio-celular.png" alt="Tela inicial no celular" width="28%">
 </p>
 
 ## O problema
 
-Em uma empresa distribuída por vários estados, como a Equatorial, a experiência que resolveria o desafio de uma colaboradora muitas vezes está com outra, em outra regional ou em outra área. As duas não se conhecem e não sabem que poderiam se ajudar.
+Em uma empresa distribuída por vários estados, a experiência que resolveria o desafio de uma colaboradora muitas vezes está com outra, em outra regional ou em outra área. As duas não se conhecem e não sabem que poderiam se ajudar.
 
 O custo aparece de várias formas:
 
@@ -43,7 +45,7 @@ O que a torna diferente de uma rede social interna:
 
 <img src="docs/img/rede-desktop.png" alt="Diretório da rede com pessoas, saberes e evidências" width="100%">
 
-## Valor para a Equatorial
+## Valor para a empresa
 
 O painel de liderança, restrito e sempre com dados agregados, responde perguntas que hoje não têm resposta:
 
@@ -60,7 +62,7 @@ Esses dados indicam onde investir em formação, quem convidar para ensinar e qu
 
 ## Piloto real com a banca (18 a 23 de outubro de 2026)
 
-Em vez de só uma demonstração, o Entre Elas está em uso real: cadastro aberto, login verificado, convites, chat, vídeo e registro de aprendizados entre as participantes. Os números abaixo vêm do painel de liderança, que exclui dados de teste e de demonstração.
+Em vez de só uma demonstração, a Tecida está em uso real: cadastro aberto, login verificado, convites, chat, vídeo e registro de aprendizados entre as participantes. Os números abaixo vêm do painel de liderança, que exclui dados de teste e de demonstração.
 
 <!-- Atualizar com o botão "Copiar resumo para a apresentação" do painel de liderança. -->
 | Indicador | Resultado |
@@ -103,4 +105,4 @@ Next.js 16 e React 19 (TypeScript estrito), Supabase (Postgres, pgvector, autent
 
 ---
 
-**Entre Elas: uma Faísca pode transformar experiência em oportunidade.**
+**Tecida: uma Faísca pode transformar experiência em oportunidade.**

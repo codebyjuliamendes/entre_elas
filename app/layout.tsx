@@ -11,15 +11,15 @@ import "./editorial.css";
 import "./piloto.css";
 import { PwaRegistration } from "@/components/PwaRegistration";
 export const metadata: Metadata = {
-  title: "Entre Elas · Saber que conecta",
+  title: "Tecida · Saber que conecta",
   description:
     "Uma conversa pode abrir novos caminhos. Conecte experiências e compartilhe saberes entre mulheres.",
-  applicationName: "Entre Elas",
+  applicationName: "Tecida",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Entre Elas",
+    title: "Tecida",
   },
   icons: { icon: "/icon.svg", apple: "/icon-192.png" },
 };

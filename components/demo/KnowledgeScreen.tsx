@@ -48,7 +48,7 @@ export function KnowledgeScreen() {
       if (navigator.share)
         await navigator.share({
           title: titulo,
-          text: `${titulo} · Entre Elas`,
+          text: `${titulo} · Tecida`,
           url,
         });
       else {

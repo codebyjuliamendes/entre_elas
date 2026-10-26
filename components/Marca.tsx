@@ -39,7 +39,7 @@ export function Marca({ className = "" }: { className?: string }) {
     <span className={`marca ${className}`}>
       <SimboloFaisca />
       <span className="marca-nome">
-        entre<span>elas</span>
+        tecida
         <b aria-hidden="true">.</b>
       </span>
     </span>

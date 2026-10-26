@@ -1,5 +1,5 @@
 /**
- * QA Completo Automatizado - Entre Elas
+ * QA Completo Automatizado - Tecida
  * Executa testes end-to-end de conformidade, segurança, fluxos de usuário e integrações
  * diretamente contra a implantação em produção (ou ambiente configurado).
  */
@@ -124,7 +124,7 @@ async function json(res: Response) {
 
 async function main() {
   console.log(`\n======================================================`);
-  console.log(`🔍 INICIANDO SUÍTE DE QA COMPLETA - ENTRE ELAS`);
+  console.log(`🔍 INICIANDO SUÍTE DE QA COMPLETA - TECIDA`);
   console.log(`🌐 Alvo: ${BASE_URL}`);
   console.log(`⏰ Data/Hora: ${new Date().toISOString()}`);
   console.log(`======================================================\n`);
@@ -143,7 +143,7 @@ async function main() {
     } else {
       assert(res.status === 200, `Esperado 200 ou 307, recebido ${res.status}`);
       const html = await res.text();
-      assert(html.includes("Entre Elas"), "Título ou marca ausente no HTML");
+      assert(html.includes("Tecida"), "Título ou marca ausente no HTML");
     }
   });
 
@@ -151,7 +151,7 @@ async function main() {
     const res = await request("/entrar");
     assert(res.status === 200, `Esperado 200, recebido ${res.status}`);
     const html = await res.text();
-    assert(html.includes("Entre Elas"), "Metadados de marca não encontrados no HTML da página de entrar");
+    assert(html.includes("Tecida"), "Metadados de marca não encontrados no HTML da página de entrar");
     assert(html.includes("viewport"), "Meta viewport ausente");
   });
 

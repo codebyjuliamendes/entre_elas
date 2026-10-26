@@ -1,10 +1,10 @@
-# AGENTS.md — Entre Elas (back-end)
+# AGENTS.md — Tecida (back-end)
 
 > Leia este arquivo inteiro antes de qualquer tarefa. Ele vale para todo o repositório.
 
 ## 1. O produto
 
-Entre Elas é um app web instalável (PWA) que conecta mulheres da Equatorial por interesses,
+Tecida (antes Entre Elas, nome do hackathon) é um app web instalável (PWA) que conecta mulheres de uma empresa por interesses,
 competências e objetivos. Uma **IA curadora** aprende, a partir do perfil e das trocas
 (fórum, dicas, Faíscas), quem sabe o quê, e conecta quem quer aprender com quem já viveu aquilo.
 
