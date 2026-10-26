@@ -1134,3 +1134,6 @@ body:has(.pilot-app) {
   margin: 6px 0 10px;
   max-width: 220px;
 }
+.pilot-login .input-hint a {
+  color: var(--brand-roxo);
+}
