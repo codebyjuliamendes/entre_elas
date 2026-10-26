@@ -6,7 +6,7 @@
 
 A Tecida conecta quem quer aprender com quem já viveu aquilo, por meio de uma conversa curta e com propósito: a **Faísca**. Cada Faísca deixa um saber reconhecido e, com autorização das duas participantes, uma dica para toda a rede. Assim a empresa passa a enxergar um mapa vivo de quem sabe o quê.
 
-[**Acessar o piloto**](https://entre-elas-omega.vercel.app/entrar) · [Explorar sem cadastro](https://entre-elas-omega.vercel.app/demonstracao) · [Roteiro da demonstração](docs/roteiro-demo.md) · [Roteiro do pitch](docs/roteiro-pitch.md) · [Caminho para produção](docs/caminho-producao.md)
+[**Acessar o piloto**](https://entre-elas-omega.vercel.app/entrar) · [Explorar sem cadastro](https://entre-elas-omega.vercel.app/demonstracao) · [Roteiro da demonstração](docs/roteiro-demo.md) · [Roteiro do pitch](docs/roteiro-pitch.md) · [Caminho para produção](docs/caminho-producao.md) · [Materiais da startup](docs/startup/README.md)
 
 <p>
   <img src="docs/img/inicio-desktop.png" alt="Tela inicial da Tecida com a pergunta 'O que você quer aprender hoje?'" width="68%">
