@@ -1073,6 +1073,7 @@ export type Database = {
         Args: { chave: string; dados: Json; usuaria_id: string }
         Returns: Json
       }
+      piloto_excluir_conta: { Args: { usuaria_id: string }; Returns: Json }
       piloto_indexar_perfil: {
         Args: { perfil_lido: Json; saberes_input: Json; usuaria_id: string }
         Returns: Json

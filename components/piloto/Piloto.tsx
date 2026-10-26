@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { CircleHelp } from "lucide-react";
 import { Avatar } from "./Visual";
 import { PerfilPiloto } from "./PerfilPiloto";
+import { SeusDados } from "./SeusDados";
 import { Encontro } from "./Encontro";
 import { PainelLideranca } from "./PainelLideranca";
 import { AbroFaiscas } from "./AbroFaiscas";
@@ -1008,6 +1009,7 @@ export function Piloto({
                     As mensagens do chat não alimentam esse mapa.
                   </p>
                 </section>
+                <SeusDados dados={d} />
               </>
             )}
             {tab === "lideranca" && d.lider && <PainelLideranca />}

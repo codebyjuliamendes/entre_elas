@@ -8,6 +8,7 @@ import { resposta, corpo, type RotaAcao } from "@/lib/api";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { identidadePiloto } from "@/lib/auth/piloto";
 import * as a from "@/lib/piloto/acoes";
+import { excluirConta, exportarDados } from "@/lib/piloto/conta";
 import { indicadoresPiloto } from "@/lib/piloto/indicadores";
 import { ErroDominio } from "@/lib/domain/erros";
 export async function POST(request: Request, ctx: RotaAcao) {
@@ -47,6 +48,10 @@ export async function POST(request: Request, ctx: RotaAcao) {
         return a.definirDisponibilidade(u.id, input.faiscas_por_mes);
       case "avaliar":
         return a.avaliarFaisca(u.id, input);
+      case "exportar":
+        return exportarDados(u.id, (await identidadePiloto()).email);
+      case "excluir-conta":
+        return excluirConta(u.id, input);
       case "indicadores":
         return indicadoresPiloto((await identidadePiloto()).email);
       default:

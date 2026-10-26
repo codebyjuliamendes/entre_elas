@@ -13,7 +13,13 @@ export function Login() {
   );
   const [email, setEmail] = useState(""),
     [senha, setSenha] = useState(""),
-    [status, setStatus] = useState({ texto: "", erro: false }),
+    [status, setStatus] = useState({
+      texto:
+        params.get("conta") === "excluida"
+          ? "Sua conta foi excluída. Obrigada por ter participado."
+          : "",
+      erro: false,
+    }),
     [busy, setBusy] = useState(false);
 
   useEffect(() => {

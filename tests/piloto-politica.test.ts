@@ -21,6 +21,16 @@ describe("Política de admissão do piloto", () => {
       "não está habilitado",
     );
   });
+  it("com domínios configurados, só e-mails da empresa e a liderança entram", () => {
+    vi.stubEnv("APP_MODE", "piloto");
+    vi.stubEnv("PILOT_EMAIL_DOMINIOS", " @Empresa.com.br, filial.com ");
+    vi.stubEnv("PILOT_LEADER_EMAILS", "consultora@externa.com");
+    expect(exigirEmail("ana@empresa.com.br")).toBe("ana@empresa.com.br");
+    expect(exigirEmail("bia@FILIAL.com")).toBe("bia@filial.com");
+    expect(exigirEmail("consultora@externa.com")).toBe("consultora@externa.com");
+    expect(() => exigirEmail("ana@gmail.com")).toThrow("@empresa.com.br, @filial.com");
+    expect(() => exigirEmail("ana@sub.empresa.com.br")).toThrow();
+  });
   it("cadastro aberto não concede acesso à liderança", () => {
     vi.stubEnv("APP_MODE", "piloto");
     vi.stubEnv("PILOT_LEADER_EMAILS", "pessoa@banca.test");
