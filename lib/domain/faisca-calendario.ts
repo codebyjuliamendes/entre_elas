@@ -47,7 +47,7 @@ export function calendarioFaisca(entrada: unknown) {
   const linhas = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Entre Elas//Faiscas//PT-BR",
+    "PRODID:-//Tecida//Faiscas//PT-BR",
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
     `UID:${f.id}@entreelas.app`,
@@ -55,7 +55,7 @@ export function calendarioFaisca(entrada: unknown) {
     `DTSTART:${data(f.horario)}`,
     `DTEND:${data(new Date(Date.parse(f.horario) + 20 * 60000).toISOString())}`,
     `SUMMARY:${escapar("Faísca · " + f.tema.slice(0, 120))}`,
-    `DESCRIPTION:${escapar("Conversa de 20 minutos. Abra sua conta no Entre Elas para acessar a Faísca. Este arquivo não envia convites nem confirma presença.")}`,
+    `DESCRIPTION:${escapar("Conversa de 20 minutos. Abra sua conta na Tecida para acessar a Faísca. Este arquivo não envia convites nem confirma presença.")}`,
     `URL:${url.href}`,
     "END:VEVENT",
     "END:VCALENDAR",

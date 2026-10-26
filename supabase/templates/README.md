@@ -1,4 +1,4 @@
-# E-mails de autenticação — Entre Elas
+# E-mails de autenticação — Tecida
 
 Os HTMLs usam a identidade rosa/coral/roxo/azul do app, wordmark em texto,
 ícone PNG, tabelas e estilos inline, sem fontes externas ou scripts.
@@ -8,8 +8,8 @@ controles de acesso continuam disponíveis. Funcionam como templates do Supabase
 
 | Supabase → Authentication → Email Templates | Arquivo | Assunto sugerido |
 | --- | --- | --- |
-| Confirm signup | `confirm-signup.html` | Boas-vindas ao Entre Elas ✨ Confirme seu e-mail |
-| Magic Link | `magic-link.html` | Seu link para entrar no Entre Elas ✨ |
+| Confirm signup | `confirm-signup.html` | Boas-vindas à Tecida ✨ Confirme seu e-mail |
+| Magic Link | `magic-link.html` | Seu link para entrar na Tecida ✨ |
 
 Copie o HTML completo para cada template e salve. Personalize **os dois**:
 `signInWithOtp` com cadastro habilitado pode usar confirmação no primeiro acesso
@@ -24,13 +24,13 @@ Os templates não alteram expiração, URLs permitidas ou a política de cadastr
 ## Remetente próprio
 
 É possível criar uma caixa como `ola@seudominio.com` ou `contato@seudominio.com`
-e usar **Entre Elas** como nome do remetente. O endereço é um exemplo; use um
+e usar **Tecida** como nome do remetente. O endereço é um exemplo; use um
 domínio que você controla. A criação dessa caixa é feita no provedor de e-mail.
 
 No Supabase, configure **Custom SMTP** com o provedor que enviará as mensagens
 (por exemplo, Brevo, Resend, SES ou o serviço da sua caixa):
 
-- Nome do remetente: **Entre Elas**.
+- Nome do remetente: **Tecida**.
 - Endereço do remetente: a caixa/endereço verificado no provedor.
 - Host, porta, usuário e senha SMTP: conforme instruções do provedor, inseridos
   diretamente nas configurações seguras do Supabase. Nunca no Git ou no chat.

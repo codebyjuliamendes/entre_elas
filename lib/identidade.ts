@@ -1,3 +1,6 @@
+/** Nome do produto. Backups antigos ainda trazem o nome do hackathon. */
+export const nomeProduto = "Tecida";
+export const nomesBackupAceitos = [nomeProduto, "Entre Elas"] as const;
 /** Cores oficiais dos vetores do kit da designer (Logos/SVG). */
 export const coresMarca = {
   rosaClaro: "#ffd5eb",

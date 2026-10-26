@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { WifiOff, Sparkles } from "lucide-react";
-export const metadata = { title: "Sem conexão · Entre Elas" };
+export const metadata = { title: "Sem conexão · Tecida" };
 export default function Offline() {
   return (
     <main className="standalone-state">

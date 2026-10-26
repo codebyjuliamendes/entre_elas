@@ -1,6 +1,5 @@
 "use client";
 import { Marca, SimboloFaisca } from "@/components/Marca";
-import Image from "next/image";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -87,7 +86,7 @@ export function Login() {
     <main className="pilot-login brand-login">
       <section
         className="login-story"
-        aria-label="Entre Elas, saber que conecta"
+        aria-label="Tecida, saber que conecta"
       >
         <Marca />
         <div className="login-story-copy">
@@ -103,15 +102,6 @@ export function Login() {
           <br />
           Saberes que vão mais longe.
         </p>
-        <div className="login-parceira">
-          <span>Projeto do Hackathon</span>
-          <Image
-            src="/equatorial-branca.png"
-            alt="Grupo Equatorial"
-            width={160}
-            height={35}
-          />
-        </div>
       </section>
       <section className="login-content" aria-labelledby="login-titulo">
         <span className="eyebrow">Seu espaço começa aqui</span>

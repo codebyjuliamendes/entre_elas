@@ -51,7 +51,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           Pular para o conteúdo
         </a>
         <header className="app-header">
-          <Link href="/" className="wordmark" aria-label="Entre Elas — início">
+          <Link href="/" className="wordmark" aria-label="Tecida, início">
             <Marca />
           </Link>
           <SearchDialog />

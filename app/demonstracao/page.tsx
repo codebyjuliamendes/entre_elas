@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { Demonstracao } from "@/components/piloto/Demonstracao";
 
 export const metadata: Metadata = {
-  title: "Demonstração · Entre Elas",
+  title: "Demonstração · Tecida",
   description:
-    "Conheça o Entre Elas sem cadastro, com uma rede fictícia de colaboradoras.",
+    "Conheça a Tecida sem cadastro, com uma rede fictícia de colaboradoras.",
 };
 
 export default function Page() {

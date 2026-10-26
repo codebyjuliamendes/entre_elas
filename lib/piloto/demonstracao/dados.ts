@@ -171,7 +171,7 @@ const SEMENTES: Semente[] = [
     ["Plano de desenvolvimento", "Feedback", "Mentoria"],
     ["Trabalhar com indicadores"],
     [
-      "Conduz a trilha de desenvolvimento de novas líderes na CEEE Equatorial",
+      "Conduz a trilha de desenvolvimento de novas líderes da distribuidora",
       "Ajuda colegas a transformar experiências em um PDI com uma primeira ação",
     ],
     4,

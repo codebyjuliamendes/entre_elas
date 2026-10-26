@@ -218,7 +218,7 @@ const fmt = (v: number | null, sufixo = "%") =>
 // Texto pronto para slide ou mensagem, sempre com os números reais do painel.
 export function resumoParaApresentacao(i: IndicadoresPiloto) {
   const linhas = [
-    `Piloto Entre Elas — dados reais${i.inicio ? ` desde ${new Date(i.inicio).toLocaleDateString("pt-BR", { timeZone: "UTC" })}` : ""}`,
+    `Piloto Tecida — dados reais${i.inicio ? ` desde ${new Date(i.inicio).toLocaleDateString("pt-BR", { timeZone: "UTC" })}` : ""}`,
     `${i.participantes} participantes (${i.perfis_completos} com perfil completo)`,
     `${i.convites} convites de Faísca · ${i.aceitas} aceitos (taxa de aceite ${fmt(i.taxa_aceite)}) · ${i.realizadas} realizadas`,
     `${i.pessoas_conectadas} pessoas conectadas em ${i.pares_distintos} pares diferentes`,

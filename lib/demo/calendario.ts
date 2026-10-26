@@ -49,7 +49,7 @@ export function criarIcs(entrada: unknown): string {
   const linhas = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Entre Elas//Agenda demonstrativa//PT-BR",
+    "PRODID:-//Tecida//Agenda demonstrativa//PT-BR",
     "CALSCALE:GREGORIAN",
     "BEGIN:VEVENT",
     `UID:${escapar(input.id.replace(/[^a-zA-Z0-9-]/g, ""))}@entre-elas.local`,
@@ -57,7 +57,7 @@ export function criarIcs(entrada: unknown): string {
     `DTSTART:${data(inicio)}`,
     `DTEND:${data(fim)}`,
     `SUMMARY:${escapar(input.titulo)}`,
-    `DESCRIPTION:${escapar(input.descricao + "\nEvento fictício da apresentação Entre Elas.")}`,
+    `DESCRIPTION:${escapar(input.descricao + "\nEvento fictício da apresentação Tecida.")}`,
     "END:VEVENT",
     "END:VCALENDAR",
   ];

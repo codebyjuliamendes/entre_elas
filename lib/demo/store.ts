@@ -24,6 +24,7 @@ import {
   validarComunidade,
 } from "./estado";
 import { ANA_ID, perfisDemo } from "./catalogo";
+import { nomeProduto, nomesBackupAceitos } from "@/lib/identidade";
 import { postsIniciais } from "./conteudo";
 export { jornadaInicial };
 export const estadoInicial = criarEstadoInicial();
@@ -190,7 +191,7 @@ export function comentarDemo(entrada: unknown) {
 export function exportarBackup() {
   return JSON.stringify(
     {
-      aplicativo: "Entre Elas",
+      aplicativo: nomeProduto,
       exportado_em: new Date().toISOString(),
       dados: getSnapshot(),
     },
@@ -202,7 +203,7 @@ export function importarBackup(texto: string) {
   if (new TextEncoder().encode(texto).byteLength > 10_000_000)
     throw new Error("O arquivo deve ter até 10 MB.");
   const arquivo = z
-    .object({ aplicativo: z.literal("Entre Elas"), dados: z.unknown() })
+    .object({ aplicativo: z.enum(nomesBackupAceitos), dados: z.unknown() })
     .parse(JSON.parse(texto));
   const dados = restaurarEstado(arquivo.dados);
   protegerOriginal = false;
