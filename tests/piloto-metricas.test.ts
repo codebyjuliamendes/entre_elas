@@ -5,6 +5,7 @@ import {
   consolidarIndicadores,
   resumoParaApresentacao,
   noExpediente,
+  planilhaIndicadores,
 } from "@/lib/piloto/metricas";
 const A = "00000000-0000-4000-8000-0000000000a1",
   B = "00000000-0000-4000-8000-0000000000b2",
@@ -85,6 +86,18 @@ describe("Indicadores do piloto", () => {
     expect(i.no_expediente).toBeNull();
     expect(i.avaliacoes).toBeNull();
     expect(resumoParaApresentacao(i)).toContain("taxa de aceite —");
+  });
+  it("planilha abre no Excel em português e não executa fórmulas", () => {
+    const i = consolidarIndicadores({
+      ...base,
+      perfis: [{ id: A, area: "Operações", regional: "Pará", interesses: ["=HIPERLINK(\"x\")"] }],
+      faiscas: [{ id: "f1", solicitante_id: A, convidada_id: B, status: "realizada" }],
+    });
+    const csv = planilhaIndicadores(i, new Date("2026-10-27T12:00:00Z"));
+    expect(csv.startsWith("\uFEFF\"Grupo\";\"Indicador\";\"Valor\"")).toBe(true);
+    expect(csv).toContain('"Avaliações";"Utilidade média (1 a 5)";"4,5"');
+    expect(csv).toContain(`"'=HIPERLINK(""x"")"`);
+    expect(csv).not.toMatch(/;"=/);
   });
   it("avaliação aceita somente escala de 1 a 5", () => {
     const ok = { faisca_id: A, utilidade: 5, voltaria: true };

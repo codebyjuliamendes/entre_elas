@@ -1,12 +1,14 @@
 "use client";
 import { Marca, SimboloFaisca } from "@/components/Marca";
+import { empresaCliente } from "@/lib/identidade";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function Login() {
+export function Login({ dominios = [] }: { dominios?: string[] }) {
   const router = useRouter(),
-    params = useSearchParams();
+    params = useSearchParams(),
+    empresa = empresaCliente();
   const retorno = normalizarRetorno(params.get("retorno"));
   const [modo, setModo] = useState<"entrar" | "cadastrar">(
     params.get("modo") === "cadastrar" ? "cadastrar" : "entrar",
@@ -110,7 +112,9 @@ export function Login() {
         </p>
       </section>
       <section className="login-content" aria-labelledby="login-titulo">
-        <span className="eyebrow">Seu espaço começa aqui</span>
+        <span className="eyebrow">
+          {empresa ? `A rede das mulheres da ${empresa}` : "Seu espaço começa aqui"}
+        </span>
         <div className="login-modos" role="group" aria-label="Tipo de acesso">
           <button
             type="button"
@@ -155,7 +159,13 @@ export function Login() {
             maxLength={254}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            aria-describedby={dominios.length ? "email-dominio" : undefined}
           />
+          {dominios.length > 0 && (
+            <p id="email-dominio" className="input-hint">
+              Use seu e-mail da empresa ({dominios.map((d) => "@" + d).join(", ")}).
+            </p>
+          )}
 
           <label
             className="form-label"

@@ -236,3 +236,51 @@ export function resumoParaApresentacao(i: IndicadoresPiloto) {
     );
   return linhas.join("\n");
 }
+const celula = (v: string | number | null) => {
+  const t = v === null ? "" : String(v);
+  // Aspas sempre: protege ";" e quebras; o "'" inicial impede que a planilha leia fórmula.
+  return `"${(/^[=+\-@]/.test(t) ? "'" + t : t).replaceAll('"', '""')}"`;
+};
+/** Planilha (CSV com ";", como o Excel em português espera) só com dados agregados. */
+export function planilhaIndicadores(i: IndicadoresPiloto, geradoEm = new Date()) {
+  const linhas: [string, string, string | number | null][] = [
+    ["Geral", "Gerado em", geradoEm.toISOString()],
+    ["Geral", "Início do piloto", i.inicio],
+    ["Geral", "Participantes", i.participantes],
+    ["Geral", "Perfis completos", i.perfis_completos],
+    ["Faíscas", "Convites", i.convites],
+    ["Faíscas", "Aceitas", i.aceitas],
+    ["Faíscas", "Recusadas", i.recusadas],
+    ["Faíscas", "Realizadas", i.realizadas],
+    ["Faíscas", "Taxa de aceite (%)", i.taxa_aceite],
+    ["Faíscas", "No horário de trabalho (%)", i.no_expediente],
+    ["Conexões", "Pessoas conectadas", i.pessoas_conectadas],
+    ["Conexões", "Pares diferentes", i.pares_distintos],
+    ["Conexões", "Entre regionais diferentes (%)", i.entre_regionais],
+    ["Conexões", "Entre áreas diferentes (%)", i.entre_areas],
+    ["Conhecimento", "Saberes reconhecidos", i.saberes_reconhecidos],
+    ["Conhecimento", "Dicas publicadas", i.dicas_publicadas],
+    ["Conhecimento", "Objetivos de aprendizagem", i.mapa.objetivos],
+    ["Conhecimento", "Objetivos sem ninguém que ofereça o tema", i.mapa.objetivos_sem_par],
+    ["Engajamento", "Inscrições em eventos", i.inscricoes],
+    ["Engajamento", "Mensagens trocadas", i.mensagens],
+  ];
+  if (i.avaliacoes)
+    linhas.push(
+      ["Avaliações", "Respostas", i.avaliacoes.respostas],
+      ["Avaliações", "Utilidade média (1 a 5)", i.avaliacoes.utilidade_media],
+      ["Avaliações", "Fariam outra Faísca (%)", i.avaliacoes.voltariam],
+    );
+  for (const o of i.mapa.oferta) linhas.push(["Saberes oferecidos", o.saber, o.pessoas]);
+  for (const t of i.mapa.temas_sem_par) linhas.push(["Temas procurados sem oferta", t.tema, t.pessoas]);
+  for (const s of i.mapa.concentrados) linhas.push(["Saberes com uma só pessoa", s, 1]);
+  // O Excel usa vírgula decimal em português.
+  const valor = (v: string | number | null) =>
+    typeof v === "number" ? String(v).replace(".", ",") : v;
+  return (
+    "﻿" +
+    [["Grupo", "Indicador", "Valor"], ...linhas]
+      .map(([g, n, v]) => [celula(g), celula(n), celula(valor(v))].join(";"))
+      .join("\r\n")
+  );
+}

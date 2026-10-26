@@ -16,6 +16,7 @@ import { CircleHelp } from "lucide-react";
 import { Avatar } from "./Visual";
 import { PerfilPiloto } from "./PerfilPiloto";
 import { SeusDados } from "./SeusDados";
+import { empresaCliente } from "@/lib/identidade";
 import { Encontro } from "./Encontro";
 import { PainelLideranca } from "./PainelLideranca";
 import { AbroFaiscas } from "./AbroFaiscas";
@@ -312,7 +313,7 @@ export function Piloto({
           <span>
             {demonstracao
               ? "Demonstração · dados fictícios, nada é salvo"
-              : "Piloto · dados salvos no servidor"}
+              : `${empresaCliente() ?? "Piloto"} · dados salvos no servidor`}
           </span>
           {/* Conta e ajuda ficam no topo, separadas das abas de conteúdo. */}
           <div className="pilot-conta">
