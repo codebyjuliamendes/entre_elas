@@ -62,6 +62,41 @@ const indicadores = [
   "Saberes que só uma pessoa tem",
 ];
 
+const perguntas: [string, string][] = [
+  [
+    "Precisa instalar alguma coisa?",
+    "Não. Funciona no navegador do computador e do celular, e pode ser adicionada à tela inicial como um app. Quem está em campo usa pelo celular.",
+  ],
+  [
+    "Quanto tempo as colaboradoras precisam dedicar?",
+    "Cada Faísca tem 20 minutos e é marcada no horário de trabalho. Cada pessoa define quantos convites aceita receber por mês, e pode pausar quando quiser.",
+  ],
+  [
+    "A IA usa os dados da empresa para treinar modelos?",
+    "Em pilotos contratados, usamos planos dos provedores de IA que não usam os dados enviados para treinar modelos. A IA só processa textos de quem autorizou, e tudo funciona também sem ela.",
+  ],
+  [
+    "A liderança consegue ler as conversas?",
+    "Não. O painel mostra só números agregados: convites, conexões entre áreas e regionais, temas sem oferta. Conversas, anotações e mensagens ficam entre as duas participantes.",
+  ],
+  [
+    "E se ninguém na empresa souber o tema pedido?",
+    "O painel mostra os temas procurados que ninguém oferece. É um mapa de onde investir em formação ou trazer alguém de fora.",
+  ],
+  [
+    "Dá para usar o login da empresa?",
+    "No piloto, o acesso é por e-mail da própria empresa, e só os domínios combinados entram. Login com Microsoft e Google está no nosso plano para clientes maiores.",
+  ],
+  [
+    "Como funciona a cobrança?",
+    "O piloto tem custo de entrada baixo. Depois, a assinatura é mensal por colaboradora ativa, e o valor depende do tamanho da empresa.",
+  ],
+  [
+    "É só para mulheres?",
+    "Começamos pelas mulheres, onde a falta de rede é mais sentida. O mesmo motor serve para outros grupos de afinidade e para a integração de pessoas novas.",
+  ],
+];
+
 export default function Empresas() {
   const contato = linkContato();
   return (
@@ -209,7 +244,24 @@ export default function Empresas() {
             <li>Mensagens do chat não alimentam a IA.</li>
             <li>A liderança vê números agregados, nunca conversas.</li>
             <li>Comunidades privadas não aparecem para quem não é membro.</li>
+            <li>Só e-mails da sua empresa entram.</li>
+            <li>Cada pessoa baixa os próprios dados ou exclui a conta quando quiser.</li>
           </ul>
+          <p>
+            <Link href="/privacidade">Leia a política de privacidade</Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="lp-secao" aria-labelledby="lp-perguntas">
+        <h2 id="lp-perguntas">Perguntas frequentes</h2>
+        <div className="lp-perguntas">
+          {perguntas.map(([pergunta, resposta]) => (
+            <details key={pergunta}>
+              <summary>{pergunta}</summary>
+              <p>{resposta}</p>
+            </details>
+          ))}
         </div>
       </section>
 
@@ -244,6 +296,9 @@ export default function Empresas() {
         <p>
           A {nomeProduto} nasceu como “Entre Elas” no Hackathon Equatorial
           2026. A Equatorial não é responsável pelo produto.
+        </p>
+        <p>
+          <Link href="/privacidade">Privacidade</Link>
         </p>
       </footer>
     </main>

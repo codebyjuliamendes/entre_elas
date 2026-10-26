@@ -256,7 +256,8 @@ export function Login({ dominios = [] }: { dominios?: string[] }) {
         <p className="input-hint">
           A IA é opcional. Antes de usá-la, você verá os provedores envolvidos e
           poderá autorizar o envio dos seus textos. Não informe dados sensíveis,
-          confidenciais ou de terceiros.
+          confidenciais ou de terceiros.{" "}
+          <a href="/privacidade">Política de privacidade</a>.
         </p>
         {process.env.NEXT_PUBLIC_DEMO_URL && (
           <a className="login-demo" href={process.env.NEXT_PUBLIC_DEMO_URL}>
