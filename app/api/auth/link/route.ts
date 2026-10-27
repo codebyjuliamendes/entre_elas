@@ -1,13 +1,12 @@
 import { z } from "zod";
 import { normalizarRetorno, COOKIE_RETORNO } from "@/lib/piloto/retorno";
-import { variavel } from "@/lib/config";
 import { cookies } from "next/headers";
-import { createClient } from "@supabase/supabase-js";
 import { createHash } from "node:crypto";
 import { resposta, corpo } from "@/lib/api";
 import { exigirEmail, origemApp } from "@/lib/piloto/config";
 import { getDb, verificarErro } from "@/lib/db/client";
 import { ErroDominio } from "@/lib/domain/erros";
+import { clientePkce } from "@/lib/auth/pkce";
 export async function POST(request: Request) {
   return resposta(async () => {
     const entrada = await corpo(request);
@@ -50,34 +49,7 @@ export async function POST(request: Request) {
       path: "/",
       maxAge: 600,
     });
-    const client = createClient(
-      variavel("NEXT_PUBLIC_SUPABASE_URL"),
-      variavel("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
-      {
-        auth: {
-          flowType: "pkce",
-          storageKey: "entre-elas-pkce",
-          persistSession: true,
-          autoRefreshToken: false,
-          detectSessionInUrl: false,
-          storage: {
-            getItem: (key) => jar.get(key)?.value ?? null,
-            setItem: (key, value) => {
-              jar.set(key, value, {
-                httpOnly: true,
-                secure: new URL(origemApp()).protocol === "https:",
-                sameSite: "lax",
-                path: "/",
-                maxAge: 600,
-              });
-            },
-            removeItem: (key) => {
-              jar.delete(key);
-            },
-          },
-        },
-      },
-    );
+    const client = await clientePkce();
     const { error: erro } = await client.auth.signInWithOtp({
       email,
       options: {

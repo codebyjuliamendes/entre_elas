@@ -1,5 +1,11 @@
 import type { CSSProperties } from "react";
-import { coresMarca, tracoFaisca, viewBoxFaisca } from "@/lib/identidade";
+import {
+  coresMarca,
+  empresaCliente,
+  logoEmpresa,
+  tracoFaisca,
+  viewBoxFaisca,
+} from "@/lib/identidade";
 export function SimboloFaisca({
   className = "",
   size = 40,
@@ -71,5 +77,18 @@ export function IconeFaisca({
     >
       <path fill="currentColor" d={tracoFaisca} />
     </svg>
+  );
+}
+
+/** Selo da empresa cliente ao lado da marca, quando a instalação tem logo. */
+export function LogoEmpresa({ className = "" }: { className?: string }) {
+  const src = logoEmpresa();
+  if (!src) return null;
+  return (
+    <span className={`logo-empresa ${className}`}>
+      {/* Logo vem da configuração da instalação, sem domínio fixo para o otimizador de imagens. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={empresaCliente() ?? "Empresa"} />
+    </span>
   );
 }

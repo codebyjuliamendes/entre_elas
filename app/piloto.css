@@ -1137,3 +1137,60 @@ body:has(.pilot-app) {
 .pilot-login .input-hint a {
   color: var(--brand-roxo);
 }
+
+/* Painel da liderança em PDF: "Salvar em PDF" usa a impressão do navegador. */
+.painel-impressao {
+  display: none;
+}
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  .pilot-app .pilot-topo,
+  .pilot-app > footer,
+  .pilot-app .pilot-actions,
+  .demo-faixa,
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+  .pilot-app,
+  .pilot-app main {
+    background: #fff !important;
+    padding: 0 !important;
+  }
+  .painel-impressao {
+    display: block;
+    font-size: 11px;
+    color: #68627a;
+    margin: 0 0 6px;
+  }
+  .painel-kpi,
+  .painel-grafico {
+    break-inside: avoid;
+    box-shadow: none !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+/* Login corporativo (Google, Microsoft), só quando a instalação liga. */
+.login-sso {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.login-sso-botao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 46px;
+  border: 1.5px solid var(--brand-azul);
+  border-radius: 12px;
+  color: var(--brand-azul);
+  font-weight: 700;
+  text-decoration: none;
+}
+.login-sso-botao:hover,
+.login-sso-botao:focus-visible {
+  background: #f6f2fb;
+}
