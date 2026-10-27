@@ -116,6 +116,10 @@ export function PainelLideranca() {
   }
   return (
     <section className="painel">
+      <p className="painel-impressao">
+        Tecida · Painel de liderança · gerado em{" "}
+        {new Date().toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}
+      </p>
       <header className="painel-topo">
         <div>
           <h1>Painel de liderança</h1>
@@ -149,6 +153,11 @@ export function PainelLideranca() {
               }
             >
               Baixar planilha
+            </button>
+          )}
+          {m && (
+            <button disabled={busy} onClick={() => window.print()}>
+              Salvar em PDF
             </button>
           )}
         </div>
