@@ -625,3 +625,30 @@ select {
     color: var(--brand-rosa-claro);
   }
 }
+
+/* Logo da empresa cliente, ao lado da marca da Tecida. */
+.logo-empresa {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 4px 8px;
+}
+.logo-empresa img {
+  display: block;
+  max-height: 28px;
+  max-width: 120px;
+  object-fit: contain;
+}
+.logo-empresa-topo {
+  margin-left: 8px;
+}
+.logo-empresa-login {
+  margin-top: 16px;
+}
+@media (max-width: 560px) {
+  .logo-empresa img {
+    max-height: 22px;
+    max-width: 84px;
+  }
+}

@@ -3,6 +3,16 @@ export const nomeProduto = "Tecida";
 /** Empresa cliente da instalação (uma por piloto), mostrada no app quando configurada. */
 export const empresaCliente = () =>
   process.env.NEXT_PUBLIC_EMPRESA_NOME?.trim().slice(0, 60) || null;
+/** Logo da empresa cliente: caminho em /public ou endereço https. */
+export const logoEmpresa = () => {
+  const v = process.env.NEXT_PUBLIC_EMPRESA_LOGO?.trim();
+  return v && (/^\/[\w\-./]+$/.test(v) || /^https:\/\/[^\s"'<>]+$/.test(v)) ? v : null;
+};
+/** Listas separadas por vírgula; viram sugestões no perfil, sem impedir outro texto. */
+const lista = (v: string | undefined) =>
+  [...new Set((v ?? "").split(",").map((x) => x.trim().slice(0, 100)).filter((x) => x.length >= 2))].slice(0, 80);
+export const areasEmpresa = () => lista(process.env.NEXT_PUBLIC_EMPRESA_AREAS);
+export const regionaisEmpresa = () => lista(process.env.NEXT_PUBLIC_EMPRESA_REGIONAIS);
 export const nomesBackupAceitos = [nomeProduto, "Entre Elas"] as const;
 /** Cores oficiais dos vetores do kit da designer (Logos/SVG). */
 export const coresMarca = {

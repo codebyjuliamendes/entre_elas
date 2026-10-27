@@ -10,7 +10,7 @@ import type { DadosPiloto } from "@/lib/piloto/dados";
 import type { Faisca } from "@/lib/schemas/entities";
 import { prepararFoto } from "@/lib/demo/foto";
 import { toast } from "sonner";
-import { Marca, SimboloFaisca } from "@/components/Marca";
+import { LogoEmpresa, Marca, SimboloFaisca } from "@/components/Marca";
 import { motion } from "framer-motion";
 import { CircleHelp } from "lucide-react";
 import { Avatar } from "./Visual";
@@ -310,6 +310,7 @@ export function Piloto({
           >
             <Marca />
           </a>
+          <LogoEmpresa className="logo-empresa-topo" />
           <span>
             {demonstracao
               ? "Demonstração · dados fictícios, nada é salvo"

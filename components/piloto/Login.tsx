@@ -1,5 +1,5 @@
 "use client";
-import { Marca, SimboloFaisca } from "@/components/Marca";
+import { LogoEmpresa, Marca, SimboloFaisca } from "@/components/Marca";
 import { empresaCliente } from "@/lib/identidade";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
@@ -97,6 +97,7 @@ export function Login({ dominios = [] }: { dominios?: string[] }) {
         aria-label="Tecida, saber que conecta"
       >
         <Marca />
+        <LogoEmpresa className="logo-empresa-login" />
         <div className="login-story-copy">
           <span className="eyebrow">Saber que conecta</span>
           <h1>Uma conversa pode abrir caminhos.</h1>

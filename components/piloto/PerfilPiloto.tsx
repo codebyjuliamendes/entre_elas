@@ -4,6 +4,7 @@ import type { Profile } from "@/lib/schemas/entities";
 import type { EstadoIndexacao } from "@/lib/domain/perfil-indexacao";
 import { api, emDemonstracao } from "@/lib/piloto/browser";
 import { toast } from "sonner";
+import { areasEmpresa, regionaisEmpresa } from "@/lib/identidade";
 const campos = [
   ["nome", "Seu nome"],
   ["cargo", "Cargo ou ocupação"],
@@ -11,6 +12,11 @@ const campos = [
   ["cidade", "Cidade"],
   ["regional", "Regional"],
 ] as const;
+// Áreas e regionais da empresa cliente, quando configuradas na instalação.
+const sugestoes: Partial<Record<(typeof campos)[number][0], string[]>> = {
+  area: areasEmpresa(),
+  regional: regionaisEmpresa(),
+};
 export function PerfilPiloto({
   perfil,
   ia,
@@ -147,7 +153,15 @@ export function PerfilPiloto({
               maxLength={100}
               value={form[k]}
               onChange={(e) => setForm({ ...form, [k]: e.target.value })}
+              list={sugestoes[k]?.length ? `lista-${k}` : undefined}
             />
+            {sugestoes[k]?.length ? (
+              <datalist id={`lista-${k}`}>
+                {sugestoes[k].map((s) => (
+                  <option key={s} value={s} />
+                ))}
+              </datalist>
+            ) : null}
           </div>
         ))}
         <label htmlFor="perfil-saberes">Saberes que pode compartilhar</label>
