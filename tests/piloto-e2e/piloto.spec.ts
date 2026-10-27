@@ -10,8 +10,8 @@ async function linkEntrada(page: Page, email: string, cadastrar = false) {
   await page
     .getByRole("button", {
       name: cadastrar
-        ? "Receber link para criar conta"
-        : "Receber link de entrada",
+        ? "Prefere receber link de confirmação por e-mail?"
+        : "Esqueceu a senha ou prefere link por e-mail?",
       exact: true,
     })
     .click();
@@ -426,7 +426,7 @@ test("entrar não cria uma conta nova e cadastro é uma escolha explícita", asy
     .getByLabel("Seu e-mail", { exact: true })
     .fill("nao-cadastrada@banca.test");
   await page
-    .getByRole("button", { name: "Receber link de entrada", exact: true })
+    .getByRole("button", { name: "Esqueceu a senha ou prefere link por e-mail?", exact: true })
     .click();
   await expect(page.getByRole("status")).toContainText("escolha Criar conta");
   const antes = await (
@@ -440,7 +440,7 @@ test("entrar não cria uma conta nova e cadastro é uma escolha explícita", asy
     "nao-cadastrada@banca.test",
   );
   await page
-    .getByRole("button", { name: "Receber link para criar conta", exact: true })
+    .getByRole("button", { name: "Prefere receber link de confirmação por e-mail?", exact: true })
     .click();
   await expect(page.getByRole("status")).toContainText("Link enviado");
   const depois = await (

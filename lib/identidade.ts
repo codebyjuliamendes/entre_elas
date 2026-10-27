@@ -1,5 +1,8 @@
 /** Nome do produto. Backups antigos ainda trazem o nome do hackathon. */
 export const nomeProduto = "Tecida";
+/** Empresa cliente da instalação (uma por piloto), mostrada no app quando configurada. */
+export const empresaCliente = () =>
+  process.env.NEXT_PUBLIC_EMPRESA_NOME?.trim().slice(0, 60) || null;
 export const nomesBackupAceitos = [nomeProduto, "Entre Elas"] as const;
 /** Cores oficiais dos vetores do kit da designer (Logos/SVG). */
 export const coresMarca = {

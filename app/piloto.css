@@ -1101,3 +1101,39 @@ body:has(.pilot-app) {
     display: none;
   }
 }
+
+/* Seus dados: baixar cópia e excluir a conta (LGPD). */
+.pilot-app .pilot-seus-dados > button,
+.pilot-app .pilot-exclusao button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 8px 4px 0;
+}
+.pilot-app .pilot-perigo {
+  color: #b42318;
+  border-color: #f4b4ae;
+}
+.pilot-app .pilot-exclusao {
+  margin-top: 12px;
+  padding: 14px 16px;
+  border: 1.5px solid #f4b4ae;
+  border-radius: 14px;
+  background: #fff6f5;
+}
+.pilot-app .pilot-exclusao h3 {
+  margin: 0 0 6px;
+}
+.pilot-app .pilot-exclusao ul {
+  margin: 0 0 12px;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+.pilot-app .pilot-exclusao input {
+  display: block;
+  margin: 6px 0 10px;
+  max-width: 220px;
+}
+.pilot-login .input-hint a {
+  color: var(--brand-roxo);
+}

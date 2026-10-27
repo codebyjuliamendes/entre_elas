@@ -21,11 +21,15 @@ Para 1 a 3 pilotos, **não vale reescrever o banco para várias empresas**. Cada
 
 Isso dá isolamento total dos dados, que é o que o jurídico do cliente quer ouvir, e custa cerca de R$ 250 por mês por piloto.
 
-O que falta no código para isso:
+Já pronto no código (27/10/2026):
 
-1. **Personalização por variável de ambiente:** nome e logo da empresa no topo e no login, e a lista de áreas e regionais. Hoje as regionais do cadastro seguem a demonstração.
-2. **Domínio de e-mail permitido**, como `PILOT_EMAIL_DOMINIOS=empresa.com.br`. Hoje o cadastro é aberto, e num piloto pago só colaboradoras devem entrar.
-3. **Excluir a própria conta e baixar os próprios dados** em Configurações. É obrigação da LGPD, o que o RH vai perguntar primeiro.
+1. **Nome da empresa no app:** `NEXT_PUBLIC_EMPRESA_NOME` aparece no login e no topo do piloto.
+2. **Só e-mails da empresa:** `PILOT_EMAIL_DOMINIOS=empresa.com.br` (vários separados por vírgula). A liderança em `PILOT_LEADER_EMAILS` sempre entra.
+3. **Baixar os próprios dados e excluir a conta**, em Meu perfil → Seus dados.
+4. **Painel da liderança em planilha** (CSV para Excel), com dados agregados.
+5. **Política de privacidade** em `/privacidade` e perguntas frequentes na landing.
+
+Ainda falta: lista fixa de áreas e regionais por empresa (hoje são texto livre) e logo da empresa cliente.
 
 ## Etapa 2 · De 4 a 10 clientes: uma plataforma, várias empresas
 
@@ -44,7 +48,7 @@ O que falta no código para isso:
 
 - Login com Microsoft (Entra ID) e Google Workspace, que o Supabase Auth suporta.
 - SAML para quem usa outro provedor de identidade, como Okta.
-- Painel da liderança exportável em PDF e planilha.
+- Painel da liderança também em PDF (a planilha já existe).
 - Registro de auditoria: quem acessou o painel e quando.
 
 ## IA com dados reais

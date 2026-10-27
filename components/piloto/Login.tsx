@@ -1,19 +1,27 @@
 "use client";
 import { Marca, SimboloFaisca } from "@/components/Marca";
+import { empresaCliente } from "@/lib/identidade";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function Login() {
+export function Login({ dominios = [] }: { dominios?: string[] }) {
   const router = useRouter(),
-    params = useSearchParams();
+    params = useSearchParams(),
+    empresa = empresaCliente();
   const retorno = normalizarRetorno(params.get("retorno"));
   const [modo, setModo] = useState<"entrar" | "cadastrar">(
     params.get("modo") === "cadastrar" ? "cadastrar" : "entrar",
   );
   const [email, setEmail] = useState(""),
     [senha, setSenha] = useState(""),
-    [status, setStatus] = useState({ texto: "", erro: false }),
+    [status, setStatus] = useState({
+      texto:
+        params.get("conta") === "excluida"
+          ? "Sua conta foi excluída. Obrigada por ter participado."
+          : "",
+      erro: false,
+    }),
     [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -104,7 +112,9 @@ export function Login() {
         </p>
       </section>
       <section className="login-content" aria-labelledby="login-titulo">
-        <span className="eyebrow">Seu espaço começa aqui</span>
+        <span className="eyebrow">
+          {empresa ? `A rede das mulheres da ${empresa}` : "Seu espaço começa aqui"}
+        </span>
         <div className="login-modos" role="group" aria-label="Tipo de acesso">
           <button
             type="button"
@@ -149,7 +159,13 @@ export function Login() {
             maxLength={254}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            aria-describedby={dominios.length ? "email-dominio" : undefined}
           />
+          {dominios.length > 0 && (
+            <p id="email-dominio" className="input-hint">
+              Use seu e-mail da empresa ({dominios.map((d) => "@" + d).join(", ")}).
+            </p>
+          )}
 
           <label
             className="form-label"
@@ -240,7 +256,8 @@ export function Login() {
         <p className="input-hint">
           A IA é opcional. Antes de usá-la, você verá os provedores envolvidos e
           poderá autorizar o envio dos seus textos. Não informe dados sensíveis,
-          confidenciais ou de terceiros.
+          confidenciais ou de terceiros.{" "}
+          <a href="/privacidade">Política de privacidade</a>.
         </p>
         {process.env.NEXT_PUBLIC_DEMO_URL && (
           <a className="login-demo" href={process.env.NEXT_PUBLIC_DEMO_URL}>

@@ -251,3 +251,46 @@
     order: 2;
   }
 }
+.lp a:not(.lp-botao):not(.lp-entrar) {
+  color: var(--brand-roxo);
+}
+.lp-perguntas {
+  display: grid;
+  gap: 10px;
+}
+.lp-perguntas details {
+  background: var(--lp-cartao);
+  border: 1px solid var(--lp-borda);
+  border-radius: 14px;
+  padding: 14px 18px;
+}
+.lp-perguntas summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--brand-azul);
+}
+.lp-perguntas summary:focus-visible {
+  outline: 3px solid var(--brand-rosa);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+.lp-perguntas details p {
+  margin: 10px 0 0;
+  color: var(--lp-suave);
+}
+.lp-texto {
+  max-width: 720px;
+  padding-bottom: 48px;
+}
+.lp-texto h1 {
+  font-size: clamp(32px, 5vw, 44px);
+  margin: 24px 0 8px;
+}
+.lp-texto h2 {
+  font-size: 22px;
+  margin: 32px 0 8px;
+}
+.lp-texto li {
+  line-height: 1.6;
+  margin-bottom: 6px;
+}

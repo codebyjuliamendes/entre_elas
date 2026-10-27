@@ -2,7 +2,9 @@
 import { useState, type CSSProperties } from "react";
 import { toast } from "sonner";
 import { api, dataHora, emDemonstracao } from "@/lib/piloto/browser";
+import { baixarArquivo } from "@/lib/browser/arquivo";
 import {
+  planilhaIndicadores,
   resumoParaApresentacao,
   type IndicadoresPiloto,
 } from "@/lib/piloto/metricas";
@@ -133,6 +135,20 @@ export function PainelLideranca() {
           {m && (
             <button disabled={busy} onClick={copiar}>
               Copiar resumo para a apresentação
+            </button>
+          )}
+          {m && (
+            <button
+              disabled={busy}
+              onClick={() =>
+                baixarArquivo(
+                  `tecida-indicadores-${new Date().toISOString().slice(0, 10)}${emDemonstracao() ? "-exemplo" : ""}.csv`,
+                  planilhaIndicadores(m),
+                  "text/csv;charset=utf-8",
+                )
+              }
+            >
+              Baixar planilha
             </button>
           )}
         </div>
