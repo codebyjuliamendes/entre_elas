@@ -309,8 +309,8 @@ export function Piloto({
             className="pilot-brand"
           >
             <Marca />
+            <LogoEmpresa className="logo-empresa-topo" />
           </a>
-          <LogoEmpresa className="logo-empresa-topo" />
           <span>
             {demonstracao
               ? "Demonstração · dados fictícios, nada é salvo"

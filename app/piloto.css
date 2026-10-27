@@ -1172,3 +1172,25 @@ body:has(.pilot-app) {
     print-color-adjust: exact;
   }
 }
+
+/* Login corporativo (Google, Microsoft), só quando a instalação liga. */
+.login-sso {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.login-sso-botao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 46px;
+  border: 1.5px solid var(--brand-azul);
+  border-radius: 12px;
+  color: var(--brand-azul);
+  font-weight: 700;
+  text-decoration: none;
+}
+.login-sso-botao:hover,
+.login-sso-botao:focus-visible {
+  background: #f6f2fb;
+}

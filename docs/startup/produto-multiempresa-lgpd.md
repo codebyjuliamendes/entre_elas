@@ -29,7 +29,9 @@ Já pronto no código (27/10/2026):
 4. **Painel da liderança em planilha** (CSV para Excel), com dados agregados.
 5. **Política de privacidade** em `/privacidade` e perguntas frequentes na landing.
 
-Ainda falta: lista fixa de áreas e regionais por empresa (hoje são texto livre) e logo da empresa cliente.
+6. **Logo da empresa** (`NEXT_PUBLIC_EMPRESA_LOGO`) e **sugestões de áreas e regionais** no perfil (`NEXT_PUBLIC_EMPRESA_AREAS`, `NEXT_PUBLIC_EMPRESA_REGIONAIS`).
+7. **Painel da liderança em PDF**, pelo botão "Salvar em PDF".
+8. **Login com Google e Microsoft**, desligado até configurar (veja `docs/startup/README.md`).
 
 ## Etapa 2 · De 4 a 10 clientes: uma plataforma, várias empresas
 
@@ -46,9 +48,8 @@ Ainda falta: lista fixa de áreas e regionais por empresa (hoje são texto livre
 
 **Gatilho:** um cliente com mais de 1.000 pessoas, ou o TI pede SSO.
 
-- Login com Microsoft (Entra ID) e Google Workspace, que o Supabase Auth suporta.
-- SAML para quem usa outro provedor de identidade, como Okta.
-- Painel da liderança também em PDF (a planilha já existe).
+- Login com Microsoft (Entra ID) e Google Workspace: o código está pronto; falta configurar no Supabase de cada instalação.
+- SAML para quem usa outro provedor de identidade, como Okta (plano pago do Supabase).
 - Registro de auditoria: quem acessou o painel e quando.
 
 ## IA com dados reais

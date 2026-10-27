@@ -1,6 +1,7 @@
 "use client";
 import { LogoEmpresa, Marca, SimboloFaisca } from "@/components/Marca";
 import { empresaCliente } from "@/lib/identidade";
+import { provedoresAtivos, rotuloSso } from "@/lib/auth/sso";
 import { normalizarRetorno } from "@/lib/piloto/retorno";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -148,6 +149,22 @@ export function Login({ dominios = [] }: { dominios?: string[] }) {
             ? "Digite seu e-mail e senha para acessar diretamente suas trocas e mentorias."
             : "É sua primeira vez? Escolha seu e-mail e crie sua senha para começar imediatamente."}
         </p>
+        {provedoresAtivos().length > 0 && (
+          <div className="login-sso">
+            {provedoresAtivos().map((p) => (
+              <a
+                key={p}
+                className="login-sso-botao"
+                href={`/api/auth/sso?provedor=${p}&retorno=${encodeURIComponent(retorno)}`}
+              >
+                Entrar com {rotuloSso[p]}
+              </a>
+            ))}
+            <div className="login-ou" aria-hidden="true">
+              <span>ou com e-mail</span>
+            </div>
+          </div>
+        )}
         <form onSubmit={autenticar}>
           <label className="form-label" htmlFor="email">
             Seu e-mail
