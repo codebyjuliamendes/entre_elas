@@ -320,6 +320,7 @@ export function Piloto({
             <button
               type="button"
               className="pilot-conta-item"
+              aria-label="Ajuda"
               aria-current={tab === "ajuda" ? "page" : undefined}
               onClick={() => {
                 setTab("ajuda");
@@ -332,6 +333,7 @@ export function Piloto({
             <button
               type="button"
               className="pilot-conta-item"
+              aria-label="Meu perfil"
               aria-current={tab === "perfil" ? "page" : undefined}
               onClick={() => {
                 setTab("perfil");
