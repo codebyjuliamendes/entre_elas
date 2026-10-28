@@ -234,7 +234,13 @@ test("duas contas, convite e consentimentos reais no banco, sem IA ou provedores
     data: {},
   });
   expect(painel.ok()).toBe(true);
-  expect((await painel.json()).faiscas).toBe(1);
+  expect(await painel.json()).toMatchObject({
+    convites: 1,
+    aceitas: 1,
+    recusadas: 0,
+    realizadas: 1,
+    dicas_publicadas: 1,
+  });
   const original = await (await page.request.get("/api/piloto")).json();
   const outroAparelho = await browser.newContext();
   const nova = await outroAparelho.newPage();
@@ -428,7 +434,9 @@ test("entrar não cria uma conta nova e cadastro é uma escolha explícita", asy
   await page
     .getByRole("button", { name: "Esqueceu a senha ou prefere link por e-mail?", exact: true })
     .click();
-  await expect(page.getByRole("status")).toContainText("escolha Criar conta");
+  await expect(
+    page.getByRole("alert").filter({ hasText: "clique na aba 'Criar conta'" }),
+  ).toBeVisible();
   const antes = await (
     await page.request.get(
       "http://127.0.0.1:54322/test-link?email=nao-cadastrada%40banca.test",
